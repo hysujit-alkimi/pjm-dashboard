@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALKIMI Q2 Priorities & Resource Alignment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f0f2f5;
+            min-height: 100vh;
+            padding: 8px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .search-box::before {
+            content: "🔍";
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+
+        .stat-card h3 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            padding: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        thead {
+            background: #f8f9fa;
+        }
+
+        th {
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            position: sticky;
+            top: 0;
+            background: #f8f9fa;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 15px 12px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 14px;
+        }
+
+        tbody tr {
+            transition: all 0.2s;
+        }
+
+        tbody tr:hover {
+            background: #f8f9ff;
+            transform: scale(1.01);
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+        }
+
+        .priority-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .priority-1 { background: #ff4757; color: white; }
+        .priority-2 { background: #ff6348; color: white; }
+        .priority-3 { background: #ffa502; color: white; }
+        .priority-4 { background: #ffd32a; color: #333; }
+        .priority-5 { background: #48dbfb; color: white; }
+        .priority-6 { background: #0abde3; color: white; }
+        .priority-7 { background: #1dd1a1; color: white; }
+
+        .team-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            background: #e3f2fd;
+            color: #1976d2;
+            margin: 2px;
+        }
+
+        .editable {
+            cursor: pointer;
+            position: relative;
+            min-height: 20px;
+        }
+
+        .editable:hover {
+            background: #fff9c4;
+        }
+
+        .editable input, .editable select {
+            width: 100%;
+            padding: 6px;
+            border: 2px solid #667eea;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .delete-btn {
+            background: transparent;
+            color: #ff4757;
+            border: none;
+            padding: 6px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.2s;
+        }
+
+        .delete-btn:hover {
+            background: #fff1f0;
+            color: #ff3838;
+            transform: scale(1.15);
+        }
+
+        .edit-btn {
+            background: transparent;
+            color: #667eea;
+            border: none;
+            padding: 6px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-right: 5px;
+            transition: all 0.2s;
+        }
+
+        .edit-btn:hover {
+            background: #f0f2ff;
+            color: #5568d3;
+            transform: scale(1.15);
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 10px;
+            background: white;
+            padding: 5px;
+            border-radius: 8px;
+            border: 2px solid #667eea;
+        }
+
+        .view-toggle button {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .view-toggle button.active {
+            background: #667eea;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+
+            .table-container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header" style="padding:16px 30px">
+            <h1 style="font-size:20px;margin-bottom:4px">Q2 Priorities & Resource Alignment</h1>
+            <p style="font-size:12px">Track projects, priorities, and team assignments across all departments</p>
+        </div>
+
+        <div class="stats" id="stats">
+            <div class="stat-card">
+                <h3>Total Projects</h3>
+                <div class="value" id="totalProjects">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>High Priority (1-3)</h3>
+                <div class="value" id="highPriority">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Team Members</h3>
+                <div class="value" id="teamCount">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Due This Month</h3>
+                <div class="value" id="dueThisMonth">0</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="view-toggle" style="margin-right: auto;">
+                <button class="active" id="internalTab" onclick="setProjectType('internal')">🏢 ALKIMI Internal</button>
+                <button id="externalTab" onclick="setProjectType('external')">🌐 External</button>
+            </div>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search projects or team members...">
+            </div>
+            <select id="priorityFilter">
+                <option value="">All Priorities</option>
+                <option value="1">Priority 1</option>
+                <option value="2">Priority 2</option>
+                <option value="3">Priority 3</option>
+                <option value="4">Priority 4</option>
+                <option value="5">Priority 5</option>
+                <option value="6">Priority 6</option>
+                <option value="7">Priority 7</option>
+            </select>
+            <div class="view-toggle">
+                <button class="active" onclick="setView('table')">📋 Table</button>
+                <button onclick="setView('kanban')">📌 Board</button>
+            </div>
+            <button class="btn btn-primary" onclick="openAddModal()">➕ Add Project</button>
+            <button class="btn btn-secondary" onclick="exportData()">📥 Export CSV</button>
+            <button class="btn btn-secondary" onclick="exportCurrentState()">💾 Export Current State</button>
+            <button class="btn btn-secondary" onclick="openImportModal()">📤 Import Data</button>
+            <button class="btn btn-secondary" onclick="clearAndReset()" style="background: #ff6b6b; color: white; border: none;">🔄 Clear & Reset</button>
+        </div>
+
+        <div class="table-container" id="tableView">
+            <table id="projectTable">
+                <thead>
+                    <tr>
+                        <th>Project</th>
+                        <th>Priority</th>
+                        <th>PM</th>
+                        <th>PJM</th>
+                        <th>BS</th>
+                        <th>WEB-3</th>
+                        <th>ADTECH</th>
+                        <th>FE</th>
+                        <th>BE</th>
+                        <th>QA</th>
+                        <th>Due Date/ETA</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="projectBody">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-container" id="kanbanView" style="display: none;">
+            <div id="kanbanBoard" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="addModal">
+        <div class="modal-content">
+            <div class="modal-header" id="modalTitle">Add New Project</div>
+            <form id="addProjectForm">
+                <div class="form-group">
+                    <label>Project Type</label>
+                    <select id="projectType" onchange="toggleFormFields()" required>
+                        <option value="internal">ALKIMI Internal</option>
+                        <option value="external">External</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Project Name</label>
+                    <input type="text" id="projectName" required>
+                </div>
+                <div class="form-group">
+                    <label>Priority (1-7)</label>
+                    <input type="number" id="projectPriority" min="1" max="7" value="3" required>
+                </div>
+                
+                <!-- Internal Project Fields -->
+                <div id="internalFields">
+                    <div class="form-group">
+                        <label>PM</label>
+                        <input type="text" id="projectPM" placeholder="e.g., Chandu, Vignesh">
+                    </div>
+                <div class="form-group">
+                    <label>PJM</label>
+                    <input type="text" id="projectPJM" placeholder="e.g., Sujit, Keshav">
+                </div>
+                <div class="form-group">
+                    <label>Business Stakeholder (BS)</label>
+                    <input type="text" id="projectBS" placeholder="e.g., John, Sarah">
+                </div>
+                <div class="form-group">
+                    <label>WEB-3</label>
+                    <input type="text" id="projectWeb3" placeholder="e.g., Vignesh">
+                </div>
+                <div class="form-group">
+                    <label>ADTECH</label>
+                    <input type="text" id="projectAdtech" placeholder="e.g., Ram, Pushpa">
+                </div>
+                </div>
+                
+                <!-- External Project Fields -->
+                <div id="externalFields" style="display: none;">
+                    <div class="form-group">
+                        <label>Client</label>
+                        <input type="text" id="projectClient" placeholder="e.g., TrustNet, VA">
+                    </div>
+                    <div class="form-group">
+                        <label>BA (Business Analyst)</label>
+                        <input type="text" id="projectBA" placeholder="e.g., John, Sarah">
+                    </div>
+                    <div class="form-group">
+                        <label>UX</label>
+                        <input type="text" id="projectUX" placeholder="e.g., Designer name">
+                    </div>
+                </div>
+                
+                <!-- Common Fields (PJM, FE, BE, QA, ETA) -->
+                <div class="form-group">
+                    <label>PJM</label>
+                    <input type="text" id="projectPJM" placeholder="e.g., Sujit, Keshav">
+                </div>
+                <div class="form-group">
+                    <label>Frontend (FE)</label>
+                    <input type="text" id="projectFE" placeholder="e.g., Redit, Milly">
+                </div>
+                <div class="form-group">
+                    <label>Backend (BE)</label>
+                    <input type="text" id="projectBE">
+                </div>
+                <div class="form-group">
+                    <label>QA</label>
+                    <input type="text" id="projectQA">
+                </div>
+                <div class="form-group">
+                    <label id="dueDateLabel">Due Date/ETA</label>
+                    <input type="date" id="projectDueDate">
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;" id="submitBtn">Add Project</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeAddModal()" style="flex: 1;">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="importModal">
+        <div class="modal-content">
+            <div class="modal-header">📤 Import Data</div>
+            <p style="margin-bottom: 20px; color: #666;">Import projects from CSV or JSON (exported state)</p>
+            
+            <div class="form-group">
+                <label>Select Import Type:</label>
+                <select id="importType" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
+                    <option value="json">JSON (Exported Current State)</option>
+                    <option value="csv">CSV File</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Choose File:</label>
+                <input type="file" id="importFile" accept=".json,.csv" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
+            </div>
+
+            <div class="form-group">
+                <label style="display: flex; align-items: center; gap: 10px;">
+                    <input type="checkbox" id="replaceData" style="width: auto;">
+                    <span>Replace all existing data (otherwise, merge with existing)</span>
+                </label>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button type="button" class="btn btn-primary" onclick="processImport()" style="flex: 1;">Import</button>
+                <button type="button" class="btn btn-secondary" onclick="closeImportModal()" style="flex: 1;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let projects = [];
+        let nextId = 14;
+        let editingId = null;
+        let currentView = 'table';
+        let currentProjectType = 'internal'; // 'internal' or 'external'
+
+        // Load data from localStorage on page load
+        function loadFromLocalStorage() {
+            const savedProjects = localStorage.getItem('alkimiProjects');
+            const savedNextId = localStorage.getItem('alkimiNextId');
+            
+            if (savedProjects) {
+                projects = JSON.parse(savedProjects);
+                console.log('Loaded projects from localStorage:', projects.length);
+            } else {
+                // Initial default data if nothing is saved
+                projects = [
+                    { 
+                        id: 1, 
+                        type: "internal",
+                        name: "Agentic Marketplace", 
+                        priority: 1, 
+                        pm: "Chandu", 
+                        pjm: "Sujit",
+                        bs: "Ben",
+                        web3: "VJ", 
+                        adtech: "Ram", 
+                        fe: "Gedi, Milly, Yana", 
+                        be: "Prem, Sagar", 
+                        qa: "Manasa, Sangamesh", 
+                        dueDate: "2026-04-30",
+                        // External project fields
+                        client: "",
+                        ba: "",
+                        ux: ""
+                    },
+                    { 
+                        id: 2, 
+                        type: "internal",
+                        name: "DSP Onboarding", 
+                        priority: 2, 
+                        pm: "Ram", 
+                        pjm: "Sujit",
+                        bs: "Vin",
+                        web3: "", 
+                        adtech: "Pushpa", 
+                        fe: "Gaurav", 
+                        be: "Rekha, Chaithra", 
+                        qa: "Priyanka", 
+                        dueDate: "",
+                        client: "",
+                        ba: "",
+                        ux: ""
+                    },
+                    { 
+                        id: 3, 
+                        type: "internal",
+                        name: "DSP & Exchange", 
+                        priority: 2, 
+                        pm: "Ram", 
+                        pjm: "Sujit",
+                        bs: "Vin",
+                        web3: "", 
+                        adtech: "Pushpa", 
+                        fe: "Gaurav, Anand", 
+                        be: "Rekha, Chaithra, Mithun, Velraj", 
+                        qa: "Abhay", 
+                        dueDate: "2026-04-29",
+                        client: "",
+                        ba: "",
+                        ux: ""
+                    },
+                    { 
+                        id: 4, 
+                        type: "internal",
+                        name: "ADFI", 
+                        priority: 3, 
+                        pm: "Vignesh", 
+                        pjm: "Sujit",
+                        bs: "Alice",
+                        web3: "", 
+                        adtech: "Pushpa", 
+                        fe: "Anand", 
+                        be: "Chaithra", 
+                        qa: "Vinay", 
+                        dueDate: "2026-04-30",
+                        client: "",
+                        ba: "",
+                        ux: ""
+                    },
+                    { 
+                        id: 5, 
+                        type: "internal",
+                        name: "MMP", 
+                        priority: 4, 
+                        pm: "Phani", 
+                        pjm: "Sujit",
+                        bs: "Chorley, Huy",
+                        web3: "", 
+                        adtech: "", 
+                        fe: "Anand", 
+                        be: "Mohit, Gunjan, Kannan", 
+                        qa: "Manasa", 
+                        dueDate: "2026-04-30",
+                        client: "",
+                        ba: "",
+                        ux: ""
+                    },
+                    { 
+                        id: 6, 
+                        type: "internal",
+                        name: "MBP/AMP", 
+                        priority: 4, 
+                        pm: "Darwie", 
+                        pjm: "Sujit",
+                        bs: "Vin, Priya",
+                        web3: "", 
+                        adtech: "Ram", 
+                        fe: "Daniel", 
+                        be: "Prem, Sagar, Subham, Mithun", 
+                        qa: "Priyanka", 
+                        dueDate: "2026-04-30",
+                        client: "",
+                        ba: "",
+                        ux: ""
+                    },
+                    { 
+                        id: 7, 
+                        type: "internal",
+                        name: "ALKIMI Labs", 
+                        priority: 5, 
+                        pm: "Phani", 
+                        pjm: "Keshav",
+                        bs: "Chorley",
+                        web3: "VJ", 
+                        adtech: "", 
+                        fe: "Gedi", 
+                        be: "Sandesh, Darshan, Sriram", 
+                        qa: "Sangamesh", 
+                        dueDate: "2026-04-22",
+                        client: "",
+                        ba: "",
+                        ux: ""
+                    },
+                    { 
+                        id: 8, 
+                        type: "internal",
+                        name: "AI Adoption", 
+                        priority: 5, 
+                        pm: "John", 
+                        pjm: "Keshav",
+                        bs: "John",
+                        web3: "", 
+                        adtech: "", 
+                        fe: "Gedi", 
+                        be: "", 
+                        qa: "", 
+                        dueDate: "",
+                        client: "",
+                        ba: "",
+                        ux: ""
+                    },
+                    { 
+                        id: 9, 
+                        type: "internal",
+                        name: "Tech-Ops Automation", 
+                        priority: 6, 
+                        pm: "Kalidas", 
+                        pjm: "Keshav",
+                        bs: "John, Vin",
+                        web3: "", 
+                        adtech: "Phani, Visnupriya", 
+                        fe: "", 
+                        be: "", 
+                        qa: "", 
+                        dueDate: "",
+                        client: "",
+                        ba: "",
+                        ux: ""
+                    },
+                    { 
+                        id: 10, 
+                        type: "external",
+                        name: "TrustNet", 
+                        priority: 1, 
+                        client: "TrustNet",
+                        ba: "Vignesh",
+                        pjm: "Keshav",
+                        ux: "Yana",
+                        fe: "Gaurav, Sandesh", 
+                        be: "Sandesh, Sujan", 
+                        qa: "Abhay", 
+                        dueDate: "2026-05-15",
+                        // Internal fields (not used for external)
+                        pm: "",
+                        bs: "",
+                        web3: "",
+                        adtech: ""
+                    },
+                    { 
+                        id: 11, 
+                        type: "external",
+                        name: "VA Project", 
+                        priority: 2, 
+                        client: "VA",
+                        ba: "Vignesh",
+                        pjm: "",
+                        ux: "Niranjan",
+                        fe: "Niranjan", 
+                        be: "Sandesh", 
+                        qa: "Vinay", 
+                        dueDate: "2026-04-30",
+                        pm: "",
+                        bs: "",
+                        web3: "",
+                        adtech: ""
+                    },
+                    { 
+                        id: 13, 
+                        type: "external",
+                        name: "FlightOps", 
+                        priority: 4, 
+                        client: "Selas",
+                        ba: "Vignesh",
+                        pjm: "",
+                        ux: "Sujan",
+                        fe: "Sujan", 
+                        be: "Sujan, Sandesh", 
+                        qa: "Vinay", 
+                        dueDate: "2026-04-24",
+                        pm: "",
+                        bs: "",
+                        web3: "",
+                        adtech: ""
+                    },
+                    { 
+                        id: 12, 
+                        type: "internal",
+                        name: "MISC", 
+                        priority: 0, 
+                        pm: "", 
+                        pjm: "",
+                        bs: "",
+                        web3: "", 
+                        adtech: "", 
+                        fe: "", 
+                        be: "", 
+                        qa: "", 
+                        dueDate: "",
+                        client: "",
+                        ba: "",
+                        ux: ""
+                    }
+                ];
+            }
+            
+            if (savedNextId) {
+                nextId = parseInt(savedNextId);
+            }
+        }
+
+        // Save data to localStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('alkimiProjects', JSON.stringify(projects));
+            localStorage.setItem('alkimiNextId', nextId.toString());
+            console.log('Saved to localStorage');
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('projectBody');
+            const thead = document.querySelector('#projectTable thead tr');
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const priorityFilter = document.getElementById('priorityFilter').value;
+            
+            // Update table headers based on project type
+            if (currentProjectType === 'internal') {
+                thead.innerHTML = `
+                    <th>Project</th>
+                    <th>Priority</th>
+                    <th>PM</th>
+                    <th>PJM</th>
+                    <th>BS</th>
+                    <th>WEB-3</th>
+                    <th>ADTECH</th>
+                    <th>FE</th>
+                    <th>BE</th>
+                    <th>QA</th>
+                    <th>Due Date/ETA</th>
+                    <th>Actions</th>
+                `;
+            } else {
+                thead.innerHTML = `
+                    <th>Project</th>
+                    <th>Priority</th>
+                    <th>Client</th>
+                    <th>BA</th>
+                    <th>PJM</th>
+                    <th>UX</th>
+                    <th>FE</th>
+                    <th>BE</th>
+                    <th>QA</th>
+                    <th>ETA</th>
+                    <th>Actions</th>
+                `;
+            }
+            
+            let filteredProjects = projects.filter(p => {
+                if (p.priority === 0) return false; // Hide MISC
+                if (p.type !== currentProjectType) return false; // Filter by type
+                
+                const matchesSearch = p.name.toLowerCase().includes(searchTerm) || 
+                                    (p.pm && p.pm.toLowerCase().includes(searchTerm)) ||
+                                    (p.pjm && p.pjm.toLowerCase().includes(searchTerm)) ||
+                                    (p.bs && p.bs.toLowerCase().includes(searchTerm)) ||
+                                    (p.client && p.client.toLowerCase().includes(searchTerm)) ||
+                                    (p.ba && p.ba.toLowerCase().includes(searchTerm)) ||
+                                    (p.ux && p.ux.toLowerCase().includes(searchTerm)) ||
+                                    (p.web3 && p.web3.toLowerCase().includes(searchTerm)) ||
+                                    (p.adtech && p.adtech.toLowerCase().includes(searchTerm)) ||
+                                    (p.fe && p.fe.toLowerCase().includes(searchTerm)) ||
+                                    (p.be && p.be.toLowerCase().includes(searchTerm)) ||
+                                    (p.qa && p.qa.toLowerCase().includes(searchTerm));
+                const matchesPriority = !priorityFilter || p.priority.toString() === priorityFilter;
+                return matchesSearch && matchesPriority;
+            });
+
+            // Sort by priority
+            filteredProjects.sort((a, b) => a.priority - b.priority);
+
+            if (currentProjectType === 'internal') {
+                tbody.innerHTML = filteredProjects.map(project => `
+                    <tr>
+                        <td><strong>${project.name}</strong></td>
+                        <td><span class="priority-badge priority-${project.priority}">${project.priority}</span></td>
+                        <td>${formatTeam(project.pm)}</td>
+                        <td>${formatTeam(project.pjm)}</td>
+                        <td>${formatTeam(project.bs)}</td>
+                        <td>${formatTeam(project.web3)}</td>
+                        <td>${formatTeam(project.adtech)}</td>
+                        <td>${formatTeam(project.fe)}</td>
+                        <td>${formatTeam(project.be)}</td>
+                        <td>${formatTeam(project.qa)}</td>
+                        <td>${formatDate(project.dueDate)}</td>
+                        <td style="white-space: nowrap;">
+                            <button class="edit-btn" onclick="editProject(${project.id})" title="Edit Project">✎</button>
+                            <button class="delete-btn" onclick="deleteProject(${project.id})" title="Delete Project">✕</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } else {
+                tbody.innerHTML = filteredProjects.map(project => `
+                    <tr>
+                        <td><strong>${project.name}</strong></td>
+                        <td><span class="priority-badge priority-${project.priority}">${project.priority}</span></td>
+                        <td>${formatTeam(project.client)}</td>
+                        <td>${formatTeam(project.ba)}</td>
+                        <td>${formatTeam(project.pjm)}</td>
+                        <td>${formatTeam(project.ux)}</td>
+                        <td>${formatTeam(project.fe)}</td>
+                        <td>${formatTeam(project.be)}</td>
+                        <td>${formatTeam(project.qa)}</td>
+                        <td>${formatDate(project.dueDate)}</td>
+                        <td style="white-space: nowrap;">
+                            <button class="edit-btn" onclick="editProject(${project.id})" title="Edit Project">✎</button>
+                            <button class="delete-btn" onclick="deleteProject(${project.id})" title="Delete Project">✕</button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            updateStats();
+            saveToLocalStorage(); // Save after rendering
+        }
+
+        function formatTeam(members) {
+            if (!members) return '';
+            return members.split(',').map(m => `<span class="team-badge">${m.trim()}</span>`).join(' ');
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        function renderKanban() {
+            const kanbanBoard = document.getElementById('kanbanBoard');
+            const priorities = [1, 2, 3, 4, 5, 6, 7];
+            
+            kanbanBoard.innerHTML = priorities.map(priority => {
+                const priorityProjects = projects.filter(p => p.priority === priority && p.type === currentProjectType);
+                return `
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 12px;">
+                        <h3 style="margin-bottom: 15px; color: #667eea;">Priority ${priority} (${priorityProjects.length})</h3>
+                        ${priorityProjects.map(p => {
+                            let fields = '';
+                            if (currentProjectType === 'internal') {
+                                fields = `
+                                    ${p.pm ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">👤 PM: ${p.pm}</div>` : ''}
+                                    ${p.pjm ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">📋 PJM: ${p.pjm}</div>` : ''}
+                                    ${p.bs ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">💼 BS: ${p.bs}</div>` : ''}
+                                `;
+                            } else {
+                                fields = `
+                                    ${p.client ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">🏢 Client: ${p.client}</div>` : ''}
+                                    ${p.ba ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">📊 BA: ${p.ba}</div>` : ''}
+                                    ${p.pjm ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">📋 PJM: ${p.pjm}</div>` : ''}
+                                `;
+                            }
+                            return `
+                                <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                    <strong style="color: #333; display: block; margin-bottom: 10px;">${p.name}</strong>
+                                    ${fields}
+                                    ${p.dueDate ? `<div style="font-size: 12px; color: #666;">📅 ${formatDate(p.dueDate)}</div>` : ''}
+                                    <div style="margin-top: 10px;">
+                                        <button class="edit-btn" onclick="editProject(${p.id})" title="Edit Project">✎</button>
+                                        <button class="delete-btn" onclick="deleteProject(${p.id})" title="Delete Project">✕</button>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function setView(view) {
+            currentView = view;
+            const buttons = document.querySelectorAll('.view-toggle button');
+            buttons.forEach((btn, idx) => {
+                btn.classList.remove('active');
+                if ((view === 'table' && idx === 0) || (view === 'kanban' && idx === 1)) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            if (view === 'table') {
+                document.getElementById('tableView').style.display = 'block';
+                document.getElementById('kanbanView').style.display = 'none';
+                renderTable();
+            } else {
+                document.getElementById('tableView').style.display = 'none';
+                document.getElementById('kanbanView').style.display = 'block';
+                renderKanban();
+            }
+        }
+
+        function setProjectType(type) {
+            currentProjectType = type;
+            
+            // Update tab active state
+            document.getElementById('internalTab').classList.remove('active');
+            document.getElementById('externalTab').classList.remove('active');
+            
+            if (type === 'internal') {
+                document.getElementById('internalTab').classList.add('active');
+            } else {
+                document.getElementById('externalTab').classList.add('active');
+            }
+            
+            // Re-render current view
+            if (currentView === 'table') {
+                renderTable();
+            } else {
+                renderKanban();
+            }
+        }
+
+        function updateStats() {
+            const activeProjects = projects.filter(p => p.priority > 0 && p.type === currentProjectType);
+            document.getElementById('totalProjects').textContent = activeProjects.length;
+            document.getElementById('highPriority').textContent = activeProjects.filter(p => p.priority <= 3).length;
+            
+            // Count unique team members (including external fields)
+            const allMembers = new Set();
+            activeProjects.forEach(p => {
+                [p.pm, p.pjm, p.bs, p.client, p.ba, p.ux, p.web3, p.adtech, p.fe, p.be, p.qa].forEach(field => {
+                    if (field) {
+                        field.split(',').forEach(m => allMembers.add(m.trim()));
+                    }
+                });
+            });
+            document.getElementById('teamCount').textContent = allMembers.size;
+
+            // Count projects due this month
+            const thisMonth = new Date().getMonth();
+            const dueThisMonth = activeProjects.filter(p => {
+                if (!p.dueDate) return false;
+                return new Date(p.dueDate).getMonth() === thisMonth;
+            }).length;
+            document.getElementById('dueThisMonth').textContent = dueThisMonth;
+        }
+
+        function toggleFormFields() {
+            const projectType = document.getElementById('projectType').value;
+            const internalFields = document.getElementById('internalFields');
+            const externalFields = document.getElementById('externalFields');
+            const dueDateLabel = document.getElementById('dueDateLabel');
+            
+            if (projectType === 'internal') {
+                internalFields.style.display = 'block';
+                externalFields.style.display = 'none';
+                dueDateLabel.textContent = 'Due Date/ETA';
+            } else {
+                internalFields.style.display = 'none';
+                externalFields.style.display = 'block';
+                dueDateLabel.textContent = 'ETA';
+            }
+        }
+
+        function openAddModal() {
+            editingId = null;
+            document.getElementById('modalTitle').textContent = 'Add New Project';
+            document.getElementById('submitBtn').textContent = 'Add Project';
+            document.getElementById('addProjectForm').reset();
+            document.getElementById('projectType').value = currentProjectType;
+            toggleFormFields(); // Show correct fields
+            document.getElementById('addModal').classList.add('active');
+        }
+
+        function editProject(id) {
+            editingId = id;
+            const project = projects.find(p => p.id === id);
+            if (!project) return;
+
+            document.getElementById('modalTitle').textContent = 'Edit Project';
+            document.getElementById('submitBtn').textContent = 'Update Project';
+            
+            // Set project type and toggle fields
+            document.getElementById('projectType').value = project.type || 'internal';
+            toggleFormFields();
+            
+            // Common fields
+            document.getElementById('projectName').value = project.name || '';
+            document.getElementById('projectPriority').value = project.priority || 1;
+            document.getElementById('projectPJM').value = project.pjm || '';
+            document.getElementById('projectFE').value = project.fe || '';
+            document.getElementById('projectBE').value = project.be || '';
+            document.getElementById('projectQA').value = project.qa || '';
+            document.getElementById('projectDueDate').value = project.dueDate || '';
+            
+            // Internal-specific fields
+            document.getElementById('projectPM').value = project.pm || '';
+            document.getElementById('projectBS').value = project.bs || '';
+            document.getElementById('projectWeb3').value = project.web3 || '';
+            document.getElementById('projectAdtech').value = project.adtech || '';
+            
+            // External-specific fields
+            document.getElementById('projectClient').value = project.client || '';
+            document.getElementById('projectBA').value = project.ba || '';
+            document.getElementById('projectUX').value = project.ux || '';
+            
+            document.getElementById('addModal').classList.add('active');
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModal').classList.remove('active');
+            document.getElementById('addProjectForm').reset();
+            document.getElementById('modalTitle').textContent = 'Add New Project';
+            document.getElementById('submitBtn').textContent = 'Add Project';
+            editingId = null;
+        }
+
+        function deleteProject(id) {
+            if (confirm('Are you sure you want to delete this project?')) {
+                projects = projects.filter(p => p.id !== id);
+                saveToLocalStorage(); // Save after deletion
+                if (currentView === 'table') {
+                    renderTable();
+                } else {
+                    renderKanban();
+                }
+            }
+        }
+
+        document.getElementById('addProjectForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const projectType = document.getElementById('projectType').value;
+            
+            const projectData = {
+                type: projectType,
+                name: document.getElementById('projectName').value,
+                priority: parseInt(document.getElementById('projectPriority').value),
+                pjm: document.getElementById('projectPJM').value,
+                fe: document.getElementById('projectFE').value,
+                be: document.getElementById('projectBE').value,
+                qa: document.getElementById('projectQA').value,
+                dueDate: document.getElementById('projectDueDate').value
+            };
+            
+            // Add internal-specific fields
+            if (projectType === 'internal') {
+                projectData.pm = document.getElementById('projectPM').value;
+                projectData.bs = document.getElementById('projectBS').value;
+                projectData.web3 = document.getElementById('projectWeb3').value;
+                projectData.adtech = document.getElementById('projectAdtech').value;
+                projectData.client = '';
+                projectData.ba = '';
+                projectData.ux = '';
+            } else {
+                // Add external-specific fields
+                projectData.client = document.getElementById('projectClient').value;
+                projectData.ba = document.getElementById('projectBA').value;
+                projectData.ux = document.getElementById('projectUX').value;
+                projectData.pm = '';
+                projectData.bs = '';
+                projectData.web3 = '';
+                projectData.adtech = '';
+            }
+
+            if (editingId) {
+                // Update existing project
+                const index = projects.findIndex(p => p.id === editingId);
+                if (index !== -1) {
+                    projects[index] = { ...projects[index], ...projectData };
+                }
+            } else {
+                // Add new project
+                projects.push({ id: nextId++, ...projectData });
+            }
+
+            saveToLocalStorage(); // Save after add/edit
+
+            if (currentView === 'table') {
+                renderTable();
+            } else {
+                renderKanban();
+            }
+            closeAddModal();
+        });
+
+        document.getElementById('searchInput').addEventListener('input', () => {
+            if (currentView === 'table') renderTable();
+        });
+        
+        document.getElementById('priorityFilter').addEventListener('change', () => {
+            if (currentView === 'table') renderTable();
+        });
+
+        function exportData() {
+            const csv = [
+                ['Project', 'Priority', 'PM', 'PJM', 'BS', 'WEB-3', 'ADTECH', 'FE', 'BE', 'QA', 'Due Date'],
+                ...projects.filter(p => p.priority > 0).map(p => [
+                    p.name, p.priority, p.pm, p.pjm, p.bs, p.web3, p.adtech, p.fe, p.be, p.qa, p.dueDate
+                ])
+            ].map(row => row.join(',')).join('\n');
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'project-team-allocation.csv';
+            a.click();
+        }
+
+        function exportCurrentState() {
+            const stateData = JSON.stringify(projects, null, 4);
+            const instructions = `
+===========================================
+EXPORT CURRENT STATE - INSTRUCTIONS
+===========================================
+
+To update the HTML file so others see your current data:
+
+1. Copy the projects array below (between the START and END markers)
+2. Open the HTML file in a text editor
+3. Find the line: let projects = [];
+4. Find the loadFromLocalStorage() function
+5. Replace the projects array in the "else" block (the default data)
+6. Save the file and upload to Git/S3
+
+===========================================
+PROJECTS ARRAY - START
+===========================================
+
+${stateData}
+
+===========================================
+PROJECTS ARRAY - END
+===========================================
+
+Your nextId value: ${nextId}
+(Also update: let nextId = ${nextId}; in the HTML file)
+`;
+
+            // Copy to clipboard
+            navigator.clipboard.writeText(stateData).then(() => {
+                // Show modal with instructions
+                alert('✅ Projects data copied to clipboard!\n\nCheck the downloaded file for instructions on how to update the HTML file.');
+            }).catch(() => {
+                alert('⚠️ Could not copy to clipboard. Please check the downloaded instructions file.');
+            });
+
+            // Download instructions file
+            const blob = new Blob([instructions], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'UPDATE_INSTRUCTIONS.txt';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function clearAndReset() {
+            if (confirm('⚠️ This will clear all your saved changes and reload the default Q2 project data. Continue?')) {
+                localStorage.removeItem('alkimiProjects');
+                localStorage.removeItem('alkimiNextId');
+                alert('✅ Data cleared! The page will now reload with default data.');
+                location.reload();
+            }
+        }
+
+        function openImportModal() {
+            document.getElementById('importModal').classList.add('active');
+        }
+
+        function closeImportModal() {
+            document.getElementById('importModal').classList.remove('active');
+            document.getElementById('importFile').value = '';
+            document.getElementById('replaceData').checked = false;
+        }
+
+        function processImport() {
+            const fileInput = document.getElementById('importFile');
+            const importType = document.getElementById('importType').value;
+            const replaceData = document.getElementById('replaceData').checked;
+
+            if (!fileInput.files || !fileInput.files[0]) {
+                alert('❌ Please select a file to import.');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                try {
+                    const content = e.target.result;
+                    let importedProjects = [];
+
+                    if (importType === 'json') {
+                        // Parse JSON
+                        importedProjects = JSON.parse(content);
+                        
+                        if (!Array.isArray(importedProjects)) {
+                            throw new Error('Invalid JSON format. Expected an array of projects.');
+                        }
+                    } else if (importType === 'csv') {
+                        // Parse CSV
+                        const lines = content.split('\n');
+                        const headers = lines[0].split(',').map(h => h.trim());
+                        
+                        // Expected headers: Project, Priority, PM, PJM, BS, WEB-3, ADTECH, FE, BE, QA, Due Date
+                        for (let i = 1; i < lines.length; i++) {
+                            if (!lines[i].trim()) continue;
+                            
+                            const values = lines[i].split(',').map(v => v.trim());
+                            if (values.length < 11) continue;
+
+                            importedProjects.push({
+                                id: nextId++,
+                                name: values[0] || '',
+                                priority: parseInt(values[1]) || 0,
+                                pm: values[2] || '',
+                                pjm: values[3] || '',
+                                bs: values[4] || '',
+                                web3: values[5] || '',
+                                adtech: values[6] || '',
+                                fe: values[7] || '',
+                                be: values[8] || '',
+                                qa: values[9] || '',
+                                dueDate: values[10] || ''
+                            });
+                        }
+                    }
+
+                    // Validate imported data
+                    if (importedProjects.length === 0) {
+                        alert('❌ No valid projects found in the file.');
+                        return;
+                    }
+
+                    // Apply import
+                    if (replaceData) {
+                        projects = importedProjects;
+                        alert(`✅ Successfully replaced all data with ${importedProjects.length} projects.`);
+                    } else {
+                        // Merge - update nextId to avoid conflicts
+                        const maxId = Math.max(...projects.map(p => p.id), 0);
+                        importedProjects.forEach(p => {
+                            if (!p.id || projects.find(existing => existing.id === p.id)) {
+                                p.id = ++nextId;
+                            }
+                        });
+                        projects = [...projects, ...importedProjects];
+                        alert(`✅ Successfully imported ${importedProjects.length} projects. Total: ${projects.length}`);
+                    }
+
+                    saveToLocalStorage();
+                    
+                    if (currentView === 'table') {
+                        renderTable();
+                    } else {
+                        renderKanban();
+                    }
+                    
+                    closeImportModal();
+                } catch (error) {
+                    alert(`❌ Import failed: ${error.message}`);
+                    console.error('Import error:', error);
+                }
+            };
+
+            reader.readAsText(file);
+        }
+
+        // Click outside modal to close
+        document.getElementById('addModal').addEventListener('click', (e) => {
+            if (e.target.id === 'addModal') {
+                closeAddModal();
+            }
+        });
+
+        document.getElementById('importModal').addEventListener('click', (e) => {
+            if (e.target.id === 'importModal') {
+                closeImportModal();
+            }
+        });
+
+        // Load data and initial render
+        loadFromLocalStorage();
+        renderTable();
+    </script>
+</body>
+</html>
