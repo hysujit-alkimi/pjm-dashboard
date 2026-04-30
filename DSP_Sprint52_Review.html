@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sprint Review — DSP Sprint 52</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--primary:#6C63FF;--success:#10B981;--warning:#F59E0B;--danger:#EF4444;--info:#3B82F6;--muted:#6B7280;--bg:#F1F5F9;--card:#FFFFFF;--border:#E2E8F0;--text:#1E293B;--text-sm:#64748B;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);}
+.report-header{background:linear-gradient(135deg,#6C63FF 0%,#3B82F6 100%);color:white;padding:32px 48px;}
+.report-header h1{font-size:1.8rem;font-weight:700;}
+.report-header .meta{opacity:.85;margin-top:6px;font-size:.9rem;}
+.tab-bar{background:white;border-bottom:2px solid var(--border);padding:0 32px;display:flex;gap:4px;overflow-x:auto;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.tab-btn{padding:14px 22px;border:none;background:none;font-size:.9rem;font-weight:500;color:var(--text-sm);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:all .15s;}
+.tab-btn:hover{color:var(--primary);background:#F8FAFF;}
+.tab-btn.active{color:var(--primary);border-bottom-color:var(--primary);font-weight:600;}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+.container{max-width:1280px;margin:0 auto;padding:32px 24px;}
+.section{margin-bottom:40px;}
+.section-title{font-size:1rem;font-weight:600;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.section-title::before{content:'';display:block;width:4px;height:20px;background:var(--primary);border-radius:2px;}
+.sprint-bar{background:white;border-radius:10px;padding:14px 20px;display:flex;gap:24px;align-items:center;border:1px solid var(--border);margin-bottom:24px;flex-wrap:wrap;}
+.sprint-bar .sprint-label{font-weight:700;color:var(--primary);font-size:1rem;}
+.sprint-bar .sprint-meta{color:var(--text-sm);font-size:.85rem;}
+.sprint-type-badge{padding:4px 14px;border-radius:20px;font-size:.8rem;font-weight:600;background:#EEF2FF;color:#4F46E5;}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;}
+.kpi-card{background:var(--card);border-radius:12px;padding:18px 20px;border:1px solid var(--border);border-left:4px solid var(--primary);}
+.kpi-card.success{border-left-color:var(--success);}
+.kpi-card.warning{border-left-color:var(--warning);}
+.kpi-card.danger{border-left-color:var(--danger);}
+.kpi-card.info{border-left-color:var(--info);}
+.kpi-card.purple{border-left-color:#8B5CF6;}
+.kpi-value{font-size:1.9rem;font-weight:700;line-height:1;margin-bottom:4px;}
+.kpi-label{font-size:.75rem;color:var(--text-sm);text-transform:uppercase;letter-spacing:.05em;}
+.kpi-sub{font-size:.8rem;color:var(--text-sm);margin-top:4px;}
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.chart-card{background:var(--card);border-radius:12px;padding:20px 24px;border:1px solid var(--border);}
+.chart-card h3{font-size:.8rem;font-weight:600;color:var(--text-sm);text-transform:uppercase;letter-spacing:.05em;margin-bottom:14px;}
+.chart-container{position:relative;height:240px;}
+.table-card{background:var(--card);border-radius:12px;border:1px solid var(--border);overflow:hidden;margin-bottom:8px;}
+.table-card table{width:100%;border-collapse:collapse;font-size:.85rem;}
+.table-card th{background:#F8FAFC;padding:10px 14px;text-align:left;font-weight:600;font-size:.78rem;color:var(--text-sm);text-transform:uppercase;letter-spacing:.04em;}
+.table-card td{padding:9px 14px;border-top:1px solid var(--border);vertical-align:middle;}
+.table-card tr:hover td{background:#FAFBFF;}
+.issue-link{color:var(--primary);text-decoration:none;font-weight:600;font-size:.82rem;}
+.issue-link:hover{text-decoration:underline;}
+.badge{display:inline-block;padding:2px 9px;border-radius:10px;font-size:.72rem;font-weight:500;}
+.badge-story{background:#EEF2FF;color:#4F46E5;}
+.badge-task{background:#F0FDF4;color:#15803D;}
+.badge-bug{background:#FEF2F2;color:#DC2626;}
+.badge-subtask{background:#F0F9FF;color:#0369A1;}
+.status-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:500;}
+.status-done{background:#D1FAE5;color:#065F46;}
+.status-progress{background:#DBEAFE;color:#1E40AF;}
+.status-testing{background:#FEF3C7;color:#92400E;}
+.status-todo{background:#F1F5F9;color:#475569;}
+.status-blocked{background:#FEE2E2;color:#991B1B;}
+.status-devdone{background:#E0E7FF;color:#3730A3;}
+.priority-high{color:#F59E0B;font-weight:600;}
+.priority-medium{color:#3B82F6;}
+.priority-low{color:#9CA3AF;}
+.health-card{background:var(--card);border-radius:12px;padding:24px;border:1px solid var(--border);}
+.health-bar{height:12px;background:var(--border);border-radius:6px;overflow:hidden;margin-top:10px;}
+.health-fill{height:100%;border-radius:6px;}
+.health-good{background:linear-gradient(90deg,#10B981,#34D399);}
+.health-ok{background:linear-gradient(90deg,#F59E0B,#FCD34D);}
+.health-concern{background:linear-gradient(90deg,#EF4444,#F87171);}
+.health-facts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:16px;}
+.health-fact{background:#F8FAFC;border-radius:8px;padding:12px;font-size:.82rem;}
+.health-fact .hf-label{color:var(--text-sm);font-size:.72rem;text-transform:uppercase;margin-bottom:4px;}
+.health-fact .hf-val{font-weight:700;font-size:1rem;}
+.rolled-count{display:inline-block;background:#FEE2E2;color:#991B1B;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:600;}
+.report-footer{text-align:center;padding:24px;color:var(--text-sm);font-size:.78rem;border-top:1px solid var(--border);margin-top:40px;}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:24px;}
+.prog-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.prog-label{font-size:.82rem;color:var(--text);min-width:130px;}
+.prog-bar-wrap{flex:1;background:#F1F5F9;border-radius:4px;height:8px;overflow:hidden;}
+.prog-bar-fill{height:100%;border-radius:4px;}
+.prog-count{font-size:.8rem;font-weight:600;color:var(--text-sm);min-width:28px;text-align:right;}
+@media(max-width:768px){.charts-grid{grid-template-columns:1fr;}.kpi-grid{grid-template-columns:1fr 1fr;}.report-header{padding:24px;}.health-facts{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<div class="report-header">
+  <h1>🚀 Sprint Review — DSP Sprint 52</h1>
+  <div class="meta">Generated 30 Apr 2026 &nbsp;·&nbsp; Project: DSP (Demand Side Platform) &nbsp;·&nbsp; Sprint: 13 Apr → 24 Apr 2026</div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" data-tab="overview" onclick="showTab('overview')">🌐 Overview</button>
+  <button class="tab-btn" data-tab="DSP" onclick="showTab('DSP')">📋 DSP Sprint 52</button>
+  <button class="tab-btn" data-tab="completed" onclick="showTab('completed')">✅ Completed (22)</button>
+  <button class="tab-btn" data-tab="inprogress" onclick="showTab('inprogress')">🔄 In Progress (20)</button>
+  <button class="tab-btn" data-tab="testing" onclick="showTab('testing')">🧪 System Testing (12)</button>
+  <button class="tab-btn" data-tab="todo" onclick="showTab('todo')">📋 To Do (7)</button>
+  <button class="tab-btn" data-tab="rolled" onclick="showTab('rolled')">🔁 Rolled Over (41)</button>
+</div>
+
+<!-- OVERVIEW TAB -->
+<div id="tab-overview" class="tab-pane active">
+  <div class="container">
+
+    <div class="section">
+      <div class="section-title">Sprint Summary — DSP Sprint 52</div>
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-value" style="color:var(--primary)">68</div><div class="kpi-label">Total Items</div><div class="kpi-sub">in sprint</div></div>
+        <div class="kpi-card success"><div class="kpi-value" style="color:var(--success)">22</div><div class="kpi-label">Done</div><div class="kpi-sub">Released + Completed</div></div>
+        <div class="kpi-card purple"><div class="kpi-value" style="color:#8B5CF6">5</div><div class="kpi-label">Dev Completed</div><div class="kpi-sub">Awaiting QA sign-off</div></div>
+        <div class="kpi-card info"><div class="kpi-value" style="color:var(--info)">32%</div><div class="kpi-label">Completion Rate</div><div class="kpi-sub">22 of 68 done</div></div>
+        <div class="kpi-card warning"><div class="kpi-value" style="color:var(--warning)">20</div><div class="kpi-label">In Progress</div><div class="kpi-sub">carried to Sprint 53</div></div>
+        <div class="kpi-card warning"><div class="kpi-value" style="color:var(--warning)">12</div><div class="kpi-label">In Testing</div><div class="kpi-sub">carried to Sprint 53</div></div>
+        <div class="kpi-card danger"><div class="kpi-value" style="color:var(--danger)">41</div><div class="kpi-label">Rolled Over</div><div class="kpi-sub">60% of sprint</div></div>
+        <div class="kpi-card"><div class="kpi-value" style="color:var(--primary)">22</div><div class="kpi-label">Velocity</div><div class="kpi-sub">↑ vs avg 11 last 3</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Status Breakdown</div>
+      <div style="background:white;border-radius:12px;padding:20px 24px;border:1px solid var(--border);">
+        <div class="prog-row"><span class="prog-label">✅ Released</span><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:19.1%;background:#10B981;"></div></div><span class="prog-count">13</span></div>
+        <div class="prog-row"><span class="prog-label">✅ Completed</span><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:13.2%;background:#34D399;"></div></div><span class="prog-count">9</span></div>
+        <div class="prog-row"><span class="prog-label">🟣 Dev Completed</span><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:7.3%;background:#8B5CF6;"></div></div><span class="prog-count">5</span></div>
+        <div class="prog-row"><span class="prog-label">🔵 In Progress</span><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:29.4%;background:#3B82F6;"></div></div><span class="prog-count">20</span></div>
+        <div class="prog-row"><span class="prog-label">🟡 System Testing</span><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:17.6%;background:#F59E0B;"></div></div><span class="prog-count">12</span></div>
+        <div class="prog-row"><span class="prog-label">⚪ To Do</span><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:10.3%;background:#94A3B8;"></div></div><span class="prog-count">7</span></div>
+        <div class="prog-row"><span class="prog-label">🔴 Blocked/Hold</span><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:2.9%;background:#EF4444;"></div></div><span class="prog-count">2</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Sprint Analytics</div>
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3>Status Distribution</h3>
+          <div class="chart-container"><canvas id="chart-status"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Velocity Trend (Issues Completed)</h3>
+          <div class="chart-container"><canvas id="chart-velocity"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Items by Type</h3>
+          <div class="chart-container"><canvas id="chart-types"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Team Workload (Issue Count)</h3>
+          <div class="chart-container"><canvas id="chart-team"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Sprint Health</div>
+      <div class="health-card">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;">
+          <span style="font-size:.9rem;font-weight:600;">Health Score</span>
+          <span style="font-size:2rem;font-weight:700;color:#EF4444;">46<span style="font-size:1rem;color:var(--text-sm)">/100</span></span>
+        </div>
+        <div class="health-bar"><div class="health-fill health-concern" style="width:46%;"></div></div>
+        <div style="margin-top:8px;font-size:.85rem;color:var(--text-sm);">🔴 Sprint needs attention — High rollover rate (60%). Velocity is up at 22 issues vs 11-issue average from the last 3 sprints, but 41 items carried into Sprint 53 indicate scope exceeded capacity.</div>
+        <div class="health-facts">
+          <div class="health-fact"><div class="hf-label">Completion Rate</div><div class="hf-val" style="color:#EF4444;">32%</div></div>
+          <div class="hf-val"></div>
+          <div class="health-fact"><div class="hf-label">Rollover Rate</div><div class="hf-val" style="color:#EF4444;">60%</div></div>
+          <div class="health-fact"><div class="hf-label">Velocity (Issues)</div><div class="hf-val" style="color:#10B981;">22</div></div>
+          <div class="health-fact"><div class="hf-label">Avg Last 3 Sprints</div><div class="hf-val" style="color:var(--text-sm);">11</div></div>
+          <div class="health-fact"><div class="hf-label">Blocked Items</div><div class="hf-val" style="color:#EF4444;">2</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- DSP SPRINT TAB -->
+<div id="tab-DSP" class="tab-pane">
+  <div class="container">
+    <div class="sprint-bar">
+      <span class="sprint-label">DSP Sprint 52</span>
+      <span class="sprint-meta">📅 13 Apr 2026 → 24 Apr 2026</span>
+      <span class="sprint-meta">🏁 Completed: 27 Apr 2026</span>
+      <span class="sprint-type-badge">Last Sprint</span>
+    </div>
+
+    <div class="section">
+      <div class="section-title">All 68 Sprint Issues</div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>Issue</th><th>Summary</th><th>Type</th><th>Priority</th><th>Assignee</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1939" target="_blank">DSP-1939</a></td><td>Unauthorized Line Item Creation via API for Another MAA User</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td><td><span class="status-badge status-done">Released</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1938" target="_blank">DSP-1938</a></td><td>Create Line Item API returns 500 when request body is missing mediaAgencyId and advertiserId</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Abhishek M Teli</td><td><span class="status-badge status-done">Released</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1934" target="_blank">DSP-1934</a></td><td>[FE] Edit Single Line Item: Pacing dropdown set to Even instead of ASAP</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td><td><span class="status-badge status-done">Released</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1927" target="_blank">DSP-1927</a></td><td>Bywho column not displaying proper data in modification history page</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td><td><span class="status-badge status-done">Released</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1907" target="_blank">DSP-1907</a></td><td>[BE] Create New Endpoint for Updating Single LineItem</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhishek M Teli</td><td><span class="status-badge status-done">Released</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1900" target="_blank">DSP-1900</a></td><td>Getting error while uploading .xlsx format file for Third-party display</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td><td><span class="status-badge status-done">Released</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1899" target="_blank">DSP-1899</a></td><td>Third-Party Script HTML Tag not uploaded or processed correctly via + Add File option</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td><td><span class="status-badge status-done">Released</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1896" target="_blank">DSP-1896</a></td><td>File Size Validation Inconsistency – Bulk Creative Upload Allows Files >10 MB</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td><td><span class="status-badge status-done">Released</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1868" target="_blank">DSP-1868</a></td><td>DSP Footer showing year as 2025, needs update to 2026</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-low">Low</span></td><td>Abhay Thakur</td><td><span class="status-badge status-done">Released</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1824" target="_blank">DSP-1824</a></td><td>BE API: Filter Line Items in Campaign Details by Status</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td><td><span class="status-badge status-done">Released</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1793" target="_blank">DSP-1793</a></td><td>Remove columns (Daily Budget & Line Items Budget) from Campaign & Advertiser Details</td><td><span class="badge badge-task">Task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td><td><span class="status-badge status-done">Released</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1775" target="_blank">DSP-1775</a></td><td>When editing one particular Line Item it only needs to show that Line Item</td><td><span class="badge badge-task">Task</span></td><td><span class="priority-medium">Medium</span></td><td>Vishnupriya Polraj</td><td><span class="status-badge status-done">Released</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1774" target="_blank">DSP-1774</a></td><td>Line items in Campaigns Details page needs to display based on their status</td><td><span class="badge badge-task">Task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td><td><span class="status-badge status-done">Released</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1940" target="_blank">DSP-1940</a></td><td>Getting error: "Oops, data is not available" when selecting Draft from Filter on Campaign Listing</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td><td><span class="status-badge status-done">Completed</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1933" target="_blank">DSP-1933</a></td><td>QA Task for Single Line Item Creation/Edit</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhishek M Teli</td><td><span class="status-badge status-done">Completed</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1931" target="_blank">DSP-1931</a></td><td>Change Log Report API returning 500 Internal Server Error (UI working as expected)</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Abhishek M Teli</td><td><span class="status-badge status-done">Completed</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1930" target="_blank">DSP-1930</a></td><td>QA Tasks for Line items in Campaigns Details page</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td><td><span class="status-badge status-done">Completed</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1924" target="_blank">DSP-1924</a></td><td>[UX] Create the Design Screen</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Gihith Syras</td><td><span class="status-badge status-done">Completed</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1894" target="_blank">DSP-1894</a></td><td>Bulk Upload: Dimension field blank when uploading HTML5 .zip without dimensions</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td><td><span class="status-badge status-done">Completed</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1725" target="_blank">DSP-1725</a></td><td>Create new endpoint to fetch Countries, Regions, Counties and Cities in hierarchy</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>velraj.m</td><td><span class="status-badge status-done">Completed</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1709" target="_blank">DSP-1709</a></td><td>Edit Option Slowness (PRODUCTION ISSUE)</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Unassigned</td><td><span class="status-badge status-done">Completed</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1708" target="_blank">DSP-1708</a></td><td>DSP report taking a very long time to load when selecting a larger date range</td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Mithun Krishna</td><td><span class="status-badge status-done">Completed</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1943" target="_blank">DSP-1943</a></td><td>Issue observed with Frequency Capping while editing a Single Line Item</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td><td><span class="status-badge status-devdone">Dev Completed</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1941" target="_blank">DSP-1941</a></td><td>Add new Endpoints in KeyCloak</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Chaithra P</td><td><span class="status-badge status-devdone">Dev Completed</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1923" target="_blank">DSP-1923</a></td><td>Viewability Targeting</td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Pushpalatha Rangaswamy</td><td><span class="status-badge status-devdone">Dev Completed</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1864" target="_blank">DSP-1864</a></td><td>Domain can be added without selecting Allow/Block – no validation error shown</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td><td><span class="status-badge status-devdone">Dev Completed</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1798" target="_blank">DSP-1798</a></td><td>Newly created publishers in Exchange not auto-syncing to DSP without manual cache refresh</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-low">Low</span></td><td>Gaurav Handa</td><td><span class="status-badge status-devdone">Dev Completed</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1942" target="_blank">DSP-1942</a></td><td>Add line item type and advertiser price validation at line item level</td><td><span class="badge badge-task">Task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td><td><span class="status-badge status-testing">System Testing</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1929" target="_blank">DSP-1929</a></td><td>[DSP] Move report polling loop from serverless function to browser (client-side)</td><td><span class="badge badge-task">Task</span></td><td><span class="priority-high">High</span></td><td>Abhay Thakur</td><td><span class="status-badge status-testing">System Testing</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1926" target="_blank">DSP-1926</a></td><td>[FE] Task</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td><td><span class="status-badge status-testing">System Testing</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1925" target="_blank">DSP-1925</a></td><td>[BE] Task</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td><td><span class="status-badge status-testing">System Testing</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1860" target="_blank">DSP-1860</a></td><td>Domain and Mobile App Id</td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Manasa Mariswamy</td><td><span class="status-badge status-testing">System Testing</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1782" target="_blank">DSP-1782</a></td><td>Activated inactive campaigns are not receiving bid requests until NBR is enabled</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Vishnupriya Polraj</td><td><span class="status-badge status-testing">System Testing</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1758" target="_blank">DSP-1758</a></td><td>Domain Allow List at Line Item Level Is Not Enforced — Requests Coming From All Domains</td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td><td><span class="status-badge status-testing">System Testing</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1719" target="_blank">DSP-1719</a></td><td>Click redirecting is not working in Exchange & DSP</td><td><span class="badge badge-story">Story</span></td><td><span class="priority-high">High</span></td><td>Vishnupriya Polraj</td><td><span class="status-badge status-testing">System Testing</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1657" target="_blank">DSP-1657</a></td><td>Reports showing blank in DSP where Line item level shows daily impression and cost</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td><td><span class="status-badge status-testing">System Testing</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1370" target="_blank">DSP-1370</a></td><td>[RBAC|API|MAA] Draft Campaign API: allows creation without required fields</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td><td><span class="status-badge status-testing">System Testing</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1367" target="_blank">DSP-1367</a></td><td>[RBAC|API|MAA] Create Campaign: missing biddingStrategy error message</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-low">Low</span></td><td>Abhay Thakur</td><td><span class="status-badge status-testing">System Testing</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1324" target="_blank">DSP-1324</a></td><td>[RBAC|API] Create/Edit/Clone Creative: missing format & adType error params</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-low">Low</span></td><td>Abhay Thakur</td><td><span class="status-badge status-testing">System Testing</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1932" target="_blank">DSP-1932</a></td><td>QA Task for Domain and Mobile App Id</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td><td><span class="status-badge status-progress">In Progress</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1913" target="_blank">DSP-1913</a></td><td>Support Bulk Edit for Line Items FE</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td><td><span class="status-badge status-progress">In Progress</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1912" target="_blank">DSP-1912</a></td><td>Support Bulk Edit for Campaigns FE</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td><td><span class="status-badge status-progress">In Progress</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1911" target="_blank">DSP-1911</a></td><td>Support Bulk Edit for Creatives BE</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Rekha S</td><td><span class="status-badge status-progress">In Progress</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1910" target="_blank">DSP-1910</a></td><td>Support Bulk Edit for Line Items BE</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Rekha S</td><td><span class="status-badge status-progress">In Progress</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1909" target="_blank">DSP-1909</a></td><td>Support Bulk Edit for Campaigns BE</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Rekha S</td><td><span class="status-badge status-progress">In Progress</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1906" target="_blank">DSP-1906</a></td><td>[FE] Task for the US/UK Cluster</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td><td><span class="status-badge status-progress">In Progress</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1905" target="_blank">DSP-1905</a></td><td>[BE] Task for the US/UK Cluster setup</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Chaithra P</td><td><span class="status-badge status-progress">In Progress</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1904" target="_blank">DSP-1904</a></td><td>US/UK CLUSTER SETUP</td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Pushpalatha Rangaswamy</td><td><span class="status-badge status-progress">In Progress</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1878" target="_blank">DSP-1878</a></td><td>Add Fields specific to Stop Loss in Campaign and LineItem</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td><td><span class="status-badge status-progress">In Progress</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1877" target="_blank">DSP-1877</a></td><td>DSP UI: Kebab Menu Misaligned in Advertiser Listing Page</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-low">Low</span></td><td>Gaurav Handa</td><td><span class="status-badge status-progress">In Progress</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1876" target="_blank">DSP-1876</a></td><td>Implement Campaign Stop Loss feature as per the PRD</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Rekha S</td><td><span class="status-badge status-progress">In Progress</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1874" target="_blank">DSP-1874</a></td><td>Campaign Stop - Loss Feature</td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Pushpalatha Rangaswamy</td><td><span class="status-badge status-progress">In Progress</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1865" target="_blank">DSP-1865</a></td><td>Domain list shows multiple domains selected when editing line item created with single domain</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td><td><span class="status-badge status-progress">In Progress</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1817" target="_blank">DSP-1817</a></td><td>Bulk edit option is required for campaigns, line items, and creatives</td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Pushpalatha Rangaswamy</td><td><span class="status-badge status-progress">In Progress</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1814" target="_blank">DSP-1814</a></td><td>Configure kafka logs_queue table to drop bad message and continue with next msg</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Rekha S</td><td><span class="status-badge status-progress">In Progress</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1795" target="_blank">DSP-1795</a></td><td>Optimize /campaigns/create Performance to Reduce GB-Hours, Latency, and Invocations</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td><td><span class="status-badge status-progress">In Progress</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1761" target="_blank">DSP-1761</a></td><td>Bid Vs Win Discrepancy (Ongoing)</td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Pushpalatha Rangaswamy</td><td><span class="status-badge status-progress">In Progress</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1710" target="_blank">DSP-1710</a></td><td>Report not getting generated when more domains selected</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Sujit Kumar</td><td><span class="status-badge status-progress">In Progress</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1675" target="_blank">DSP-1675</a></td><td>DSP Slowness to be resolved</td><td><span class="badge badge-story">Story</span></td><td><span class="priority-high">High</span></td><td>Pushpalatha Rangaswamy</td><td><span class="status-badge status-progress">In Progress</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1803" target="_blank">DSP-1803</a></td><td>Create scripts to identify memory leaks on DSP in dev</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>velraj.m</td><td><span class="status-badge status-blocked">Blocked/Hold</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1922" target="_blank">DSP-1922</a></td><td>At Line Item level user should be allowed to add domains & Exclude sub domains by typing</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-high">High</span></td><td>Gaurav Handa</td><td><span class="status-badge status-todo">To Do</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1914" target="_blank">DSP-1914</a></td><td>Support Bulk Edit for Creatives FE</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td><td><span class="status-badge status-todo">To Do</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1908" target="_blank">DSP-1908</a></td><td>Getting "Oops, data is not available" error when user visits Scheduled Reports screen</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td><td><span class="status-badge status-todo">To Do</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1903" target="_blank">DSP-1903</a></td><td>MARCH 2026 REGRESSION BUGS</td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td><td><span class="status-badge status-todo">To Do</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1902" target="_blank">DSP-1902</a></td><td>MARCH 2026 PRODUCTION BUGS</td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td><td><span class="status-badge status-todo">To Do</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1898" target="_blank">DSP-1898</a></td><td>Clicking edit icon for HTML5 File opens all file types instead of just HTML5</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td><td><span class="status-badge status-todo">To Do</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1897" target="_blank">DSP-1897</a></td><td>Creative Listing Screen – Slow Loading After Successful Bulk Creative Upload</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td><td><span class="status-badge status-todo">To Do</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1847" target="_blank">DSP-1847</a></td><td>QA Activity - Domain Allow List at Line Item Level Is Not Enforced</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Vinay Krishna Bhat</td><td><span class="status-badge status-blocked">Blocked/Hold</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1815" target="_blank">DSP-1815</a></td><td>FE needed to be implemented</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Vinay Krishna Bhat</td><td><span class="status-badge status-blocked">Blocked/Hold</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPLETED TAB -->
+<div id="tab-completed" class="tab-pane">
+  <div class="container">
+    <div class="section">
+      <div class="section-title">✅ Released (13 items)</div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>Issue</th><th>Summary</th><th>Type</th><th>Priority</th><th>Assignee</th></tr></thead>
+          <tbody>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1939" target="_blank">DSP-1939</a></td><td>Unauthorized Line Item Creation via API for Another MAA User</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1938" target="_blank">DSP-1938</a></td><td>Create Line Item API returns 500 when request body is missing fields</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Abhishek M Teli</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1934" target="_blank">DSP-1934</a></td><td>[FE] Edit Single Line Item: Pacing dropdown defaulting to Even instead of ASAP</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1927" target="_blank">DSP-1927</a></td><td>Bywho column not displaying proper data in modification history page</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1907" target="_blank">DSP-1907</a></td><td>[BE] Create New Endpoint for Updating Single LineItem</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhishek M Teli</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1900" target="_blank">DSP-1900</a></td><td>Error uploading .xlsx format file for Third-party display</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1899" target="_blank">DSP-1899</a></td><td>Third-Party Script HTML Tag not uploaded or processed correctly</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1896" target="_blank">DSP-1896</a></td><td>File Size Validation Inconsistency – Bulk Creative Upload Allows Files >10 MB</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1868" target="_blank">DSP-1868</a></td><td>DSP Footer showing year as 2025 — updated to 2026</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-low">Low</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1824" target="_blank">DSP-1824</a></td><td>BE API: Filter Line Items in Campaign Details by Status</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1793" target="_blank">DSP-1793</a></td><td>Remove columns (Daily Budget & Line Items Budget) from Campaign & Advertiser Details</td><td><span class="badge badge-task">Task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1775" target="_blank">DSP-1775</a></td><td>When editing one particular Line Item it only needs to show that Line Item</td><td><span class="badge badge-task">Task</span></td><td><span class="priority-medium">Medium</span></td><td>Vishnupriya Polraj</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1774" target="_blank">DSP-1774</a></td><td>Line items in Campaigns Details page needs to display based on their status</td><td><span class="badge badge-task">Task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">✅ Completed (9 items)</div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>Issue</th><th>Summary</th><th>Type</th><th>Priority</th><th>Assignee</th></tr></thead>
+          <tbody>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1940" target="_blank">DSP-1940</a></td><td>Getting "Oops, data is not available" when selecting Draft from Filter on Campaign Listing</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1933" target="_blank">DSP-1933</a></td><td>QA Task for Single Line Item Creation/Edit</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhishek M Teli</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1931" target="_blank">DSP-1931</a></td><td>Change Log Report API returning 500 Internal Server Error</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Abhishek M Teli</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1930" target="_blank">DSP-1930</a></td><td>QA Tasks for Line items in Campaigns Details page</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1924" target="_blank">DSP-1924</a></td><td>[UX] Create the Design Screen</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Gihith Syras</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1894" target="_blank">DSP-1894</a></td><td>Bulk Upload Listing: Dimension field blank when HTML5 .zip has no dimensions</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1725" target="_blank">DSP-1725</a></td><td>Create new endpoint to fetch Countries, Regions, Counties and Cities in hierarchy</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>velraj.m</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1709" target="_blank">DSP-1709</a></td><td>Edit Option Slowness (PRODUCTION ISSUE)</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Unassigned</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1708" target="_blank">DSP-1708</a></td><td>DSP report taking very long time to load when selecting a larger date range</td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Mithun Krishna</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- IN PROGRESS TAB -->
+<div id="tab-inprogress" class="tab-pane">
+  <div class="container">
+    <div class="section">
+      <div class="section-title">🔄 In Progress — 20 items (carried to Sprint 53)</div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>Issue</th><th>Summary</th><th>Type</th><th>Priority</th><th>Assignee</th><th>Last Updated</th></tr></thead>
+          <tbody>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1675" target="_blank">DSP-1675</a></td><td>DSP Slowness to be resolved</td><td><span class="badge badge-story">Story</span></td><td><span class="priority-high">High</span></td><td>Pushpalatha Rangaswamy</td><td>27 Apr</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1761" target="_blank">DSP-1761</a></td><td>Bid Vs Win Discrepancy (Ongoing)</td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Pushpalatha Rangaswamy</td><td>27 Apr</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1817" target="_blank">DSP-1817</a></td><td>Bulk edit option for campaigns, line items, and creatives</td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Pushpalatha Rangaswamy</td><td>27 Apr</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1874" target="_blank">DSP-1874</a></td><td>Campaign Stop - Loss Feature</td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Pushpalatha Rangaswamy</td><td>27 Apr</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1904" target="_blank">DSP-1904</a></td><td>US/UK CLUSTER SETUP</td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Pushpalatha Rangaswamy</td><td>27 Apr</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1878" target="_blank">DSP-1878</a></td><td>Add Fields specific to Stop Loss in Campaign and LineItem</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td><td>28 Apr</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1865" target="_blank">DSP-1865</a></td><td>Domain list shows multiple domains selected when editing line item</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td><td>07 Apr</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1877" target="_blank">DSP-1877</a></td><td>DSP UI: Kebab Menu Misaligned in Advertiser Listing Page</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-low">Low</span></td><td>Gaurav Handa</td><td>16 Mar</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1906" target="_blank">DSP-1906</a></td><td>[FE] Task for the US/UK Cluster</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td><td>16 Mar</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1912" target="_blank">DSP-1912</a></td><td>Support Bulk Edit for Campaigns FE</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td><td>23 Mar</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1913" target="_blank">DSP-1913</a></td><td>Support Bulk Edit for Line Items FE</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td><td>23 Mar</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1795" target="_blank">DSP-1795</a></td><td>Optimize /campaigns/create Performance</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td><td>16 Mar</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1876" target="_blank">DSP-1876</a></td><td>Implement Campaign Stop Loss feature as per the PRD</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Rekha S</td><td>30 Mar</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1909" target="_blank">DSP-1909</a></td><td>Support Bulk Edit for Campaigns BE</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Rekha S</td><td>06 Apr</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1910" target="_blank">DSP-1910</a></td><td>Support Bulk Edit for Line Items BE</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Rekha S</td><td>10 Apr</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1911" target="_blank">DSP-1911</a></td><td>Support Bulk Edit for Creatives BE</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Rekha S</td><td>10 Apr</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1814" target="_blank">DSP-1814</a></td><td>Configure kafka logs_queue table to drop bad message</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Rekha S</td><td>16 Mar</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1905" target="_blank">DSP-1905</a></td><td>[BE] Task for the US/UK Cluster setup</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Chaithra P</td><td>16 Mar</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1710" target="_blank">DSP-1710</a></td><td>Report not getting generated when more domains selected</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Sujit Kumar</td><td>06 Apr</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1932" target="_blank">DSP-1932</a></td><td>QA Task for Domain and Mobile App Id</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td><td>30 Mar</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TESTING TAB -->
+<div id="tab-testing" class="tab-pane">
+  <div class="container">
+    <div class="section">
+      <div class="section-title">🧪 System Testing — 12 items (carried to Sprint 53)</div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>Issue</th><th>Summary</th><th>Type</th><th>Priority</th><th>Assignee</th></tr></thead>
+          <tbody>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1719" target="_blank">DSP-1719</a></td><td>Click redirecting is not working in Exchange & DSP</td><td><span class="badge badge-story">Story</span></td><td><span class="priority-high">High</span></td><td>Vishnupriya Polraj</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1929" target="_blank">DSP-1929</a></td><td>[DSP] Move report polling loop from serverless function to browser</td><td><span class="badge badge-task">Task</span></td><td><span class="priority-high">High</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1758" target="_blank">DSP-1758</a></td><td>Domain Allow List at Line Item Level Is Not Enforced</td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1860" target="_blank">DSP-1860</a></td><td>Domain and Mobile App Id</td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Manasa Mariswamy</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1942" target="_blank">DSP-1942</a></td><td>Add line item type and advertiser price validation at line item level</td><td><span class="badge badge-task">Task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1370" target="_blank">DSP-1370</a></td><td>[RBAC|API|MAA] Draft Campaign API allows creation without required fields</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1782" target="_blank">DSP-1782</a></td><td>Activated inactive campaigns not receiving bid requests until NBR is enabled</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Vishnupriya Polraj</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1925" target="_blank">DSP-1925</a></td><td>[BE] Task</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1926" target="_blank">DSP-1926</a></td><td>[FE] Task</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1657" target="_blank">DSP-1657</a></td><td>Reports showing blank in DSP where Line item level shows daily impression and cost</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1367" target="_blank">DSP-1367</a></td><td>[RBAC|API|MAA] Create Campaign: missing biddingStrategy error message</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-low">Low</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1324" target="_blank">DSP-1324</a></td><td>[RBAC|API] Create/Edit/Clone Creative: missing format & adType error params</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-low">Low</span></td><td>Abhay Thakur</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TO DO TAB -->
+<div id="tab-todo" class="tab-pane">
+  <div class="container">
+    <div class="section">
+      <div class="section-title">📋 To Do — 7 items + 2 Blocked (carried to Sprint 53)</div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>Issue</th><th>Summary</th><th>Type</th><th>Priority</th><th>Assignee</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1922" target="_blank">DSP-1922</a></td><td>Allow adding domains & excluding sub-domains by typing at Line Item level</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-high">High</span></td><td>Gaurav Handa</td><td><span class="status-badge status-todo">To Do</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1902" target="_blank">DSP-1902</a></td><td>MARCH 2026 PRODUCTION BUGS</td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td><td><span class="status-badge status-todo">To Do</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1903" target="_blank">DSP-1903</a></td><td>MARCH 2026 REGRESSION BUGS</td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td><td><span class="status-badge status-todo">To Do</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1908" target="_blank">DSP-1908</a></td><td>Getting error when visiting Scheduled Reports screen</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td><td><span class="status-badge status-todo">To Do</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1914" target="_blank">DSP-1914</a></td><td>Support Bulk Edit for Creatives FE</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td><td><span class="status-badge status-todo">To Do</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1897" target="_blank">DSP-1897</a></td><td>Creative Listing Screen – Slow Loading After Bulk Creative Upload</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td><td><span class="status-badge status-todo">To Do</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1898" target="_blank">DSP-1898</a></td><td>Edit icon for HTML5 File opens all file types</td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td><td><span class="status-badge status-todo">To Do</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1847" target="_blank">DSP-1847</a></td><td>QA Activity - Domain Allow List at Line Item Level Is Not Enforced</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Vinay Krishna Bhat</td><td><span class="status-badge status-blocked">Blocked/Hold</span></td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1815" target="_blank">DSP-1815</a></td><td>FE needed to be implemented</td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Vinay Krishna Bhat</td><td><span class="status-badge status-blocked">Blocked/Hold</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ROLLED OVER TAB -->
+<div id="tab-rolled" class="tab-pane">
+  <div class="container">
+    <div class="section">
+      <div class="section-title">🔁 Rolled Over to Sprint 53 — 41 items (60% of sprint)</div>
+      <div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:.88rem;color:#991B1B;">
+        ⚠️ <strong>High rollover alert:</strong> 41 out of 68 sprint items (60%) have been carried into DSP Sprint 53. Key areas: Bulk Edit feature (5 items), Stop-Loss feature (3 items), Domain Allow List enforcement (3 items), RBAC API validation (3 items), and March Production/Regression Bugs (2 parent stories still untouched).
+      </div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>Issue</th><th>Summary</th><th>Current Status</th><th>Type</th><th>Priority</th><th>Assignee</th></tr></thead>
+          <tbody>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1675" target="_blank">DSP-1675</a></td><td>DSP Slowness to be resolved</td><td><span class="status-badge status-progress">In Progress</span></td><td><span class="badge badge-story">Story</span></td><td><span class="priority-high">High</span></td><td>Pushpalatha Rangaswamy</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1719" target="_blank">DSP-1719</a></td><td>Click redirecting is not working in Exchange & DSP</td><td><span class="status-badge status-testing">System Testing</span></td><td><span class="badge badge-story">Story</span></td><td><span class="priority-high">High</span></td><td>Vishnupriya Polraj</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1922" target="_blank">DSP-1922</a></td><td>Allow adding domains & excluding sub-domains by typing at Line Item level</td><td><span class="status-badge status-todo">To Do</span></td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-high">High</span></td><td>Gaurav Handa</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1929" target="_blank">DSP-1929</a></td><td>[DSP] Move report polling loop to browser</td><td><span class="status-badge status-testing">System Testing</span></td><td><span class="badge badge-task">Task</span></td><td><span class="priority-high">High</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1761" target="_blank">DSP-1761</a></td><td>Bid Vs Win Discrepancy (Ongoing)</td><td><span class="status-badge status-progress">In Progress</span></td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Pushpalatha Rangaswamy</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1758" target="_blank">DSP-1758</a></td><td>Domain Allow List at Line Item Level Is Not Enforced</td><td><span class="status-badge status-testing">System Testing</span></td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1817" target="_blank">DSP-1817</a></td><td>Bulk edit option for campaigns, line items, and creatives</td><td><span class="status-badge status-progress">In Progress</span></td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Pushpalatha Rangaswamy</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1860" target="_blank">DSP-1860</a></td><td>Domain and Mobile App Id</td><td><span class="status-badge status-testing">System Testing</span></td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Manasa Mariswamy</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1874" target="_blank">DSP-1874</a></td><td>Campaign Stop - Loss Feature</td><td><span class="status-badge status-progress">In Progress</span></td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Pushpalatha Rangaswamy</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1902" target="_blank">DSP-1902</a></td><td>MARCH 2026 PRODUCTION BUGS</td><td><span class="status-badge status-todo">To Do</span></td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1903" target="_blank">DSP-1903</a></td><td>MARCH 2026 REGRESSION BUGS</td><td><span class="status-badge status-todo">To Do</span></td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1904" target="_blank">DSP-1904</a></td><td>US/UK CLUSTER SETUP</td><td><span class="status-badge status-progress">In Progress</span></td><td><span class="badge badge-story">Story</span></td><td><span class="priority-medium">Medium</span></td><td>Pushpalatha Rangaswamy</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1942" target="_blank">DSP-1942</a></td><td>Add line item type and advertiser price validation</td><td><span class="status-badge status-testing">System Testing</span></td><td><span class="badge badge-task">Task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1878" target="_blank">DSP-1878</a></td><td>Add Fields specific to Stop Loss in Campaign and LineItem</td><td><span class="status-badge status-progress">In Progress</span></td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1876" target="_blank">DSP-1876</a></td><td>Implement Campaign Stop Loss feature as per the PRD</td><td><span class="status-badge status-progress">In Progress</span></td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Rekha S</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1865" target="_blank">DSP-1865</a></td><td>Domain list shows multiple domains selected when editing line item</td><td><span class="status-badge status-progress">In Progress</span></td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1814" target="_blank">DSP-1814</a></td><td>Configure kafka logs_queue table to drop bad message</td><td><span class="status-badge status-progress">In Progress</span></td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Rekha S</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1795" target="_blank">DSP-1795</a></td><td>Optimize /campaigns/create Performance</td><td><span class="status-badge status-progress">In Progress</span></td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1912" target="_blank">DSP-1912</a></td><td>Support Bulk Edit for Campaigns FE</td><td><span class="status-badge status-progress">In Progress</span></td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1913" target="_blank">DSP-1913</a></td><td>Support Bulk Edit for Line Items FE</td><td><span class="status-badge status-progress">In Progress</span></td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1906" target="_blank">DSP-1906</a></td><td>[FE] Task for the US/UK Cluster</td><td><span class="status-badge status-progress">In Progress</span></td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1909" target="_blank">DSP-1909</a></td><td>Support Bulk Edit for Campaigns BE</td><td><span class="status-badge status-progress">In Progress</span></td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Rekha S</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1910" target="_blank">DSP-1910</a></td><td>Support Bulk Edit for Line Items BE</td><td><span class="status-badge status-progress">In Progress</span></td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Rekha S</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1911" target="_blank">DSP-1911</a></td><td>Support Bulk Edit for Creatives BE</td><td><span class="status-badge status-progress">In Progress</span></td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Rekha S</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1905" target="_blank">DSP-1905</a></td><td>[BE] Task for the US/UK Cluster setup</td><td><span class="status-badge status-progress">In Progress</span></td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Chaithra P</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1710" target="_blank">DSP-1710</a></td><td>Report not getting generated when more domains selected</td><td><span class="status-badge status-progress">In Progress</span></td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Sujit Kumar</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1932" target="_blank">DSP-1932</a></td><td>QA Task for Domain and Mobile App Id</td><td><span class="status-badge status-progress">In Progress</span></td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1370" target="_blank">DSP-1370</a></td><td>[RBAC|API|MAA] Draft Campaign API allows creation without required fields</td><td><span class="status-badge status-testing">System Testing</span></td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1782" target="_blank">DSP-1782</a></td><td>Activated inactive campaigns not receiving bid requests</td><td><span class="status-badge status-testing">System Testing</span></td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Vishnupriya Polraj</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1908" target="_blank">DSP-1908</a></td><td>Getting error when visiting Scheduled Reports screen</td><td><span class="status-badge status-todo">To Do</span></td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1897" target="_blank">DSP-1897</a></td><td>Creative Listing Screen – Slow Loading After Bulk Creative Upload</td><td><span class="status-badge status-todo">To Do</span></td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1898" target="_blank">DSP-1898</a></td><td>Edit icon for HTML5 File opens all file types</td><td><span class="status-badge status-todo">To Do</span></td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1914" target="_blank">DSP-1914</a></td><td>Support Bulk Edit for Creatives FE</td><td><span class="status-badge status-todo">To Do</span></td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Gaurav Handa</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1925" target="_blank">DSP-1925</a></td><td>[BE] Task</td><td><span class="status-badge status-testing">System Testing</span></td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1926" target="_blank">DSP-1926</a></td><td>[FE] Task</td><td><span class="status-badge status-testing">System Testing</span></td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1657" target="_blank">DSP-1657</a></td><td>Reports showing blank in DSP</td><td><span class="status-badge status-testing">System Testing</span></td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1877" target="_blank">DSP-1877</a></td><td>DSP UI: Kebab Menu Misaligned in Advertiser Listing Page</td><td><span class="status-badge status-progress">In Progress</span></td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-low">Low</span></td><td>Gaurav Handa</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1367" target="_blank">DSP-1367</a></td><td>[RBAC] Create Campaign: missing biddingStrategy error</td><td><span class="status-badge status-testing">System Testing</span></td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-low">Low</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1324" target="_blank">DSP-1324</a></td><td>[RBAC] Create/Edit/Clone Creative: missing format & adType error params</td><td><span class="status-badge status-testing">System Testing</span></td><td><span class="badge badge-bug">Bug</span></td><td><span class="priority-low">Low</span></td><td>Abhay Thakur</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1847" target="_blank">DSP-1847</a></td><td>QA Activity - Domain Allow List at Line Item Level Is Not Enforced</td><td><span class="status-badge status-blocked">Blocked/Hold</span></td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Vinay Krishna Bhat</td></tr>
+            <tr><td><a class="issue-link" href="https://alkimi.atlassian.net/browse/DSP-1815" target="_blank">DSP-1815</a></td><td>FE needed to be implemented</td><td><span class="status-badge status-blocked">Blocked/Hold</span></td><td><span class="badge badge-subtask">Sub-task</span></td><td><span class="priority-medium">Medium</span></td><td>Vinay Krishna Bhat</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="report-footer">
+  Sprint Review &nbsp;·&nbsp; DSP Sprint 52 (13 Apr – 24 Apr 2026) &nbsp;·&nbsp; Generated by Claude · 30 Apr 2026 &nbsp;·&nbsp;
+  Data source: <a href="https://alkimi.atlassian.net" target="_blank" style="color:var(--primary)">alkimi.atlassian.net</a>
+</div>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  document.querySelector('[data-tab="' + id + '"]').classList.add('active');
+}
+
+// Status Distribution Donut
+new Chart(document.getElementById('chart-status'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Released (13)', 'Completed (9)', 'Dev Completed (5)', 'In Progress (20)', 'System Testing (12)', 'To Do (7)', 'Blocked/Hold (2)'],
+    datasets: [{
+      data: [13, 9, 5, 20, 12, 7, 2],
+      backgroundColor: ['#10B981','#34D399','#8B5CF6','#3B82F6','#F59E0B','#94A3B8','#EF4444'],
+      borderWidth: 2,
+      borderColor: '#fff'
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { position: 'right', labels: { font: { size: 11 } } } }
+  }
+});
+
+// Velocity Trend Bar
+new Chart(document.getElementById('chart-velocity'), {
+  type: 'bar',
+  data: {
+    labels: ['DSP Sprint 49', 'DSP Sprint 50', 'DSP Sprint 51', 'DSP Sprint 52'],
+    datasets: [{
+      label: 'Issues Completed',
+      data: [10, 10, 13, 22],
+      backgroundColor: ['#CBD5E1','#CBD5E1','#94A3B8','#6C63FF'],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: true, ticks: { stepSize: 5 } } }
+  }
+});
+
+// Items by Type
+new Chart(document.getElementById('chart-types'), {
+  type: 'bar',
+  data: {
+    labels: ['Story', 'Task', 'Sub-task', 'Bug/SubTask'],
+    datasets: [
+      { label: 'Done', data: [1, 3, 10, 8], backgroundColor: '#10B981', borderRadius: 4 },
+      { label: 'In Progress', data: [5, 0, 10, 5], backgroundColor: '#3B82F6', borderRadius: 4 },
+      { label: 'Testing/Todo/Blocked', data: [6, 2, 8, 8], backgroundColor: '#EF4444', borderRadius: 4 }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } },
+    plugins: { legend: { labels: { font: { size: 11 } } } }
+  }
+});
+
+// Team Workload
+new Chart(document.getElementById('chart-team'), {
+  type: 'bar',
+  data: {
+    labels: ['Abhay Thakur','Gaurav Handa','Pushpalatha R.','Rekha S','Abhishek M Teli','Vishnupriya P.','Vinay K Bhat','Chaithra P','Others'],
+    datasets: [{
+      label: 'Issues',
+      data: [23, 15, 6, 5, 4, 3, 2, 2, 8],
+      backgroundColor: '#6C63FF',
+      borderRadius: 4
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { x: { beginAtZero: true } }
+  }
+});
+</script>
+</body>
+</html>
