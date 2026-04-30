@@ -71,6 +71,49 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .header .date{font-size:14px;color:var(--muted);background:var(--card);padding:8px 16px;border-radius:8px;border:1px solid var(--border)}
 .section{display:none}
 .section.active{display:block}
+#sec-prdashboard.active{display:block}
+#pr-setup-screen{display:flex}
+.pr-kpi-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;display:flex;align-items:center;justify-content:space-between}
+.pr-kpi-card.highlight{background:#f59e0b;border-color:#d97706}
+.pr-kpi-card.highlight .pr-kv{color:#fff}
+.pr-kpi-card.highlight .pr-kl{color:rgba(255,255,255,.8)}
+.pr-kv{font-size:26px;font-weight:800;color:var(--text)}
+.pr-kl{font-size:12px;color:var(--muted);margin-bottom:2px}
+.pr-kicon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.pr-proj-btn{display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:8px;border:none;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;background:#f3f4f6;color:#374151}
+.pr-proj-btn.active{background:#3b82f6;color:#fff;box-shadow:0 4px 12px rgba(59,130,246,.3)}
+.pr-proj-cnt{padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;background:rgba(0,0,0,.1)}
+.pr-proj-btn.active .pr-proj-cnt{background:rgba(255,255,255,.25);color:#fff}
+.pr-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:12px;cursor:pointer;transition:box-shadow .15s,transform .15s}
+.pr-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.08);transform:translateY(-1px)}
+.pr-card-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;gap:12px}
+.pr-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#6C63FF,#3B82F6);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}
+.pr-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.pr-badge.review{background:#fef3c7;color:#92400e}
+.pr-badge.approved{background:#d1fae5;color:#065f46}
+.pr-badge.changes{background:#fee2e2;color:#991b1b}
+.pr-badge.env-prod{background:#ede9fe;color:#5b21b6}
+.pr-badge.env-qa{background:#fef3c7;color:#92400e}
+.pr-badge.env-stage{background:#dbeafe;color:#1e40af}
+.pr-badge.env-dev{background:#f3f4f6;color:#374151}
+.pr-pipeline{display:flex;align-items:center;background:#f9fafb;border-radius:10px;padding:12px 16px;margin-bottom:14px}
+.pr-step{display:flex;flex-direction:column;align-items:center;gap:4px}
+.pr-step-circle{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.pr-step-circle.done{background:#10b981;color:#fff}
+.pr-step-circle.pending{background:#e5e7eb;color:#9ca3af}
+.pr-step-lbl{font-size:10px;color:#6b7280;white-space:nowrap}
+.pr-connector{flex:1;height:2px;min-width:12px;background:#e5e7eb;margin-bottom:18px}
+.pr-connector.done{background:#10b981}
+.pr-meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.pr-meta-lbl{font-size:11px;color:var(--muted);margin-bottom:2px}
+.pr-meta-val{font-size:13px;font-weight:600;color:var(--text)}
+.pr-reviewers{margin-bottom:12px}
+.pr-reviewer-chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 8px;border-radius:6px;margin:2px;background:#f3f4f6;color:#374151}
+.pr-reviewer-chip.approved{background:#d1fae5;color:#065f46}
+.pr-card-footer{display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border);font-size:12px;color:var(--muted)}
+.pr-branch-badge{padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;font-family:monospace}
+.pr-empty{text-align:center;padding:60px 20px;color:var(--muted)}
+.pr-loading{text-align:center;padding:60px 20px;color:var(--muted);font-size:14px}
 .kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-bottom:24px}
 .kpi{background:var(--card);border-radius:var(--radius);padding:20px;border:1px solid var(--border)}
 .kpi .label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
@@ -378,6 +421,7 @@ a.jira-link:hover{text-decoration:underline}
     <a href="#" data-tab="q2priorities"><span class="icon">&#x1F3AF;</span><span>Project Priorities</span></a>
     <a href="#" data-tab="deliverables"><span class="icon">&#x1F4E6;</span><span>Key Deliverables</span></a>
     <a href="#" data-tab="roadmap"><span class="icon">&#x1F5FA;</span><span>Product Roadmap</span></a>
+    <a href="#" data-tab="prdashboard"><span class="icon">&#x1F4E5;</span><span>PR Dashboard</span></a>
   </nav>
   <div class="sidebar-bottom">
     <div class="sidebar-bottom-tabs">
@@ -579,7 +623,99 @@ a.jira-link:hover{text-decoration:underline}
     <div id="delContent"></div>
   </div>
 
-  <!-- PRODUCT ROADMAP -->
+  <!-- PR DASHBOARD — Native GitHub GraphQL Implementation -->
+  <div class="section" id="sec-prdashboard">
+
+    <!-- PAT Setup Screen -->
+    <div id="pr-setup-screen" style="display:none;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:0">
+      <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:40px;max-width:480px;width:100%;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,.08)">
+        <div style="width:64px;height:64px;background:linear-gradient(135deg,#6C63FF,#3B82F6);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 20px">📥</div>
+        <h2 style="font-size:20px;font-weight:700;margin-bottom:8px">Connect GitHub</h2>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6">Enter your GitHub Personal Access Token to load live PR data from the Alkimi-Exchange org. The token is stored only in your browser and never sent anywhere except GitHub's API.</p>
+        <div style="text-align:left;margin-bottom:16px">
+          <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px">GITHUB PERSONAL ACCESS TOKEN</label>
+          <input id="pr-pat-input" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+            style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:monospace;outline:none"
+            onkeydown="if(event.key==='Enter')prDash.saveToken()">
+        </div>
+        <div style="font-size:11px;color:var(--muted);text-align:left;margin-bottom:20px;background:#f9fafb;padding:10px 12px;border-radius:8px;line-height:1.7">
+          Token needs: <strong>repo</strong> (read) scope. Generate at <a href="https://github.com/settings/tokens" target="_blank" style="color:var(--primary)">github.com/settings/tokens</a>
+        </div>
+        <button onclick="prDash.saveToken()" style="width:100%;padding:12px;background:linear-gradient(135deg,#6C63FF,#3B82F6);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer">Connect & Load PRs</button>
+      </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="pr-main-dash" style="display:none">
+      <!-- Header -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:44px;height:44px;background:linear-gradient(135deg,#6C63FF,#3B82F6);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px">📥</div>
+          <div>
+            <div style="font-size:18px;font-weight:700">ALKIMI PR Dashboard</div>
+            <div style="font-size:12px;color:var(--muted)">Real-time pull request monitoring — Alkimi-Exchange</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span id="pr-last-synced" style="font-size:11px;color:var(--muted)"></span>
+          <button onclick="prDash.fetch()" id="pr-refresh-btn" style="display:flex;align-items:center;gap:7px;padding:8px 16px;background:#3b82f6;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">
+            <span id="pr-refresh-icon">🔄</span> Refresh
+          </button>
+          <button onclick="prDash.resetToken()" style="padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--muted);cursor:pointer">⚙ Reset Token</button>
+        </div>
+      </div>
+
+      <!-- KPI Row -->
+      <div id="pr-kpi-row" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px"></div>
+
+      <!-- Project Tabs -->
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <span style="font-size:13px;font-weight:600">Projects</span>
+          <span style="font-size:11px;color:var(--muted)">Click to filter by project</span>
+        </div>
+        <div id="pr-proj-tabs" style="display:flex;gap:10px;flex-wrap:wrap"></div>
+      </div>
+
+      <!-- Filters + Search -->
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <div style="flex:1;min-width:200px;position:relative">
+          <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px">🔍</span>
+          <input id="pr-search" type="text" placeholder="Search by PR number, title, or author..."
+            oninput="prDash.onSearch(this.value)"
+            style="width:100%;padding:8px 12px 8px 32px;border:1px solid var(--border);border-radius:8px;font-size:13px;outline:none;font-family:inherit">
+        </div>
+        <span style="color:var(--muted);font-size:16px">▼</span>
+        <select id="pr-env-filter" onchange="prDash.onFilter()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;outline:none">
+          <option value="All">All</option>
+          <option value="Dev">Dev</option>
+          <option value="QA">QA</option>
+          <option value="Stage">Stage</option>
+          <option value="Prod">Prod</option>
+        </select>
+        <select id="pr-team-filter" onchange="prDash.onFilter()" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;outline:none">
+          <option value="All">All</option>
+          <option value="Blockchain Team">Blockchain Team</option>
+          <option value="Backend Team">Backend Team</option>
+          <option value="Frontend Team">Frontend Team</option>
+          <option value="Security Team">Security Team</option>
+        </select>
+      </div>
+
+      <!-- Time window notice -->
+      <div id="pr-time-notice" style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 14px;font-size:12px;color:#1d4ed8;margin-bottom:14px;display:none"></div>
+
+      <!-- PR List -->
+      <div id="pr-list"></div>
+    </div>
+
+    <!-- PR Detail Modal -->
+    <div id="pr-detail-modal" onclick="prDash.closeModal(event)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:center;justify-content:center;padding:24px">
+      <div id="pr-detail-inner" onclick="event.stopPropagation()" style="background:#fff;border-radius:16px;max-width:680px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)"></div>
+    </div>
+
+  </div>
+
   <div class="section" id="sec-roadmap">
     <div class="section-title">Product Roadmap</div>
     <div class="section-sub">Strategic roadmap by quarter — Labs from Confluence &amp; OKR planning; AdTech link pending</div>
@@ -1907,7 +2043,7 @@ const teamColors={BE:"#3b82f6",FE:"#8b5cf6",QA:"#f59e0b",NJ:"#06b6d4",AI:"#10b98
 // ============================
 // TAB NAVIGATION
 // ============================
-const titles={overview:"Overview",projects:"Projects",workload:"Team & Individual Workload",velocity:"Sprint Velocity & Comparison",features:"Sprint Feature Tracker",sprintreview:"Sprint Review",meetings:"Weekly Meetings & Notes",bandwidth:"Bandwidth Radar",releases:"Release Tracker",q2priorities:"Project Priorities",deliverables:"Key Deliverables",roadmap:"Product Roadmap"};
+const titles={overview:"Overview",projects:"Projects",workload:"Team & Individual Workload",velocity:"Sprint Velocity & Comparison",features:"Sprint Feature Tracker",sprintreview:"Sprint Review",meetings:"Weekly Meetings & Notes",bandwidth:"Bandwidth Radar",releases:"Release Tracker",q2priorities:"Project Priorities",deliverables:"Key Deliverables",roadmap:"Product Roadmap",prdashboard:"PR Dashboard"};
 
 function switchTab(tab){
   // Deactivate all sidebar nav links
@@ -1935,7 +2071,343 @@ function switchTab(tab){
   // Section-specific init hooks
   if(tab==='sprintreview') { setTimeout(function(){ initSprintReview(); }, 50); }
   if(tab==='projects') { setTimeout(function(){ renderActiveSprintSection(); }, 50); }
+  if(tab==='prdashboard') { setTimeout(function(){ loadPrDashboard(); }, 50); }
 }
+
+// ============================================================
+// PR DASHBOARD — Native GitHub GraphQL Implementation
+// Reads live data directly from GitHub API using a stored PAT
+// ============================================================
+function loadPrDashboard(){ prDash.init(); }
+
+var prDash = {
+  allPRs: [],
+  filteredPRs: [],
+  loading: false,
+  lastSynced: null,
+  selectedProject: 'All',
+  selectedEnv: 'All',
+  selectedTeam: 'All',
+  searchQuery: '',
+  repos: [
+    {owner:'Alkimi-Exchange', name:'alkimi-frontend'},
+    {owner:'Alkimi-Exchange', name:'alkimi-backend'},
+    {owner:'Alkimi-Exchange', name:'alkimi-infrastructure'},
+    {owner:'Alkimi-Exchange', name:'alkimi-common'}
+  ],
+  topicMap: {exchange:'Exchange', dsp:'DSP', alkimilab:'ALKIMILAB', dsa:'DSA'},
+
+  getToken: function(){ return localStorage.getItem('alkimi_pr_pat')||''; },
+  setToken: function(t){ localStorage.setItem('alkimi_pr_pat',t); },
+
+  init: function(){
+    if(!this.getToken()){ this.showSetup(); }
+    else { this.showDash(); if(!this.allPRs.length) this.fetch(); }
+  },
+
+  showSetup: function(){
+    document.getElementById('pr-setup-screen').style.display='flex';
+    document.getElementById('pr-main-dash').style.display='none';
+  },
+  showDash: function(){
+    document.getElementById('pr-setup-screen').style.display='none';
+    document.getElementById('pr-main-dash').style.display='block';
+  },
+
+  saveToken: function(){
+    var t=(document.getElementById('pr-pat-input').value||'').trim();
+    if(!t) return;
+    this.setToken(t);
+    this.showDash();
+    this.fetch();
+  },
+  resetToken: function(){
+    localStorage.removeItem('alkimi_pr_pat');
+    this.allPRs=[];
+    this.showSetup();
+  },
+
+  fetch: async function(){
+    var token=this.getToken();
+    if(!token){ this.showSetup(); return; }
+    this.loading=true;
+    document.getElementById('pr-list').innerHTML='<div class="pr-loading">⏳ Loading pull requests from GitHub…</div>';
+    var btn=document.getElementById('pr-refresh-btn');
+    if(btn){ btn.disabled=true; btn.innerHTML='<span>⏳</span> Refreshing…'; }
+
+    var q=`query($owner:String!,$repo:String!,$states:[PullRequestState!],$first:Int!){
+      repository(owner:$owner,name:$repo){
+        name
+        repositoryTopics(first:10){nodes{topic{name}}}
+        pullRequests(states:$states,first:$first,orderBy:{field:UPDATED_AT,direction:DESC}){
+          nodes{
+            number title state merged reviewDecision createdAt updatedAt url
+            changedFiles additions deletions
+            author{login avatarUrl}
+            labels(first:20){nodes{name}}
+            reviewRequests(first:20){nodes{requestedReviewer{...on User{login}...on Team{name}}}}
+            reviews(last:50){nodes{author{login} state submittedAt}}
+          }
+        }
+      }
+    }`;
+
+    var fetchRepo=async(repo,states)=>{
+      try{
+        var r=await fetch('https://api.github.com/graphql',{
+          method:'POST',
+          headers:{'Authorization':'bearer '+token,'Content-Type':'application/json'},
+          body:JSON.stringify({query:q,variables:{owner:repo.owner,repo:repo.name,states:states,first:100}})
+        });
+        var d=await r.json();
+        if(d.errors){ console.error('GQL errors',d.errors); return []; }
+        var nodes=d?.data?.repository?.pullRequests?.nodes||[];
+        var topics=(d?.data?.repository?.repositoryTopics?.nodes||[]).map(n=>n.topic.name);
+        return nodes.map(pr=>this.transform(pr,repo.name,repo.owner,topics));
+      }catch(e){ console.error(e); return []; }
+    };
+
+    var promises=[];
+    this.repos.forEach(repo=>{
+      promises.push(fetchRepo(repo,['OPEN']));
+      promises.push(fetchRepo(repo,['MERGED']));
+    });
+    var results=await Promise.all(promises);
+    var allPRs=[];
+    results.forEach(prs=>allPRs.push(...prs));
+    allPRs.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+    this.allPRs=allPRs;
+    this.loading=false;
+    this.lastSynced=new Date();
+    var synced=document.getElementById('pr-last-synced');
+    if(synced) synced.innerHTML='<span style="color:#10b981">●</span> Last updated: '+this.lastSynced.toLocaleTimeString();
+    if(btn){ btn.disabled=false; btn.innerHTML='<span>🔄</span> Refresh'; }
+    this.applyFilters();
+    this.render();
+  },
+
+  transform: function(pr,repo,owner,topics){
+    var labels=pr.labels.nodes.map(l=>l.name);
+    var teamLabel=labels.find(l=>l.startsWith('team:'));
+    var team=teamLabel?(teamLabel.replace('team:','').charAt(0).toUpperCase()+teamLabel.replace('team:','').slice(1)+' Team'):'Unassigned';
+    var envLabel=labels.find(l=>['env:dev','env:qa','env:stage','env:prod'].includes(l));
+    var env=envLabel?(envLabel.replace('env:','').charAt(0).toUpperCase()+envLabel.replace('env:','').slice(1)):'Dev';
+    var project='Unassigned';
+    for(var t of topics){ if(this.topicMap[t.toLowerCase()]){ project=this.topicMap[t.toLowerCase()]; break; } }
+    var reviewsByUser={};
+    pr.reviews.nodes.forEach(r=>{
+      if(!reviewsByUser[r.author.login]||new Date(r.submittedAt)>new Date(reviewsByUser[r.author.login].submittedAt)) reviewsByUser[r.author.login]=r;
+    });
+    var approvers=Object.values(reviewsByUser).filter(r=>r.state==='APPROVED').map(r=>r.author.login);
+    var pending=pr.reviewRequests.nodes.map(n=>n.requestedReviewer?(n.requestedReviewer.login||n.requestedReviewer.name||''):'' ).filter(Boolean);
+    return {
+      id:pr.number+'-'+repo, number:pr.number, title:pr.title,
+      author:pr.author.login, authorAvatar:pr.author.avatarUrl,
+      repo:repo, owner:owner, environment:env, team:team, project:project,
+      state:pr.state.toLowerCase(), reviewDecision:pr.reviewDecision||'REVIEW_REQUIRED',
+      merged:pr.merged, createdAt:pr.createdAt, updatedAt:pr.updatedAt,
+      approvers:approvers, pendingReviewers:pending,
+      changedFiles:pr.changedFiles, additions:pr.additions, deletions:pr.deletions, url:pr.url
+    };
+  },
+
+  applyFilters: function(){
+    this.filteredPRs=this.allPRs.filter(pr=>{
+      var mp=this.selectedProject==='All'||pr.project===this.selectedProject;
+      var me=this.selectedEnv==='All'||pr.environment===this.selectedEnv;
+      var mt=this.selectedTeam==='All'||pr.team===this.selectedTeam;
+      var ms=!this.searchQuery||pr.title.toLowerCase().includes(this.searchQuery.toLowerCase())||
+             pr.author.toLowerCase().includes(this.searchQuery.toLowerCase())||pr.number.toString().includes(this.searchQuery);
+      return mp&&me&&mt&&ms;
+    });
+  },
+
+  onSearch: function(v){ this.searchQuery=v; this.applyFilters(); this.render(); },
+  onFilter: function(){
+    this.selectedEnv=document.getElementById('pr-env-filter').value;
+    this.selectedTeam=document.getElementById('pr-team-filter').value;
+    this.applyFilters(); this.render();
+  },
+  setProject: function(p){
+    this.selectedProject=p; this.applyFilters(); this.render();
+  },
+
+  render: function(){
+    this.renderKPIs();
+    this.renderProjectTabs();
+    this.renderTimeNotice();
+    this.renderList();
+  },
+
+  renderKPIs: function(){
+    var prs=this.allPRs;
+    var now=Date.now(), h72=72*60*60*1000;
+    var stats=[
+      {label:'Total PRs', val:prs.length, icon:'📊', bg:'#eff6ff', iconBg:'#dbeafe'},
+      {label:'Open', val:prs.filter(p=>p.state==='open').length, icon:'⏳', highlight:true},
+      {label:'Merged', val:prs.filter(p=>p.merged).length, icon:'✅', bg:'#f0fdf4', iconBg:'#dcfce7'},
+      {label:'Last 72h', val:prs.filter(p=>now-new Date(p.createdAt)<h72).length, icon:'🕐', bg:'#fff7ed', iconBg:'#fed7aa'}
+    ];
+    document.getElementById('pr-kpi-row').innerHTML=stats.map(s=>
+      '<div class="pr-kpi-card'+(s.highlight?' highlight':'')+'" style="'+(s.bg?'background:'+s.bg+';border-color:'+s.iconBg+';':'')+'">'
+      +'<div><div class="pr-kl">'+s.label+'</div><div class="pr-kv">'+s.val+'</div></div>'
+      +'<div class="pr-kicon" style="background:'+(s.highlight?'rgba(255,255,255,.25)':s.iconBg||'#f3f4f6')+'">'+s.icon+'</div>'
+      +'</div>'
+    ).join('');
+  },
+
+  renderProjectTabs: function(){
+    var projStats={};
+    this.allPRs.forEach(pr=>{
+      if(!projStats[pr.project]) projStats[pr.project]={total:0,open:0};
+      projStats[pr.project].total++;
+      if(pr.state==='open') projStats[pr.project].open++;
+    });
+    var html='<button class="pr-proj-btn'+(this.selectedProject==='All'?' active':'')+'" onclick="prDash.setProject(\'All\')">'
+      +'All Projects <span class="pr-proj-cnt">'+this.allPRs.length+'</span></button>';
+    Object.entries(projStats).sort((a,b)=>b[1].total-a[1].total).forEach(([name,s])=>{
+      var active=this.selectedProject===name;
+      html+='<button class="pr-proj-btn'+(active?' active':'')+'" onclick="prDash.setProject(\''+name+'\')">'
+        +name+' <span class="pr-proj-cnt">'+s.total+'</span>'
+        +(s.open>0&&!active?'<span style="background:#fef3c7;color:#92400e;padding:2px 6px;border-radius:8px;font-size:10px;font-weight:700">'+s.open+' open</span>':'')
+        +'</button>';
+    });
+    document.getElementById('pr-proj-tabs').innerHTML=html;
+  },
+
+  renderTimeNotice: function(){
+    var el=document.getElementById('pr-time-notice');
+    if(!el) return;
+    var now=new Date(), h72ago=new Date(now-72*60*60*1000);
+    el.style.display='block';
+    el.innerHTML='ℹ️ Showing PRs from the last 72 hours — raised between '
+      +h72ago.toLocaleString()+' and '+now.toLocaleString()
+      +'. Active filter may show PRs outside this window.';
+  },
+
+  renderList: function(){
+    var el=document.getElementById('pr-list'); if(!el) return;
+    if(!this.filteredPRs.length){
+      el.innerHTML='<div class="pr-empty"><div style="font-size:48px;margin-bottom:12px">📭</div><div style="font-size:16px;font-weight:600;margin-bottom:6px">No PRs found</div><div style="font-size:13px">Try adjusting your filters or search query</div></div>';
+      return;
+    }
+    el.innerHTML=this.filteredPRs.map(pr=>this.cardHTML(pr)).join('');
+  },
+
+  reviewBadge: function(dec){
+    if(dec==='APPROVED') return '<span class="pr-badge approved">✓ Approved</span>';
+    if(dec==='CHANGES_REQUESTED') return '<span class="pr-badge changes">✗ Changes Requested</span>';
+    return '<span class="pr-badge review">⚠ Review Required</span>';
+  },
+
+  envBadge: function(env){
+    var cls=env==='Prod'?'env-prod':env==='QA'?'env-qa':env==='Stage'?'env-stage':'env-dev';
+    return '<span class="pr-badge '+cls+'">'+env+'</span>';
+  },
+
+  pipeline: function(pr){
+    var steps=[
+      {label:'Open',done:true},
+      {label:'Approved',done:pr.reviewDecision==='APPROVED'},
+      {label:'Merged',done:pr.merged},
+      {label:'Deployed',done:false},
+      {label:'Closed',done:pr.state==='closed'}
+    ];
+    return '<div class="pr-pipeline">'+steps.map((s,i)=>
+      '<div class="pr-step"><div class="pr-step-circle '+(s.done?'done':'pending')+'">'+(s.done?'✓':(i+1))+'</div><span class="pr-step-lbl">'+s.label+'</span></div>'
+      +(i<steps.length-1?'<div class="pr-connector'+(s.done?' done':'')+'"></div>':'')
+    ).join('')+'</div>';
+  },
+
+  cardHTML: function(pr){
+    var initials=(pr.author||'?').substring(0,2).toUpperCase();
+    var date=new Date(pr.createdAt).toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'numeric'});
+    var reviewers='';
+    if(pr.approvers.length) reviewers+=pr.approvers.map(a=>'<span class="pr-reviewer-chip approved">✓ '+a+'</span>').join('');
+    if(pr.pendingReviewers.length) reviewers+=pr.pendingReviewers.map(r=>'<span class="pr-reviewer-chip">'+r+'</span>').join('');
+    return '<div class="pr-card" onclick="prDash.openModal(\''+pr.id+'\')">'
+      +'<div class="pr-card-hdr">'
+        +'<div style="display:flex;gap:12px;align-items:flex-start">'
+          +'<div class="pr-avatar">'+initials+'</div>'
+          +'<div><div style="font-size:12px;color:var(--muted);margin-bottom:2px">#'+pr.number+' &nbsp;·&nbsp; '+pr.repo+'</div>'
+          +'<div style="font-size:14px;font-weight:600;color:var(--text);line-height:1.4">'+this.esc(pr.title)+'</div></div>'
+        +'</div>'
+        +'<div style="display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end">'+this.reviewBadge(pr.reviewDecision)+this.envBadge(pr.environment)+'</div>'
+      +'</div>'
+      +this.pipeline(pr)
+      +'<div class="pr-meta-grid">'
+        +'<div><div class="pr-meta-lbl">Team</div><div class="pr-meta-val">'+pr.team+'</div></div>'
+        +'<div><div class="pr-meta-lbl">Project</div><div class="pr-meta-val">'+pr.project+'</div></div>'
+      +'</div>'
+      +(reviewers?'<div class="pr-reviewers"><div class="pr-meta-lbl" style="margin-bottom:6px">Reviewers</div>'+reviewers+'</div>':'')
+      +'<div class="pr-card-footer">'
+        +'<div style="display:flex;align-items:center;gap:8px">'
+          +'<span class="pr-branch-badge" style="background:#f3f4f6;color:#374151">'+pr.repo+'</span>'
+          +'<span style="color:var(--muted)">→</span>'
+          +'<span class="pr-branch-badge" style="background:'+(pr.environment==='Prod'?'#ede9fe;color:#5b21b6':pr.environment==='QA'?'#fef3c7;color:#92400e':'#f3f4f6;color:#374151')+'">'+pr.environment+'</span>'
+        +'</div>'
+        +'<div style="display:flex;align-items:center;gap:12px">'
+          +'<span>📅 '+date+'</span>'
+          +'<span style="color:#10b981">+'+pr.additions+'</span>'
+          +'<span style="color:#ef4444">-'+pr.deletions+'</span>'
+        +'</div>'
+      +'</div>'
+      +'</div>';
+  },
+
+  openModal: function(id){
+    var pr=this.allPRs.find(p=>p.id===id); if(!pr) return;
+    var modal=document.getElementById('pr-detail-modal');
+    var inner=document.getElementById('pr-detail-inner');
+    var initials=(pr.author||'?').substring(0,2).toUpperCase();
+    var envColors={Prod:'#ede9fe;color:#5b21b6',QA:'#fef3c7;color:#92400e',Stage:'#dbeafe;color:#1e40af',Dev:'#f3f4f6;color:#374151'};
+    inner.innerHTML=
+      '<div style="position:sticky;top:0;background:#fff;border-bottom:1px solid var(--border);padding:18px 22px;display:flex;align-items:center;justify-content:space-between;border-radius:16px 16px 0 0">'
+        +'<div style="display:flex;align-items:center;gap:12px">'
+          +'<div class="pr-avatar">'+initials+'</div>'
+          +'<div><div style="font-size:16px;font-weight:700">#'+pr.number+' — '+this.esc(pr.title)+'</div>'
+          +'<div style="font-size:12px;color:var(--muted)">'+pr.repo+' · by '+pr.author+' · '+new Date(pr.createdAt).toLocaleDateString()+'</div></div>'
+        +'</div>'
+        +'<button onclick="prDash.closeModal()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted);line-height:1">✕</button>'
+      +'</div>'
+      +'<div style="padding:22px">'
+        +'<h4 style="font-size:13px;font-weight:600;margin-bottom:10px">Progress</h4>'
+        +this.pipeline(pr)
+        +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">'
+          +'<div>'
+            +'<h4 style="font-size:13px;font-weight:600;margin-bottom:10px">Details</h4>'
+            +[['Environment',pr.environment],['Team',pr.team],['Project',pr.project],['Status',pr.reviewDecision.replace('_',' ')]].map(([k,v])=>
+              '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">'
+              +'<span style="font-size:12px;color:var(--muted)">'+k+'</span>'
+              +'<span style="font-size:12px;font-weight:600">'+v+'</span></div>'
+            ).join('')
+          +'</div>'
+          +'<div>'
+            +'<h4 style="font-size:13px;font-weight:600;margin-bottom:10px">Changes</h4>'
+            +[['Files Changed',pr.changedFiles],['Additions','<span style="color:#10b981">+'+pr.additions+'</span>'],['Deletions','<span style="color:#ef4444">-'+pr.deletions+'</span>']].map(([k,v])=>
+              '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">'
+              +'<span style="font-size:12px;color:var(--muted)">'+k+'</span>'
+              +'<span style="font-size:12px;font-weight:600">'+v+'</span></div>'
+            ).join('')
+          +'</div>'
+        +'</div>'
+        +(pr.approvers.length||pr.pendingReviewers.length?
+          '<h4 style="font-size:13px;font-weight:600;margin-bottom:10px">Reviewers</h4>'
+          +pr.approvers.map(a=>'<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#f0fdf4;border-radius:8px;margin-bottom:8px"><div style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600"><span style="color:#10b981">✓</span>'+a+'</div><span style="font-size:11px;font-weight:600;color:#10b981">Approved</span></div>').join('')
+          +pr.pendingReviewers.map(r=>'<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#f9fafb;border-radius:8px;margin-bottom:8px"><div style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600"><span style="color:var(--muted)">⏳</span>'+r+'</div><span style="font-size:11px;font-weight:600;color:var(--muted)">Pending</span></div>').join('')
+        :'')
+        +'<a href="'+pr.url+'" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;background:#111827;color:#fff;border-radius:10px;text-decoration:none;font-size:14px;font-weight:600;margin-top:4px">🔗 View on GitHub</a>'
+      +'</div>';
+    modal.style.display='flex';
+  },
+
+  closeModal: function(e){
+    if(!e||e.target===document.getElementById('pr-detail-modal'))
+      document.getElementById('pr-detail-modal').style.display='none';
+  },
+
+  esc: function(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+};
 
 document.querySelectorAll('.sidebar nav a').forEach(function(a){
   a.addEventListener('click',function(e){
