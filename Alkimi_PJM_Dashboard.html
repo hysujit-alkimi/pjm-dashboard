@@ -250,6 +250,70 @@ tr:hover td{background:#f9fafb}
 .indicator.available{background:var(--green)}
 .indicator.balanced{background:var(--orange)}
 .indicator.overloaded{background:var(--red)}
+
+/* ── Velocity ── */
+.vel-proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.vel-proj-card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:18px;position:relative;overflow:hidden}
+.vel-proj-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.vel-proj-name{font-size:15px;font-weight:700;margin-bottom:2px}
+.vel-proj-sprint{font-size:11px;color:var(--muted);margin-bottom:14px}
+.vel-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.vel-stat{text-align:center;background:var(--bg);border-radius:8px;padding:8px 4px}
+.vel-stat-val{font-size:20px;font-weight:800;line-height:1}
+.vel-stat-lbl{font-size:10px;color:var(--muted);margin-top:3px}
+.vel-gauge-wrap{margin-bottom:12px}
+.vel-gauge-label{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:4px}
+.vel-gauge{height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.vel-gauge-fill{height:100%;border-radius:4px;transition:width .4s}
+.vel-trend{display:flex;align-items:center;gap:6px;font-size:12px;margin-bottom:10px}
+.vel-trend-up{color:#10b981}
+.vel-trend-down{color:#ef4444}
+.vel-trend-flat{color:var(--muted)}
+.vel-contributors{font-size:11px;color:var(--muted)}
+.vel-contributors span{display:inline-block;background:var(--bg);border-radius:10px;padding:2px 8px;margin:2px 2px 2px 0}
+.vel-placeholder{opacity:.35;font-style:italic}
+
+/* ── Project Resource Mapping ── */
+.rm-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border)}
+.rm-table{width:100%;border-collapse:collapse;font-size:12px;min-width:600px}
+.rm-table th{background:var(--card);padding:7px 5px;text-align:center;border:1px solid var(--border);font-weight:600;font-size:11px;white-space:nowrap;position:sticky;top:0;z-index:2}
+.rm-table th.col-name{text-align:left;padding:7px 12px;min-width:140px;position:sticky;left:0;z-index:3}
+.rm-table td{padding:5px 4px;border:1px solid var(--border);text-align:center;vertical-align:middle}
+.rm-table td.row-name{text-align:left;font-size:12px;font-weight:500;white-space:nowrap;padding:5px 12px;position:sticky;left:0;background:var(--card);z-index:1}
+.rm-table tr.rm-group-header td{background:var(--bg);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:6px 12px;color:var(--muted)}
+.rm-dot{width:16px;height:16px;border-radius:50%;margin:0 auto;display:block}
+.rm-empty{width:8px;height:8px;border-radius:50%;margin:0 auto;background:var(--border);display:block;opacity:.4}
+
+/* ── Team Structure ── */
+.ts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.ts-card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden}
+.ts-card-header{padding:11px 14px;font-weight:700;font-size:13px;color:#fff;display:flex;align-items:center;justify-content:space-between}
+.ts-card-header .ts-count{font-size:11px;font-weight:600;background:rgba(0,0,0,.2);padding:2px 8px;border-radius:10px}
+.ts-member{display:flex;align-items:center;gap:10px;padding:8px 12px;border-top:1px solid var(--border);transition:background .1s}
+.ts-member:hover{background:var(--bg)}
+.ts-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;color:#fff;flex-shrink:0}
+.ts-member-info{flex:1;min-width:0}
+.ts-member-name{font-size:13px;font-weight:500}
+.ts-member-meta{font-size:11px;color:var(--muted)}
+.ts-badge{font-size:10px;padding:1px 6px;border-radius:8px;font-weight:600;margin-left:4px}
+.ts-badge.lead{background:#fef3c7;color:#92400e}
+.ts-badge.internal{background:#dbeafe;color:#1e40af}
+.ts-badge.external{background:#fce7f3;color:#9d174d}
+
+/* ── Org Chart ── */
+.oc-scroll{overflow-x:auto;padding-bottom:8px}
+.oc-grid{display:inline-flex;gap:12px;align-items:flex-start;padding:4px 2px}
+.oc-col{display:flex;flex-direction:column;align-items:center;min-width:130px;max-width:150px}
+.oc-team-badge{padding:7px 10px;border-radius:8px;color:#fff;font-weight:700;font-size:11px;text-align:center;width:100%;box-sizing:border-box;margin-bottom:0}
+.oc-spine{width:2px;height:12px;margin:0 auto;flex-shrink:0}
+.oc-lead-box{background:var(--card);border-radius:8px;border:2px solid currentColor;padding:8px 10px;text-align:center;width:100%;box-sizing:border-box}
+.oc-lead-box .oc-name{font-size:12px;font-weight:700}
+.oc-lead-box .oc-tag{font-size:10px;color:var(--muted)}
+.oc-members{display:flex;flex-direction:column;gap:0;width:100%;position:relative;margin-top:0}
+.oc-members::before{content:'';position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--border);transform:translateX(-50%);z-index:0}
+.oc-member-box{background:var(--card);border-radius:6px;border:1px solid var(--border);padding:6px 8px;text-align:center;width:100%;box-sizing:border-box;margin-top:2px;position:relative;z-index:1}
+.oc-member-box .oc-name{font-size:11px;font-weight:500}
+.oc-member-box .oc-tag{font-size:10px;color:var(--muted)}
 .chart-container{background:var(--card);border-radius:var(--radius);padding:20px;border:1px solid var(--border);margin-bottom:24px}
 .chart-container h3{font-size:16px;font-weight:600;margin-bottom:16px}
 .chart-container canvas{max-height:350px}
@@ -412,11 +476,10 @@ a.jira-link:hover{text-decoration:underline}
   <nav>
     <a href="#" class="active" data-tab="overview"><span class="icon">&#x1F4CA;</span><span>Overview</span></a>
     <a href="#" data-tab="projects"><span class="icon">&#x1F4C1;</span><span>Projects</span></a>
-    <a href="#" data-tab="workload"><span class="icon">&#x1F465;</span><span>Team Load</span></a>
+    <a href="#" data-tab="workload"><span class="icon">&#x1F465;</span><span>Resources</span></a>
     <a href="#" data-tab="velocity"><span class="icon">&#x1F4C8;</span><span>Velocity</span></a>
     <a href="#" data-tab="features"><span class="icon">&#x1F3AF;</span><span>Sprint Plans</span></a>
     <a href="#" data-tab="sprintreview"><span class="icon">&#x1F4CB;</span><span>Sprint Review</span></a>
-    <a href="#" data-tab="bandwidth"><span class="icon">&#x1F50B;</span><span>Bandwidth</span></a>
     <a href="#" data-tab="releases"><span class="icon">&#x1F680;</span><span>Releases</span></a>
     <a href="#" data-tab="q2priorities"><span class="icon">&#x1F3AF;</span><span>Project Priorities</span></a>
     <a href="#" data-tab="deliverables"><span class="icon">&#x1F4E6;</span><span>Key Deliverables</span></a>
@@ -492,24 +555,196 @@ a.jira-link:hover{text-decoration:underline}
 
   <!-- TEAM WORKLOAD -->
   <div class="section" id="sec-workload">
-    <div class="filter-bar">
-      <select id="teamFilter"><option value="all">All Teams</option><option value="BE">Backend (BE)</option><option value="FE">Frontend (FE)</option><option value="QA">QA</option><option value="NJ">Node.js (NJ)</option><option value="AI">AI</option><option value="DO">DevOps</option><option value="EXT">External / Other</option></select>
+    <!-- Inner sub-tabs -->
+    <div class="sub-tabs" id="teamLoadTabs" style="margin-bottom:20px">
+      <button class="active" onclick="switchTeamLoadTab('overview',this)">📊 Overview</button>
+      <button onclick="switchTeamLoadTab('table',this)">📋 Workload Table</button>
+      <button onclick="switchTeamLoadTab('bandwidth',this)">📡 Bandwidth Grid</button>
+      <button onclick="switchTeamLoadTab('resourcemap',this)">🗺️ Project Resource Mapping</button>
+      <button onclick="switchTeamLoadTab('teamstructure',this)">👥 Team Structure</button>
+      <button onclick="switchTeamLoadTab('orgchart',this)">🏢 Org Chart</button>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px">
-      <div class="chart-container"><h3>Projects per Team</h3><canvas id="chartTeam"></canvas></div>
-      <div class="chart-container"><h3>Jira Tickets per Person (Top 20)</h3><canvas id="chartIndividual"></canvas></div>
+
+    <!-- PANE: Overview -->
+    <div id="tl-pane-overview" class="tl-pane">
+      <!-- KPI Summary -->
+      <div id="tl-kpi-row" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:22px"></div>
+      <!-- Charts -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+        <div class="chart-container"><h3>Team Capacity Overview</h3><canvas id="chartCapacity"></canvas></div>
+        <div class="chart-container"><h3>Projects per Team</h3><canvas id="chartTeam"></canvas></div>
+      </div>
+      <!-- Load Legend -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+        <div class="card" style="padding:16px;border-left:4px solid var(--green)">
+          <strong style="color:var(--green)">● Available</strong>
+          <div style="font-size:12px;color:var(--muted);margin-top:6px">Can take on more work<br>≤1 project &amp; ≤5 tickets</div>
+        </div>
+        <div class="card" style="padding:16px;border-left:4px solid var(--orange)">
+          <strong style="color:var(--orange)">● Balanced</strong>
+          <div style="font-size:12px;color:var(--muted);margin-top:6px">Moderate load<br>2–3 projects or 6–29 tickets</div>
+        </div>
+        <div class="card" style="padding:16px;border-left:4px solid var(--red)">
+          <strong style="color:var(--red)">● Overloaded</strong>
+          <div style="font-size:12px;color:var(--muted);margin-top:6px">At or over capacity<br>4+ projects or 30+ tickets</div>
+        </div>
+      </div>
     </div>
-    <div class="section-title">Individual Workload</div>
-    <div class="table-wrap"><table id="workloadTable"><thead><tr><th>Name</th><th>Team</th><th>Projects Assigned</th><th>Jira Tickets</th><th>Status</th><th>Load</th></tr></thead><tbody></tbody></table></div>
+
+    <!-- PANE: Workload Table -->
+    <div id="tl-pane-table" class="tl-pane" style="display:none">
+      <div class="filter-bar">
+        <select id="teamFilter" onchange="renderWorkload(this.value)">
+          <option value="all">All Teams</option>
+          <option value="Java">Java</option>
+          <option value="AI">AI</option>
+          <option value="FE">Frontend (FE)</option>
+          <option value="Web3">Web3</option>
+          <option value="QA">QA</option>
+          <option value="DevOps">DevOps</option>
+          <option value="Product">Product</option>
+          <option value="BA">BA</option>
+          <option value="AdOps">AdOps</option>
+          <option value="TechOps">TechOps</option>
+          <option value="Marketing">Marketing</option>
+          <option value="Design">Design</option>
+          <option value="Delivery">Delivery</option>
+          <option value="C++">C++</option>
+        </select>
+      </div>
+      <div class="chart-container" style="margin-bottom:20px"><h3>Jira Tickets per Person (Top 20)</h3><canvas id="chartIndividual"></canvas></div>
+      <div class="section-title" style="margin-bottom:12px">Individual Workload</div>
+      <div class="table-wrap"><table id="workloadTable"><thead><tr><th>Name</th><th>Team</th><th>Projects Assigned</th><th>Jira Tickets</th><th>Status</th><th>Load</th></tr></thead><tbody></tbody></table></div>
+    </div>
+
+    <!-- PANE: Bandwidth Grid -->
+    <div id="tl-pane-bandwidth" class="tl-pane" style="display:none">
+      <div class="filter-bar">
+        <select id="bwTeamFilter" onchange="renderBandwidth(this.value,document.getElementById('bwLoadFilter').value)">
+          <option value="all">All Teams</option>
+          <option value="Java">Java</option>
+          <option value="AI">AI</option>
+          <option value="FE">Frontend (FE)</option>
+          <option value="Web3">Web3</option>
+          <option value="QA">QA</option>
+          <option value="DevOps">DevOps</option>
+          <option value="Product">Product</option>
+          <option value="BA">BA</option>
+          <option value="AdOps">AdOps</option>
+          <option value="TechOps">TechOps</option>
+          <option value="Marketing">Marketing</option>
+          <option value="Design">Design</option>
+          <option value="Delivery">Delivery</option>
+          <option value="C++">C++</option>
+        </select>
+        <select id="bwLoadFilter" onchange="renderBandwidth(document.getElementById('bwTeamFilter').value,this.value)">
+          <option value="all">All Load Levels</option>
+          <option value="available">● Available</option>
+          <option value="balanced">● Balanced</option>
+          <option value="overloaded">● Overloaded</option>
+        </select>
+      </div>
+      <div class="bw-grid" id="bwGrid"></div>
+    </div>
+
+    <!-- PANE: Project Resource Mapping -->
+    <div id="tl-pane-resourcemap" class="tl-pane" style="display:none">
+      <div style="margin-bottom:14px;display:flex;align-items:center;gap:12px">
+        <select id="rmTeamFilter" onchange="renderResourceMap(this.value)" style="padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:13px">
+          <option value="all">All Teams</option>
+          <option value="Java">Java</option>
+          <option value="AI">AI</option>
+          <option value="FE">Frontend (FE)</option>
+          <option value="Web3">Web3</option>
+          <option value="QA">QA</option>
+          <option value="DevOps">DevOps</option>
+          <option value="Product">Product</option>
+          <option value="BA">BA</option>
+          <option value="AdOps">AdOps</option>
+          <option value="TechOps">TechOps</option>
+          <option value="Marketing">Marketing</option>
+          <option value="Design">Design</option>
+          <option value="Delivery">Delivery</option>
+          <option value="C++">C++</option>
+        </select>
+        <span style="font-size:12px;color:var(--muted)">● = assigned to project</span>
+      </div>
+      <div class="rm-wrap"><table class="rm-table" id="rmTable"></table></div>
+    </div>
+
+    <!-- PANE: Team Structure -->
+    <div id="tl-pane-teamstructure" class="tl-pane" style="display:none">
+      <div class="ts-grid" id="tsGrid"></div>
+    </div>
+
+    <!-- PANE: Org Chart -->
+    <div id="tl-pane-orgchart" class="tl-pane" style="display:none">
+      <div id="ocLeadership"></div>
+      <div style="margin-bottom:14px;font-size:12px;color:var(--muted)">👑 = Team Lead &nbsp;·&nbsp; (I) = Internal &nbsp;·&nbsp; (E) = External</div>
+      <div class="oc-scroll"><div class="oc-grid" id="ocGrid"></div></div>
+    </div>
   </div>
 
   <!-- VELOCITY -->
   <div class="section" id="sec-velocity">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px">
-      <div class="chart-container"><h3>Delivery % by Project (Current Sprint)</h3><canvas id="chartDelivery"></canvas></div>
-      <div class="chart-container"><h3>Work Items Status Across All Projects</h3><canvas id="chartAllStatus"></canvas></div>
+    <div class="sub-tabs" id="velocityTabs" style="margin-bottom:20px">
+      <button class="active" onclick="switchVelocityTab('project',this)">📊 Project Velocity</button>
+      <button onclick="switchVelocityTab('trend',this)">📈 Sprint Trend</button>
+      <button onclick="switchVelocityTab('team',this)">👥 Team Velocity</button>
+      <button onclick="switchVelocityTab('individual',this)">👤 Individual Velocity</button>
     </div>
-    <div class="chart-container"><h3>Completion Rate Comparison</h3><canvas id="chartVelocity"></canvas></div>
+
+    <!-- PANE: Project Velocity -->
+    <div id="vel-pane-project" class="vel-pane">
+      <div class="vel-proj-grid" id="velProjGrid"></div>
+    </div>
+
+    <!-- PANE: Sprint Trend -->
+    <div id="vel-pane-trend" class="vel-pane" style="display:none">
+      <div style="margin-bottom:12px;padding:10px 14px;background:var(--bg);border-radius:8px;font-size:12px;color:var(--muted)">
+        📌 Velocity = items reaching Dev Complete, Released or Done per sprint &nbsp;·&nbsp; <span style="opacity:.5">Faded points</span> = placeholder (supply historical data to fill)
+      </div>
+      <div class="filter-bar" style="margin-bottom:16px">
+        <select id="trendProjFilter" onchange="renderSprintTrend(this.value)">
+          <option value="all">All Projects</option>
+          <option value="DSP">DSP</option>
+          <option value="Exchange">Exchange</option>
+          <option value="AMP">AMP</option>
+          <option value="MMP">MMP</option>
+          <option value="Labs">Labs</option>
+          <option value="AdFi">AdFi</option>
+        </select>
+      </div>
+      <div class="chart-container"><canvas id="chartSprintTrend"></canvas></div>
+    </div>
+
+    <!-- PANE: Team Velocity -->
+    <div id="vel-pane-team" class="vel-pane" style="display:none">
+      <div style="margin-bottom:12px;font-size:12px;color:var(--muted)">Tickets assigned per team across last completed sprint · derived from sprint review issue data</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div class="chart-container"><h3>Team Ticket Load — Last Sprint</h3><canvas id="chartTeamVelLast"></canvas></div>
+        <div class="chart-container"><h3>Team Distribution — Current Sprint</h3><canvas id="chartTeamVelCurr"></canvas></div>
+      </div>
+    </div>
+
+    <!-- PANE: Individual Velocity -->
+    <div id="vel-pane-individual" class="vel-pane" style="display:none">
+      <div class="filter-bar" style="margin-bottom:16px">
+        <select id="indivProjFilter" onchange="renderIndividualVelocity(this.value)">
+          <option value="all">All Projects</option>
+          <option value="DSP">DSP</option>
+          <option value="Exchange">Exchange</option>
+          <option value="AMP">AMP</option>
+          <option value="MMP">MMP</option>
+          <option value="Labs">Labs</option>
+          <option value="AdFi">AdFi</option>
+        </select>
+      </div>
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:20px">
+        <div class="chart-container"><h3>Tickets per Person — Last Sprint</h3><canvas id="chartIndivVel"></canvas></div>
+        <div id="velIndivTable" style="background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:16px;overflow-y:auto;max-height:420px"></div>
+      </div>
+    </div>
   </div>
 
   <!-- SPRINT FEATURES -->
@@ -589,24 +824,6 @@ a.jira-link:hover{text-decoration:underline}
     <div id="releaseContent"></div>
   </div>
 
-  <!-- BANDWIDTH -->
-  <div class="section" id="sec-bandwidth">
-    <div class="section-title">Bandwidth Radar</div>
-    <div class="section-sub">Team members sorted by availability &mdash; based on project count + Jira ticket count</div>
-    <div class="filter-bar">
-      <select id="bwTeamFilter"><option value="all">All Teams</option><option value="BE">BE</option><option value="FE">FE</option><option value="QA">QA</option><option value="NJ">NJ</option><option value="AI">AI</option><option value="DO">DevOps</option><option value="EXT">External</option></select>
-      <select id="bwLoadFilter"><option value="all">All Load Levels</option><option value="available">Available</option><option value="balanced">Balanced</option><option value="overloaded">Overloaded</option></select>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px">
-      <div class="chart-container"><h3>Team Capacity Overview</h3><canvas id="chartCapacity"></canvas></div>
-      <div>
-        <div class="card" style="margin-bottom:12px;padding:16px"><strong style="color:var(--green)">&#x25CF; Available</strong> &mdash; Can take on more work (&le;1 project, &le;5 tickets)</div>
-        <div class="card" style="margin-bottom:12px;padding:16px"><strong style="color:var(--orange)">&#x25CF; Balanced</strong> &mdash; Moderate load (2-3 projects or 6-30 tickets)</div>
-        <div class="card" style="padding:16px"><strong style="color:var(--red)">&#x25CF; Overloaded</strong> &mdash; At or over capacity (4+ projects or 30+ tickets)</div>
-      </div>
-    </div>
-    <div class="bw-grid" id="bwGrid"></div>
-  </div>
 
   <!-- KEY DELIVERABLES -->
   <div class="section" id="sec-deliverables">
@@ -781,61 +998,83 @@ const projects = [
    team:[],pm:"Sujit"}
 ];
 
-// Team members with REAL Jira ticket counts aggregated across all projects (Apr 27, 2026)
-// teamMembers — refreshed from live Jira 30 Apr 2026 (784 open issues across DSP, E2, ALKIMILA, MMP, AMP, ADFI, AID)
+// teamMembers — updated 01 May 2026 | 14 teams | projects use canonical 9-project names
+// Projects: DSP · Exchange · Alkimi Labs · AdFi · MMP · AMP · Agentic Lite · Agentic Pro · Trustnet
+// Agentic Lite & Pro tracked in Linear (assignments added manually)
 const teamMembers = [
-  // BE Team
-  {name:"Pushpalatha Rangaswamy",team:"BE",projects:["DSP","Exchange"],jiraTickets:24,lead:true},
-  {name:"Rekha S",team:"BE",projects:["DSP","Exchange"],jiraTickets:10},
-  {name:"velraj.m",team:"BE",projects:["DSP","Exchange"],jiraTickets:16},
-  {name:"Chaithra P",team:"BE",projects:["DSA AI / AMP","DSP","Exchange"],jiraTickets:11},
-  {name:"Mithun Krishna",team:"BE",projects:["DSA AI / AMP","Exchange"],jiraTickets:27},
-  {name:"Nishanth",team:"BE",projects:["Alkimi Infra DevOps","DSP","MMP"],jiraTickets:35},
-  {name:"Kishan Gurumurthy",team:"BE",projects:["DSP"],jiraTickets:12},
-  {name:"Prashanth Raghu",team:"BE",projects:["DSP","Exchange"],jiraTickets:4},
-  {name:"Radha",team:"BE",projects:[],jiraTickets:0},
-  {name:"Varun",team:"BE",projects:[],jiraTickets:0},
-  // FE Team
-  {name:"Gedi (L)",team:"FE",projects:[],jiraTickets:0,lead:true},
-  {name:"Daniel Calvo Lopez",team:"FE",projects:["DSA AI / AMP"],jiraTickets:23},
-  {name:"Gaurav Handa",team:"FE",projects:["DSA AI / AMP","DSP","Exchange"],jiraTickets:36},
-  {name:"Anand Pandey",team:"FE",projects:["Exchange","MMP"],jiraTickets:28},
-  // QA Team
-  {name:"Manasa Mariswamy",team:"QA",projects:["Alkimi Infra DevOps","DSA AI / AMP","DSP","Exchange","MMP"],jiraTickets:37,lead:true},
-  {name:"Abhay Thakur",team:"QA",projects:["DSP","Exchange"],jiraTickets:60},
-  {name:"Vinay Krishna Bhat",team:"QA",projects:["DSP","Exchange"],jiraTickets:5},
-  {name:"Priyanka B",team:"QA",projects:["DSA AI / AMP","Exchange"],jiraTickets:43},
-  {name:"Vishnupriya Polraj",team:"QA",projects:["DSP","Exchange"],jiraTickets:18},
-  {name:"Gihith Syras",team:"QA",projects:["Exchange"],jiraTickets:6},
-  {name:"Sangamesh",team:"QA",projects:[],jiraTickets:0},
-  // NJ Team
-  {name:"Darshan Gaonkar",team:"NJ",projects:["MMP"],jiraTickets:10},
-  {name:"Sandesh Rannore",team:"NJ",projects:["Exchange"],jiraTickets:2},
-  {name:"Sriram",team:"NJ",projects:[],jiraTickets:0},
+  // Java Team
+  {name:"Pushpa",team:"Java",projects:["DSP","Exchange","AdFi","Agentic Pro"],jiraTickets:24,lead:true},
+  {name:"Rekha S",team:"Java",projects:["DSP","Exchange"],jiraTickets:10},
+  {name:"Chaithra P",team:"Java",projects:["AMP","DSP","Exchange","AdFi"],jiraTickets:11},
+  {name:"Velraj M",team:"Java",projects:["DSP","Exchange"],jiraTickets:16},
+  {name:"Mithun Krishna",team:"Java",projects:["AMP","Exchange"],jiraTickets:27},
+  {name:"Radha",team:"Java",projects:[],jiraTickets:0},
   // AI Team
-  {name:"Prem Upadhyay",team:"AI",projects:["DSA AI / AMP","DSP","MMP"],jiraTickets:19,lead:true},
-  {name:"sagar jadhav",team:"AI",projects:["DSA AI / AMP"],jiraTickets:80},
-  {name:"Subham Kumar Behuria",team:"AI",projects:["DSA AI / AMP"],jiraTickets:20},
-  {name:"Mohit Lalbahadur Chaubey",team:"AI",projects:["MMP"],jiraTickets:51},
+  {name:"Prem",team:"AI",projects:["AMP","DSP","MMP","Agentic Pro"],jiraTickets:19,lead:true},
+  {name:"Sagar Jadhav",team:"AI",projects:["AMP","Agentic Pro"],jiraTickets:80},
+  {name:"Subham",team:"AI",projects:["AMP","Agentic Lite"],jiraTickets:20},
+  {name:"Aakash",team:"AI",projects:[],jiraTickets:0},
   {name:"Sushanth",team:"AI",projects:[],jiraTickets:0},
-  // DevOps Team
-  {name:"Goutham",team:"DO",projects:["Alkimi Infra DevOps","DSA AI / AMP","Exchange","MMP"],jiraTickets:22},
-  {name:"Harshith Kumar",team:"DO",projects:["Alkimi Infra DevOps"],jiraTickets:11},
-  {name:"Loknath Prasad",team:"DO",projects:["Alkimi Infra DevOps","Exchange"],jiraTickets:16},
-  {name:"Sudarshan",team:"DO",projects:["Alkimi Infra DevOps","Exchange","MMP"],jiraTickets:8},
-  {name:"Nitish",team:"DO",projects:["Alkimi Infra DevOps"],jiraTickets:2},
-  {name:"Rajeev",team:"DO",projects:[],jiraTickets:0},
-  // External / Other
-  {name:"kannan",team:"EXT",projects:["MMP"],jiraTickets:39},
-  {name:"K Gunjan",team:"EXT",projects:["MMP"],jiraTickets:32},
-  {name:"Abhishek M Teli",team:"EXT",projects:["MMP"],jiraTickets:28},
-  {name:"Naveen Bharathiraman",team:"EXT",projects:["MMP"],jiraTickets:15},
-  {name:"Công Nguyễn Thành",team:"EXT",projects:["MMP"],jiraTickets:4},
-  {name:"Kalidas Engaiahraj",team:"EXT",projects:["Alkimi Infra DevOps","Exchange"],jiraTickets:2},
-  {name:"Phanindra Gummaraju",team:"EXT",projects:["MMP"],jiraTickets:1},
-  {name:"Priya Muduli",team:"EXT",projects:["DSP","Exchange"],jiraTickets:3},
-  {name:"yana.zhbanova",team:"EXT",projects:["DSA AI / AMP","DSP"],jiraTickets:4},
-  {name:"Varadharajan",team:"EXT",projects:[],jiraTickets:0}
+  // FE Team
+  {name:"Gedi",team:"FE",projects:["Alkimi Labs","Agentic Lite","Agentic Pro"],jiraTickets:4,lead:true},
+  {name:"Daniel Calvo Lopez",team:"FE",projects:["AMP","Alkimi Labs"],jiraTickets:23},
+  {name:"Gaurav Handa",team:"FE",projects:["AMP","DSP","Exchange","AdFi"],jiraTickets:36},
+  {name:"Anand Pandey",team:"FE",projects:["Exchange","MMP","Alkimi Labs","AdFi"],jiraTickets:28},
+  // Web3 Team
+  {name:"VJ",team:"Web3",projects:["Alkimi Labs","Agentic Pro"],jiraTickets:4,lead:true},
+  {name:"Darshan Gaonkar",team:"Web3",projects:["MMP","Alkimi Labs"],jiraTickets:10},
+  {name:"Sandesh Rannore",team:"Web3",projects:["Exchange","Alkimi Labs"],jiraTickets:2},
+  {name:"Gunjan",team:"Web3",projects:["MMP"],jiraTickets:32},
+  {name:"Sujan",team:"Web3",projects:[],jiraTickets:0},
+  {name:"Niranjan",team:"Web3",projects:[],jiraTickets:0},
+  {name:"Shourya",team:"Web3",projects:[],jiraTickets:0},
+  {name:"Sriram",team:"Web3",projects:["Alkimi Labs"],jiraTickets:2},
+  // QA Team
+  {name:"Manasa",team:"QA",projects:["AMP","DSP","Exchange","MMP","Alkimi Labs","AdFi"],jiraTickets:37,lead:true},
+  {name:"Abhay Thakur",team:"QA",projects:["DSP","Exchange"],jiraTickets:60},
+  {name:"Priyanka B",team:"QA",projects:["AMP","Exchange"],jiraTickets:43},
+  {name:"Sangamesh",team:"QA",projects:["Alkimi Labs"],jiraTickets:40},
+  {name:"Vinay Krishna Bhat",team:"QA",projects:["DSP","Exchange","Alkimi Labs","AdFi"],jiraTickets:5},
+  {name:"Abhishek",team:"QA",projects:["MMP"],jiraTickets:28},
+  // DevOps Team  (AID & IR boards — product project assignments shown here)
+  {name:"Sudarshan",team:"DevOps",projects:["Exchange","MMP","Agentic Pro"],jiraTickets:8,lead:true},
+  {name:"Loknath Prasad",team:"DevOps",projects:["Exchange"],jiraTickets:16},
+  {name:"Goutham",team:"DevOps",projects:["AMP","Exchange","MMP","Alkimi Labs","AdFi"],jiraTickets:22},
+  {name:"Harshith Kumar",team:"DevOps",projects:[],jiraTickets:11},
+  {name:"Rajeev",team:"DevOps",projects:[],jiraTickets:0},
+  // Product Team
+  {name:"Ram",team:"Product",projects:["Agentic Lite","Agentic Pro"],jiraTickets:0,lead:true},
+  {name:"Vishnupriya",team:"Product",projects:["DSP","Exchange","Agentic Lite"],jiraTickets:18},
+  {name:"Phani",team:"Product",projects:["MMP","Alkimi Labs"],jiraTickets:1},
+  // BA
+  {name:"Vignesh",team:"BA",projects:["AdFi"],jiraTickets:20},
+  {name:"Jyotishikha",team:"BA",projects:[],jiraTickets:0},
+  // AdOps
+  {name:"Vin",team:"AdOps",projects:[],jiraTickets:0,lead:true},
+  {name:"Priyambada",team:"AdOps",projects:["DSP","Exchange"],jiraTickets:3},
+  {name:"Lokeshwari",team:"AdOps",projects:[],jiraTickets:0},
+  {name:"Vishwas",team:"AdOps",projects:[],jiraTickets:0},
+  {name:"Harish",team:"AdOps",projects:[],jiraTickets:0},
+  // TechOps  (DES board for Design tickets)
+  {name:"Kali",team:"TechOps",projects:["Exchange","AdFi"],jiraTickets:5,lead:true},
+  {name:"Usha",team:"TechOps",projects:[],jiraTickets:0},
+  // Marketing
+  {name:"Milly",team:"Marketing",projects:["Agentic Lite","Agentic Pro"],jiraTickets:0,lead:true},
+  {name:"Karishma",team:"Marketing",projects:[],jiraTickets:0},
+  {name:"Tanya",team:"Marketing",projects:[],jiraTickets:0},
+  {name:"Roisin",team:"Marketing",projects:[],jiraTickets:0},
+  // Design  (DES board)
+  {name:"Yana",team:"Design",projects:["AMP","DSP","AdFi","Agentic Lite","Agentic Pro"],jiraTickets:6,lead:true},
+  {name:"Sana",team:"Design",projects:[],jiraTickets:0},
+  {name:"Akshay",team:"Design",projects:["Alkimi Labs"],jiraTickets:2},
+  {name:"Gihith",team:"Design",projects:["Exchange"],jiraTickets:6},
+  // Delivery
+  {name:"Sujit",team:"Delivery",projects:["DSP","Exchange","Alkimi Labs","AdFi","MMP","AMP","Agentic Lite","Agentic Pro","Trustnet"],jiraTickets:0,type:"I"},
+  {name:"Keshav",team:"Delivery",projects:["Trustnet","Alkimi Labs"],jiraTickets:0,type:"E"},
+  // C++ Team
+  {name:"Kannan",team:"C++",projects:["MMP"],jiraTickets:39,lead:true},
+  {name:"Akhil",team:"C++",projects:[],jiraTickets:0},
+  {name:"Naveen",team:"C++",projects:["MMP"],jiraTickets:15}
 ];
 
 // Sprint Feature Tracker — sourced from Confluence "High Level Sprint Backlog - Sprint 8" + live Jira status
@@ -2038,12 +2277,17 @@ function getLoad(m){
   if(p>=4||t>=30) return {label:"Overloaded",cls:"overloaded"};
   return {label:"Balanced",cls:"balanced"};
 }
-const teamColors={BE:"#3b82f6",FE:"#8b5cf6",QA:"#f59e0b",NJ:"#06b6d4",AI:"#10b981",DO:"#ef4444",EXT:"#ec4899"};
+const teamColors={
+  "Java":"#3b82f6","FE":"#8b5cf6","QA":"#f59e0b","Web3":"#06b6d4",
+  "AI":"#10b981","DevOps":"#ef4444","Product":"#f97316","BA":"#84cc16",
+  "AdOps":"#ec4899","TechOps":"#14b8a6","Marketing":"#a855f7","Design":"#e879f9",
+  "Delivery":"#64748b","C++":"#0ea5e9"
+};
 
 // ============================
 // TAB NAVIGATION
 // ============================
-const titles={overview:"Overview",projects:"Projects",workload:"Team & Individual Workload",velocity:"Sprint Velocity & Comparison",features:"Sprint Feature Tracker",sprintreview:"Sprint Review",meetings:"Weekly Meetings & Notes",bandwidth:"Bandwidth Radar",releases:"Release Tracker",q2priorities:"Project Priorities",deliverables:"Key Deliverables",roadmap:"Product Roadmap",prdashboard:"PR Dashboard"};
+const titles={overview:"Overview",projects:"Projects",workload:"Resources",velocity:"Sprint Velocity & Comparison",features:"Sprint Feature Tracker",sprintreview:"Sprint Review",meetings:"Weekly Meetings & Notes",releases:"Release Tracker",q2priorities:"Project Priorities",deliverables:"Key Deliverables",roadmap:"Product Roadmap",prdashboard:"PR Dashboard"};
 
 function switchTab(tab){
   // Deactivate all sidebar nav links
@@ -2072,6 +2316,8 @@ function switchTab(tab){
   if(tab==='sprintreview') { setTimeout(function(){ initSprintReview(); }, 50); }
   if(tab==='projects') { setTimeout(function(){ renderActiveSprintSection(); }, 50); }
   if(tab==='prdashboard') { setTimeout(function(){ loadPrDashboard(); }, 50); }
+  if(tab==='workload') { setTimeout(function(){ switchTeamLoadTab('overview', document.querySelector('#teamLoadTabs button.active')||document.querySelector('#teamLoadTabs button')); }, 50); }
+  if(tab==='velocity') { setTimeout(function(){ renderVelocity(); }, 50); }
 }
 
 // ============================================================
@@ -2701,6 +2947,59 @@ document.getElementById('projFilter').addEventListener('change',function(e){rend
 // TEAM WORKLOAD
 // ============================
 var chartTeamInst,chartIndInst;
+// ============================
+// TEAM LOAD — inner sub-tab switcher
+// ============================
+function switchTeamLoadTab(id, btn){
+  document.querySelectorAll('#teamLoadTabs button').forEach(function(b){b.classList.remove('active')});
+  if(btn) btn.classList.add('active');
+  document.querySelectorAll('.tl-pane').forEach(function(p){p.style.display='none'});
+  var pane=document.getElementById('tl-pane-'+id);
+  if(pane) pane.style.display='block';
+  if(id==='overview') renderTeamOverview();
+  if(id==='table') renderWorkload(document.getElementById('teamFilter').value);
+  if(id==='bandwidth') renderBandwidth(document.getElementById('bwTeamFilter').value, document.getElementById('bwLoadFilter').value);
+  if(id==='resourcemap') renderResourceMap(document.getElementById('rmTeamFilter').value);
+  if(id==='teamstructure') renderTeamStructure();
+  if(id==='orgchart') renderOrgChart();
+}
+
+function renderTeamOverview(){
+  // KPI summary cards
+  var avail=teamMembers.filter(function(m){return getLoad(m).cls==='available'}).length;
+  var balanced=teamMembers.filter(function(m){return getLoad(m).cls==='balanced'}).length;
+  var over=teamMembers.filter(function(m){return getLoad(m).cls==='overloaded'}).length;
+  var kpiRow=document.getElementById('tl-kpi-row');
+  if(kpiRow) kpiRow.innerHTML=
+    '<div class="card" style="padding:18px;border-left:4px solid var(--green);display:flex;align-items:center;justify-content:space-between">'
+      +'<div><div style="font-size:12px;color:var(--muted);margin-bottom:4px">Available</div><div style="font-size:28px;font-weight:800;color:var(--green)">'+avail+'</div></div>'
+      +'<span style="font-size:32px">🟢</span></div>'
+    +'<div class="card" style="padding:18px;border-left:4px solid var(--orange);display:flex;align-items:center;justify-content:space-between">'
+      +'<div><div style="font-size:12px;color:var(--muted);margin-bottom:4px">Balanced</div><div style="font-size:28px;font-weight:800;color:var(--orange)">'+balanced+'</div></div>'
+      +'<span style="font-size:32px">🟡</span></div>'
+    +'<div class="card" style="padding:18px;border-left:4px solid var(--red);display:flex;align-items:center;justify-content:space-between">'
+      +'<div><div style="font-size:12px;color:var(--muted);margin-bottom:4px">Overloaded</div><div style="font-size:28px;font-weight:800;color:var(--red)">'+over+'</div></div>'
+      +'<span style="font-size:32px">🔴</span></div>';
+
+  // Capacity donut
+  if(chartCapInst) chartCapInst.destroy();
+  chartCapInst=new Chart(document.getElementById('chartCapacity'),{
+    type:'doughnut',
+    data:{labels:['Available ('+avail+')','Balanced ('+balanced+')','Overloaded ('+over+')'],datasets:[{data:[avail,balanced,over],backgroundColor:['#10b981','#f59e0b','#ef4444']}]},
+    options:{responsive:true,plugins:{legend:{position:'bottom'}}}
+  });
+
+  // Team projects bar
+  if(chartTeamInst) chartTeamInst.destroy();
+  var teams=Object.keys(teamColors);
+  var teamProjCounts=teams.map(function(t){return teamMembers.filter(function(m){return m.team===t}).reduce(function(s,m){return s+m.projects.length},0)});
+  chartTeamInst=new Chart(document.getElementById('chartTeam'),{
+    type:'bar',
+    data:{labels:teams,datasets:[{label:'Total Project Assignments',data:teamProjCounts,backgroundColor:teams.map(function(t){return teamColors[t]})}]},
+    options:{responsive:true,indexAxis:'y',plugins:{legend:{display:false}}}
+  });
+}
+
 function renderWorkload(teamF){
   teamF=teamF||'all';
   var members=teamF==='all'?teamMembers:teamMembers.filter(function(m){return m.team===teamF});
@@ -2717,44 +3016,303 @@ function renderWorkload(teamF){
     '</tr>';
   }).join('');
 
-  if(chartTeamInst) chartTeamInst.destroy();
-  var teams=Object.keys(teamColors);
-  var teamProjCounts=teams.map(function(t){return teamMembers.filter(function(m){return m.team===t}).reduce(function(s,m){return s+m.projects.length},0)});
-  chartTeamInst=new Chart(document.getElementById('chartTeam'),{type:'bar',data:{labels:teams,datasets:[{label:'Total Project Assignments',data:teamProjCounts,backgroundColor:teams.map(function(t){return teamColors[t]})}]},options:{responsive:true,indexAxis:'y',plugins:{legend:{display:false}}}});
-
   if(chartIndInst) chartIndInst.destroy();
   var withTickets=teamMembers.filter(function(m){return m.jiraTickets>0}).sort(function(a,b){return b.jiraTickets-a.jiraTickets}).slice(0,20);
   if(withTickets.length){
     chartIndInst=new Chart(document.getElementById('chartIndividual'),{type:'bar',data:{labels:withTickets.map(function(m){return m.name}),datasets:[{label:'Open Jira Tickets',data:withTickets.map(function(m){return m.jiraTickets}),backgroundColor:withTickets.map(function(m){return teamColors[m.team]})}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{maxRotation:45,minRotation:45}}}}});
   }
 }
-document.getElementById('teamFilter').addEventListener('change',function(e){renderWorkload(e.target.value)});
 
 // ============================
 // VELOCITY
 // ============================
+// ============================
+// VELOCITY — historical data (velocity = DC + Released + Done per sprint)
+// ============================
+var velocityHistory = {
+  DSP: [
+    {label:'S49', velocity:null},{label:'S50', velocity:null},{label:'S51', velocity:null},
+    {label:'S52', velocity:25, total:55},
+    {label:'S53 ▶', velocity:16, total:57, active:true}
+  ],
+  Exchange: [
+    {label:'S59', velocity:null},{label:'S60', velocity:null},{label:'S61', velocity:null},
+    {label:'S62', velocity:10, total:50},
+    {label:'S63 ▶', velocity:60, total:100, active:true}
+  ],
+  AMP: [
+    {label:'S3', velocity:null},{label:'S4', velocity:null},{label:'S5', velocity:null},
+    {label:'S6', velocity:0, total:50},
+    {label:'S7 ▶', velocity:55, total:100, active:true}
+  ],
+  MMP: [
+    {label:'S4', velocity:null},{label:'S5', velocity:null},{label:'S6', velocity:null},
+    {label:'S7', velocity:0, total:50},
+    {label:'S8 ▶', velocity:45, total:100, active:true}
+  ],
+  Labs: [
+    {label:'S62', velocity:null},{label:'S63', velocity:null},{label:'S64', velocity:null},
+    {label:'S65', velocity:6, total:44},
+    {label:'S66 ▶', velocity:25, total:43, active:true}
+  ],
+  AdFi: [
+    {label:'S2', velocity:null},{label:'S3', velocity:null},{label:'S4', velocity:null},
+    {label:'S5', velocity:0, total:50},
+    {label:'S6 ▶', velocity:1, total:100, active:true}
+  ]
+};
+
+// Last-sprint data per project (from sprintReviewData analysis)
+var lastSprintData = {
+  DSP:      {sprint:'Sprint 52', total:55,  released:8,  dc:17, ip:17, todo:7,  blocked:0,
+             contributors:[['Abhay Thakur',23],['Gaurav Handa',16],['Rekha S',5],['Pushpa',4],['Velraj M',4]]},
+  Exchange: {sprint:'Sprint 62', total:50,  released:10, dc:0,  ip:7,  todo:17, blocked:0,
+             contributors:[['Abhay Thakur',18],['Velraj M',8],['Gaurav Handa',7],['Rekha S',4],['Pushpa',3]]},
+  AMP:      {sprint:'Sprint 6',  total:50,  released:0,  dc:0,  ip:14, todo:36, blocked:0,
+             contributors:[['Sagar Jadhav',21],['Subham',13],['Gaurav Handa',2],['Priyanka B',2],['Yana',2]]},
+  MMP:      {sprint:'Sprint 7',  total:50,  released:0,  dc:0,  ip:32, todo:18, blocked:0,
+             contributors:[['Kannan',22],['Abhishek',17],['Gunjan',9],['Sudarshan',1]]},
+  Labs:     {sprint:'Sprint 65', total:44,  released:0,  dc:0,  ip:26, todo:12, blocked:0,
+             contributors:[['Sangamesh',20],['Vinay',8],['Sandesh',3],['VJ',2],['Daniel',2]]},
+  AdFi:     {sprint:'Sprint 5',  total:50,  released:0,  dc:0,  ip:9,  todo:41, blocked:0,
+             contributors:[['Vignesh',15],['Manasa',14],['Sujit',5],['Chaithra',4],['Anand',3]]}
+};
+
+var projColors = {
+  DSP:'#3b82f6', Exchange:'#10b981', AMP:'#8b5cf6',
+  MMP:'#f59e0b', Labs:'#06b6d4', AdFi:'#ec4899'
+};
+
+// chart instances for velocity tab
+var velTrendChart, velTeamLastChart, velTeamCurrChart, velIndivChart;
+
+function switchVelocityTab(id, btn){
+  document.querySelectorAll('#velocityTabs button').forEach(function(b){b.classList.remove('active')});
+  if(btn) btn.classList.add('active');
+  document.querySelectorAll('.vel-pane').forEach(function(p){p.style.display='none'});
+  var pane=document.getElementById('vel-pane-'+id);
+  if(pane) pane.style.display='block';
+  if(id==='project')    renderProjVelocity();
+  if(id==='trend')      renderSprintTrend(document.getElementById('trendProjFilter').value);
+  if(id==='team')       renderTeamVelocity();
+  if(id==='individual') renderIndividualVelocity(document.getElementById('indivProjFilter').value);
+}
+
 function renderVelocity(){
-  var activeP=projects.filter(function(p){return p.items.total>0});
-  var deliveryPct=activeP.map(function(p){return pct(p.items.done+p.items.dc,p.items.total)});
-  new Chart(document.getElementById('chartDelivery'),{type:'bar',data:{labels:activeP.map(function(p){return p.name}),datasets:[{label:'Delivery %',data:deliveryPct,backgroundColor:deliveryPct.map(function(v){return v>=50?'#10b981':v>=25?'#f59e0b':'#ef4444'})}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{max:100,ticks:{callback:function(v){return v+'%'}}}}}});
+  switchVelocityTab('project', document.querySelector('#velocityTabs button'));
+}
 
-  new Chart(document.getElementById('chartAllStatus'),{type:'polarArea',data:{labels:['To Do','In Progress','Dev Complete','QA','Done','Blocked'],datasets:[{data:[
-    projects.reduce(function(s,p){return s+p.items.todo},0),
-    projects.reduce(function(s,p){return s+p.items.ip},0),
-    projects.reduce(function(s,p){return s+p.items.dc},0),
-    projects.reduce(function(s,p){return s+p.items.qa},0),
-    projects.reduce(function(s,p){return s+p.items.done},0),
-    projects.reduce(function(s,p){return s+p.items.blocked},0)
-  ],backgroundColor:['rgba(156,163,175,0.6)','rgba(59,130,246,0.6)','rgba(6,182,212,0.6)','rgba(139,92,246,0.6)','rgba(16,185,129,0.6)','rgba(239,68,68,0.6)']}]},options:{responsive:true,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}}}}});
+// ── Project Velocity ──────────────────────────────────────
+function renderProjVelocity(){
+  var projMap = {
+    'DSP':'DSP','Exchange':'Exchange','DSA AI / AMP':'AMP',
+    'MMP':'MMP','Alkimi Labs':'Labs','ADFI':'AdFi'
+  };
+  var html='';
+  projects.filter(function(p){return p.items.total>0 && lastSprintData[projMap[p.name]||p.name]}).forEach(function(p){
+    var key=projMap[p.name]||p.name;
+    var last=lastSprintData[key];
+    var col=projColors[key]||'#64748b';
+    var currVel=p.items.done+p.items.dc;
+    var lastVel=last.released+last.dc;
+    var currPct=Math.round(currVel/p.items.total*100);
+    var delta=currVel-lastVel;
+    var trendCls=delta>0?'vel-trend-up':delta<0?'vel-trend-down':'vel-trend-flat';
+    var trendIcon=delta>0?'↑':delta<0?'↓':'→';
+    var gaugeCol=currPct>=50?'#10b981':currPct>=25?'#f59e0b':'#ef4444';
+    html+='<div class="vel-proj-card" style="border-top:3px solid '+col+'">'
+      +'<div class="vel-proj-name" style="color:'+col+'">'+p.name+'</div>'
+      +'<div class="vel-proj-sprint">'+p.sprint+' &nbsp;·&nbsp; Last: '+last.sprint+'</div>'
+      +'<div class="vel-stats">'
+        +'<div class="vel-stat"><div class="vel-stat-val" style="color:'+col+'">'+currVel+'</div><div class="vel-stat-lbl">Velocity Now</div></div>'
+        +'<div class="vel-stat"><div class="vel-stat-val">'+lastVel+'</div><div class="vel-stat-lbl">Last Sprint</div></div>'
+        +'<div class="vel-stat"><div class="vel-stat-val" style="color:'+gaugeCol+'">'+currPct+'%</div><div class="vel-stat-lbl">Completion</div></div>'
+      +'</div>'
+      +'<div class="vel-gauge-wrap">'
+        +'<div class="vel-gauge-label"><span>Progress</span><span>'+currVel+'/'+p.items.total+' items</span></div>'
+        +'<div class="vel-gauge"><div class="vel-gauge-fill" style="width:'+Math.min(currPct,100)+'%;background:'+gaugeCol+'"></div></div>'
+      +'</div>'
+      +'<div class="vel-trend '+trendCls+'">'+trendIcon+' '
+        +(delta===0?'Same as last sprint':(Math.abs(delta)+' items '+(delta>0?'more':'fewer')+' than last sprint'))
+      +'</div>'
+      +'<div class="vel-contributors"><strong style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.4px">Last sprint top contributors &nbsp;</strong>'
+        +last.contributors.slice(0,3).map(function(c){return '<span>'+c[0]+' ('+c[1]+')</span>'}).join('')
+      +'</div>'
+    +'</div>';
+  });
+  document.getElementById('velProjGrid').innerHTML=html;
+}
 
-  // Completion rate by project
-  new Chart(document.getElementById('chartVelocity'),{type:'bar',data:{labels:activeP.map(function(p){return p.name}),datasets:[
-    {label:'Done',data:activeP.map(function(p){return p.items.done}),backgroundColor:'#10b981'},
-    {label:'Dev Complete',data:activeP.map(function(p){return p.items.dc}),backgroundColor:'#06b6d4'},
-    {label:'In Progress',data:activeP.map(function(p){return p.items.ip}),backgroundColor:'#3b82f6'},
-    {label:'To Do',data:activeP.map(function(p){return p.items.todo}),backgroundColor:'#9ca3af'},
-    {label:'Blocked',data:activeP.map(function(p){return p.items.blocked}),backgroundColor:'#ef4444'}
-  ]},options:{responsive:true,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}}},scales:{x:{stacked:true},y:{stacked:true,title:{display:true,text:'Work Items'}}}}});
+// ── Sprint Trend ──────────────────────────────────────────
+function renderSprintTrend(projFilter){
+  projFilter=projFilter||'all';
+  var keys=projFilter==='all'?Object.keys(velocityHistory):[projFilter];
+
+  // Build unified label set (last 5 labels across selected projects)
+  // Use per-project labels since sprint numbers differ
+  if(velTrendChart) velTrendChart.destroy();
+
+  var datasets=[];
+  var commonLabels=['S-3','S-2','S-1','Last Sprint','Current ▶'];
+
+  keys.forEach(function(k){
+    var hist=velocityHistory[k];
+    if(!hist) return;
+    var col=projColors[k]||'#64748b';
+    var data=hist.map(function(h){return h.velocity});
+    var pointStyles=hist.map(function(h){return h.active?'rectRot':'circle'});
+    var pointRadius=hist.map(function(h){return h.active?7:4});
+    datasets.push({
+      label:k,
+      data:data,
+      borderColor:col,
+      backgroundColor:col+'22',
+      borderWidth:2,
+      pointBackgroundColor:hist.map(function(h){return h.velocity===null?'transparent':h.active?col:'#fff'}),
+      pointBorderColor:hist.map(function(h){return h.velocity===null?col+'44':col}),
+      pointRadius:hist.map(function(h){return h.velocity===null?5:h.active?8:5}),
+      pointStyle:pointStyles,
+      borderDash:hist.map(function(h,i){return null}),
+      spanGaps:false,
+      tension:0.3
+    });
+  });
+
+  velTrendChart=new Chart(document.getElementById('chartSprintTrend'),{
+    type:'line',
+    data:{labels:commonLabels, datasets:datasets},
+    options:{
+      responsive:true,
+      plugins:{
+        legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},
+        tooltip:{callbacks:{
+          label:function(ctx){
+            var k=ctx.dataset.label;
+            var idx=ctx.dataIndex;
+            var h=velocityHistory[k];
+            if(!h) return ctx.dataset.label+': '+ctx.parsed.y;
+            var pt=h[idx];
+            if(!pt||pt.velocity===null) return ctx.dataset.label+': (no data — '+pt.label+')';
+            return ctx.dataset.label+' '+pt.label+': '+pt.velocity+' items'+(pt.total?' / '+pt.total+' total':'');
+          }
+        }}
+      },
+      scales:{
+        y:{
+          beginAtZero:true,
+          title:{display:true,text:'Velocity (items completed)'},
+          ticks:{stepSize:10}
+        },
+        x:{title:{display:true,text:'Sprint'}}
+      }
+    }
+  });
+}
+
+// ── Team Velocity ─────────────────────────────────────────
+function renderTeamVelocity(){
+  // Aggregate last-sprint tickets by team from lastSprintData contributors
+  var teamTotals={};
+  Object.keys(lastSprintData).forEach(function(proj){
+    lastSprintData[proj].contributors.forEach(function(c){
+      var name=c[0]; var cnt=c[1];
+      // Map name to team
+      var team=null;
+      teamMembers.forEach(function(m){
+        if(m.name===name||m.name.split(' ')[0]===name||name.split(' ')[0]===m.name.split(' ')[0]) team=m.team;
+      });
+      if(!team) team='Other';
+      teamTotals[team]=(teamTotals[team]||0)+cnt;
+    });
+  });
+  var sortedTeams=Object.keys(teamTotals).sort(function(a,b){return teamTotals[b]-teamTotals[a]});
+  var colors=sortedTeams.map(function(t){return teamColors[t]||'#9ca3af'});
+
+  if(velTeamLastChart) velTeamLastChart.destroy();
+  velTeamLastChart=new Chart(document.getElementById('chartTeamVelLast'),{
+    type:'bar',
+    data:{
+      labels:sortedTeams,
+      datasets:[{label:'Tickets in Last Sprint',data:sortedTeams.map(function(t){return teamTotals[t]}),backgroundColor:colors}]
+    },
+    options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,title:{display:true,text:'Tickets Assigned'}}}}
+  });
+
+  // Current sprint: tickets per team from teamMembers jiraTickets
+  var currTeamTotals={};
+  teamMembers.forEach(function(m){
+    if(m.jiraTickets>0){
+      currTeamTotals[m.team]=(currTeamTotals[m.team]||0)+m.jiraTickets;
+    }
+  });
+  var currTeams=Object.keys(currTeamTotals).sort(function(a,b){return currTeamTotals[b]-currTeamTotals[a]});
+
+  if(velTeamCurrChart) velTeamCurrChart.destroy();
+  velTeamCurrChart=new Chart(document.getElementById('chartTeamVelCurr'),{
+    type:'bar',
+    data:{
+      labels:currTeams,
+      datasets:[{label:'Open Jira Tickets',data:currTeams.map(function(t){return currTeamTotals[t]}),backgroundColor:currTeams.map(function(t){return teamColors[t]||'#9ca3af'})}]
+    },
+    options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,title:{display:true,text:'Open Tickets'}}}}
+  });
+}
+
+// ── Individual Velocity ───────────────────────────────────
+function renderIndividualVelocity(projFilter){
+  projFilter=projFilter||'all';
+  var personTotals={};
+  var keys=projFilter==='all'?Object.keys(lastSprintData):[projFilter];
+  keys.forEach(function(k){
+    var d=lastSprintData[k];
+    if(!d) return;
+    d.contributors.forEach(function(c){
+      var name=c[0]; var cnt=c[1];
+      personTotals[name]=(personTotals[name]||0)+cnt;
+    });
+  });
+
+  var sorted=Object.keys(personTotals).sort(function(a,b){return personTotals[b]-personTotals[a]});
+  var getTeamColor=function(name){
+    var m=teamMembers.find(function(m){
+      return m.name===name||m.name.split(' ')[0]===name||name.split(' ')[0]===m.name.split(' ')[0];
+    });
+    return m?teamColors[m.team]||'#9ca3af':'#9ca3af';
+  };
+
+  if(velIndivChart) velIndivChart.destroy();
+  velIndivChart=new Chart(document.getElementById('chartIndivVel'),{
+    type:'bar',
+    data:{
+      labels:sorted,
+      datasets:[{
+        label:'Tickets — Last Sprint',
+        data:sorted.map(function(n){return personTotals[n]}),
+        backgroundColor:sorted.map(function(n){return getTeamColor(n)})
+      }]
+    },
+    options:{
+      indexAxis:'y',responsive:true,
+      plugins:{legend:{display:false}},
+      scales:{x:{beginAtZero:true,title:{display:true,text:'Tickets Assigned'}}}
+    }
+  });
+
+  // Table
+  var tableHtml='<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:10px">Top Contributors</div>';
+  sorted.forEach(function(name,i){
+    var col=getTeamColor(name);
+    var m=teamMembers.find(function(m){return m.name===name||m.name.split(' ')[0]===name||name.split(' ')[0]===m.name.split(' ')[0]});
+    var team=m?m.team:'';
+    tableHtml+='<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)">'
+      +'<div style="width:22px;height:22px;border-radius:50%;background:'+col+';display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">'+(i+1)+'</div>'
+      +'<div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+name+'</div>'
+      +(team?'<div style="font-size:10px;color:'+col+'">'+team+'</div>':'')
+      +'</div>'
+      +'<div style="font-size:14px;font-weight:700;color:'+col+'">'+personTotals[name]+'</div>'
+    +'</div>';
+  });
+  document.getElementById('velIndivTable').innerHTML=tableHtml;
 }
 
 // ============================
@@ -3169,145 +3727,335 @@ function renderBandwidth(teamF,loadF){
     '</div>';
   }).join('');
 
-  if(chartCapInst) chartCapInst.destroy();
-  var avail=teamMembers.filter(function(m){return getLoad(m).cls==='available'}).length;
-  var balanced=teamMembers.filter(function(m){return getLoad(m).cls==='balanced'}).length;
-  var over=teamMembers.filter(function(m){return getLoad(m).cls==='overloaded'}).length;
-  chartCapInst=new Chart(document.getElementById('chartCapacity'),{type:'doughnut',data:{labels:['Available ('+avail+')','Balanced ('+balanced+')','Overloaded ('+over+')'],datasets:[{data:[avail,balanced,over],backgroundColor:['#10b981','#f59e0b','#ef4444']}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
 }
-document.getElementById('bwTeamFilter').addEventListener('change',function(){renderBandwidth(document.getElementById('bwTeamFilter').value,document.getElementById('bwLoadFilter').value)});
-document.getElementById('bwLoadFilter').addEventListener('change',function(){renderBandwidth(document.getElementById('bwTeamFilter').value,document.getElementById('bwLoadFilter').value)});
+
+// ============================
+// PROJECT RESOURCE MAPPING
+// ============================
+// Fixed canonical project list (Agentic Lite & Pro tracked in Linear, assignments stored manually)
+var RM_PROJECTS = [
+  {key:"DSP",          label:"DSP",          short:"DSP"},
+  {key:"Exchange",     label:"Exchange (E2)", short:"E2"},
+  {key:"Alkimi Labs",  label:"Alkimi Labs",   short:"Labs"},
+  {key:"AdFi",         label:"AdFi",          short:"AdFi"},
+  {key:"MMP",          label:"MMP",           short:"MMP"},
+  {key:"AMP",          label:"AMP / MBP",     short:"AMP"},
+  {key:"Agentic Lite", label:"Agentic Lite ✦",short:"Ag.Lite"},
+  {key:"Agentic Pro",  label:"Agentic Pro ✦", short:"Ag.Pro"},
+  {key:"Trustnet",     label:"Trustnet",      short:"TN"}
+];
+// ✦ = tracked in Linear, not Jira
+
+function renderResourceMap(teamF){
+  teamF=teamF||'all';
+  var members=teamF==='all'?teamMembers:teamMembers.filter(function(m){return m.team===teamF});
+
+  // Group members by team, preserving teamColors order
+  var teamOrder=Object.keys(teamColors);
+  var grouped={};
+  members.forEach(function(m){
+    if(!grouped[m.team]) grouped[m.team]=[];
+    grouped[m.team].push(m);
+  });
+
+  var thead='<thead><tr>'
+    +'<th class="col-name">Member</th>'
+    +RM_PROJECTS.map(function(p){
+      var isLinear=p.key==='Agentic Lite'||p.key==='Agentic Pro';
+      return '<th title="'+p.label+'"'+(isLinear?' style="color:var(--primary)"':'')+'>'+p.short+'</th>';
+    }).join('')
+    +'<th title="Total projects assigned">Total</th>'
+    +'</tr></thead>';
+
+  var tbody='<tbody>';
+  var anyRows=false;
+  teamOrder.forEach(function(t){
+    if(!grouped[t] || !grouped[t].length) return;
+    anyRows=true;
+    var color=teamColors[t];
+    tbody+='<tr class="rm-group-header"><td colspan="'+(RM_PROJECTS.length+2)+'" style="color:'+color+'">'+t+' Team</td></tr>';
+    grouped[t].forEach(function(m){
+      var assigned=0;
+      tbody+='<tr>';
+      tbody+='<td class="row-name" style="border-left:3px solid '+color+'">';
+      if(m.lead) tbody+='👑 ';
+      tbody+=m.name;
+      if(m.type) tbody+=' <span style="font-size:10px;color:var(--muted)">('+m.type+')</span>';
+      tbody+='</td>';
+      RM_PROJECTS.forEach(function(p){
+        var has=m.projects.indexOf(p.key)>-1;
+        if(has) assigned++;
+        tbody+='<td>'+(has?'<span class="rm-dot" style="background:'+color+'"></span>':'<span class="rm-empty"></span>')+'</td>';
+      });
+      var col=assigned>=7?'var(--red)':assigned>=4?'var(--orange)':assigned>=1?'var(--green)':'var(--muted)';
+      tbody+='<td style="font-weight:700;font-size:13px;color:'+col+'">'+assigned+'</td>';
+      tbody+='</tr>';
+    });
+  });
+  tbody+='</tbody>';
+
+  if(!anyRows){
+    document.getElementById('rmTable').innerHTML='<tr><td colspan="'+(RM_PROJECTS.length+2)+'" style="padding:24px;color:var(--muted);text-align:center">No assignments found.</td></tr>';
+    return;
+  }
+
+  // Footer: headcount per project
+  var tfoot='<tfoot><tr><td class="row-name" style="font-weight:700;background:var(--bg)">👥 Headcount</td>';
+  RM_PROJECTS.forEach(function(p){
+    var cnt=members.filter(function(m){return m.projects.indexOf(p.key)>-1}).length;
+    var col=cnt>=8?'var(--red)':cnt>=4?'var(--orange)':'var(--text)';
+    tfoot+='<td style="font-weight:700;font-size:12px;background:var(--bg);color:'+col+'">'+cnt+'</td>';
+  });
+  tfoot+='<td style="background:var(--bg)"></td></tr></tfoot>';
+
+  document.getElementById('rmTable').innerHTML=thead+tbody+tfoot;
+}
+
+// ============================
+// TEAM STRUCTURE
+// ============================
+function renderTeamStructure(){
+  var teamOrder=Object.keys(teamColors);
+  var html='';
+
+  teamOrder.forEach(function(t){
+    var members=teamMembers.filter(function(m){return m.team===t});
+    if(!members.length) return;
+    var color=teamColors[t];
+    var lead=members.find(function(m){return m.lead});
+    var rest=members.filter(function(m){return !m.lead}).sort(function(a,b){return a.name.localeCompare(b.name)});
+    var ordered=lead?[lead].concat(rest):rest;
+
+    html+='<div class="ts-card">';
+    html+='<div class="ts-card-header" style="background:'+color+'">';
+    html+=t+' Team';
+    html+='<span class="ts-count">'+members.length+'</span>';
+    html+='</div>';
+
+    ordered.forEach(function(m){
+      var initials=m.name.replace(/\s*\(.*?\)/g,'').trim().split(' ').map(function(w){return w[0]||''}).join('').toUpperCase().slice(0,2);
+      var load=getLoad(m);
+      html+='<div class="ts-member">';
+      html+='<div class="ts-avatar" style="background:'+color+'">'+initials+'</div>';
+      html+='<div class="ts-member-info">';
+      html+='<div class="ts-member-name">'+m.name;
+      if(m.lead) html+=' <span class="ts-badge lead">👑 Lead</span>';
+      if(m.type==='I') html+=' <span class="ts-badge internal">Internal</span>';
+      if(m.type==='E') html+=' <span class="ts-badge external">External</span>';
+      html+='</div>';
+      if(!m.type){
+        html+='<div class="ts-member-meta"><span class="indicator '+load.cls+'"></span>'+load.label;
+        if(m.jiraTickets>0) html+=' · '+m.jiraTickets+' tickets';
+        html+='</div>';
+      }
+      html+='</div></div>';
+    });
+    html+='</div>';
+  });
+
+  document.getElementById('tsGrid').innerHTML=html;
+}
+
+// ============================
+// ORG CHART
+// ============================
+function renderOrgChart(){
+  var teamOrder=Object.keys(teamColors);
+
+  // ── Leadership tier ──────────────────────────────────────
+  var leadership=[
+    {title:"CEO",       name:"Ben"},
+    {title:"CFO",       name:"Chorley"},
+    {title:"CTO",       name:"Chandru"},
+    {title:"India CEO", name:"Naresh"}
+  ];
+  var leaderHTML='<div style="margin-bottom:24px">'
+    +'<div style="font-size:11px;font-weight:700;letter-spacing:.8px;color:var(--muted);text-transform:uppercase;margin-bottom:12px">Leadership</div>'
+    +'<div style="display:flex;gap:12px;flex-wrap:wrap">';
+  leadership.forEach(function(l){
+    leaderHTML+='<div style="background:#1e293b;border-radius:10px;padding:12px 22px;text-align:center;min-width:110px;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.18)">'
+      +'<div style="font-size:10px;font-weight:600;letter-spacing:.6px;opacity:.65;margin-bottom:5px;text-transform:uppercase">'+l.title+'</div>'
+      +'<div style="font-size:15px;font-weight:700">'+l.name+'</div>'
+      +'</div>';
+  });
+  leaderHTML+='</div>'
+    +'<div style="margin-top:18px;border-bottom:2px dashed var(--border)"></div>'
+    +'<div style="font-size:11px;font-weight:700;letter-spacing:.8px;color:var(--muted);text-transform:uppercase;margin-top:16px;margin-bottom:12px">Teams</div>'
+    +'</div>';
+
+  // Write leadership into its dedicated wrapper (avoids duplication on re-render)
+  var leaderWrap=document.getElementById('ocLeadership');
+  if(leaderWrap) leaderWrap.innerHTML=leaderHTML;
+
+  var html='';
+
+  teamOrder.forEach(function(t){
+    var members=teamMembers.filter(function(m){return m.team===t});
+    if(!members.length) return;
+    var color=teamColors[t];
+    var lead=members.find(function(m){return m.lead});
+    var rest=members.filter(function(m){return !m.lead}).sort(function(a,b){return a.name.localeCompare(b.name)});
+
+    html+='<div class="oc-col">';
+    // Team badge
+    html+='<div class="oc-team-badge" style="background:'+color+'">'+t+'</div>';
+    // Spine connector to lead
+    html+='<div class="oc-spine" style="background:'+color+'"></div>';
+
+    if(lead){
+      html+='<div class="oc-lead-box" style="border-color:'+color+';color:'+color+'">';
+      html+='<div class="oc-name">👑 '+lead.name+'</div>';
+      html+='<div class="oc-tag">Lead</div>';
+      html+='</div>';
+    }
+
+    if(rest.length){
+      html+='<div class="oc-spine" style="background:'+color+'"></div>';
+      html+='<div class="oc-members">';
+      rest.forEach(function(m){
+        html+='<div class="oc-member-box">';
+        html+='<div class="oc-name">'+m.name;
+        if(m.type) html+=' <span style="font-size:9px;font-weight:700;color:var(--muted)">('+m.type+')</span>';
+        html+='</div>';
+        if(m.jiraTickets>0){
+          var load=getLoad(m);
+          html+='<div class="oc-tag"><span class="indicator '+load.cls+'" style="width:7px;height:7px;margin-right:3px"></span>'+m.jiraTickets+' tkts</div>';
+        }
+        html+='</div>';
+      });
+      html+='</div>';
+    }
+
+    html+='</div>';
+  });
+
+  document.getElementById('ocGrid').innerHTML=html;
+}
 
 // ============================
 // RELEASES
 // ============================
 const releaseData = {
   DSP:[
-    {name:"APR 2026",id:"10896",released:false,releaseDate:"2026-04-14",total:9,
-     breakdown:{todo:0,ip:0,dc:0,qa:1,rtr:8,completed:0,released:0,blocked:0},
+    {name:"APR 2026",id:"10896",released:true,releaseDate:"2026-04-14",total:13,
+     breakdown:{todo:0,ip:0,dc:0,qa:0,rtr:0,completed:0,released:13,blocked:0},
      url:"https://alkimi.atlassian.net/projects/DSP/versions/10896/tab/release-report-all-issues",
      issues:[
-       {key:"DSP-1939",summary:"Unauthorized Line Item Creation via API for Another MAA User",status:"Ready to release"},
-       {key:"DSP-1938",summary:"Create Line Item API returns 500 when missing mediaAgencyId/advertiserId",status:"Ready to release"},
-       {key:"DSP-1934",summary:"[FE] Edit Single Line Item: Pacing dropdown defaulting to Even",status:"Ready to release"},
-       {key:"DSP-1927",summary:"Bywho column not displaying proper data in modification history",status:"Ready to release"},
-       {key:"DSP-1907",summary:"[BE 1775] Create New Endpoint for Updating Single LineItem",status:"Ready to release"},
-       {key:"DSP-1824",summary:"BE API: Filter Line Items in Campaign Details by Status",status:"Ready to release"},
-       {key:"DSP-1793",summary:"Remove Daily Budget & Line Items Budget columns from screens",status:"Ready to release"},
-       {key:"DSP-1775",summary:"When editing one Line Item it should only show that Line Item",status:"System Testing"},
-       {key:"DSP-1774",summary:"Line items in Campaign Details should display based on status",status:"Ready to release"}
+       {key:"DSP-1939",summary:"Unauthorized Line Item Creation via API for Another MAA User",status:"Released"},
+       {key:"DSP-1938",summary:"Create Line Item API returns 500 when missing mediaAgencyId/advertiserId",status:"Released"},
+       {key:"DSP-1934",summary:"[FE] Edit Single Line Item: Pacing dropdown defaulting to Even",status:"Released"},
+       {key:"DSP-1927",summary:"Bywho column not displaying proper data in modification history",status:"Released"},
+       {key:"DSP-1907",summary:"[BE 1775] Create New Endpoint for Updating Single LineItem",status:"Released"},
+       {key:"DSP-1900",summary:"Getting error while uploading .xlsx format file for Third-party display",status:"Released"},
+       {key:"DSP-1899",summary:"Third-Party Script HTML Tag not uploaded or processed correctly",status:"Released"},
+       {key:"DSP-1896",summary:"File Size Validation Inconsistency – Bulk Creative Upload Allows Files >10MB",status:"Released"},
+       {key:"DSP-1868",summary:"DSP Footer still showing year as 2025, needed to be changed to 2026",status:"Released"},
+       {key:"DSP-1824",summary:"BE API: Filter Line Items in Campaign Details by Status",status:"Released"},
+       {key:"DSP-1793",summary:"Remove Daily Budget & Line Items Budget columns from screens",status:"Released"},
+       {key:"DSP-1775",summary:"When editing one Line Item it should only show that Line Item",status:"Released"},
+       {key:"DSP-1774",summary:"Line items in Campaign Details should display based on status",status:"Released"}
      ]},
-    {name:"JAN 2026",id:"10663",released:true,releaseDate:"2026-02-09",total:41,
-     breakdown:{todo:0,ip:0,dc:0,qa:0,rtr:0,completed:0,released:41,blocked:0},
+    {name:"JAN 2026",id:"10663",released:true,releaseDate:"2026-02-09",total:37,
+     breakdown:{todo:0,ip:0,dc:0,qa:0,rtr:0,completed:0,released:37,blocked:0},
      url:"https://alkimi.atlassian.net/projects/DSP/versions/10663/tab/release-report-all-issues",
      issues:[
-       {key:"DSP-1895",summary:"Fix bid response timeout handling",status:"Released"},
-       {key:"DSP-1893",summary:"Update reporting dashboard filters",status:"Released"},
-       {key:"DSP-1891",summary:"Campaign duplication feature",status:"Released"},
-       {key:"DSP-1889",summary:"Bulk creative upload support",status:"Released"},
-       {key:"DSP-1887",summary:"API rate limiting improvements",status:"Released"},
-       {key:"DSP-1885",summary:"Real-time budget alerts",status:"Released"},
-       {key:"DSP-1883",summary:"Conversion tracking pixel updates",status:"Released"},
-       {key:"DSP-1881",summary:"Multi-currency support for billing",status:"Released"},
-       {key:"DSP-1879",summary:"Audience segment targeting v2",status:"Released"},
-       {key:"DSP-1877",summary:"Creative preview enhancements",status:"Released"},
-       {key:"DSP-1875",summary:"Advertiser onboarding flow redesign",status:"Released"},
-       {key:"DSP-1873",summary:"Deal ID management improvements",status:"Released"},
-       {key:"DSP-1871",summary:"Supply path optimization logic",status:"Released"},
-       {key:"DSP-1869",summary:"Reporting export to CSV/Excel",status:"Released"},
-       {key:"DSP-1867",summary:"Campaign cloning across accounts",status:"Released"},
-       {key:"DSP-1865",summary:"Bid floor optimization",status:"Released"},
-       {key:"DSP-1863",summary:"Inventory quality scoring",status:"Released"},
-       {key:"DSP-1861",summary:"Ad format support - native ads",status:"Released"},
-       {key:"DSP-1859",summary:"User role permissions update",status:"Released"},
-       {key:"DSP-1857",summary:"Dashboard widget customization",status:"Released"},
-       {key:"DSP-1855",summary:"Automated bid strategy rules",status:"Released"},
-       {key:"DSP-1853",summary:"Third-party data integration",status:"Released"},
-       {key:"DSP-1851",summary:"Creative compliance checker",status:"Released"},
-       {key:"DSP-1849",summary:"Campaign performance alerts",status:"Released"},
-       {key:"DSP-1847",summary:"Geo-targeting radius improvements",status:"Released"},
-       {key:"DSP-1845",summary:"Video ad VAST 4.2 support",status:"Released"},
-       {key:"DSP-1843",summary:"Brand lift measurement integration",status:"Released"},
-       {key:"DSP-1841",summary:"Viewability tracking enhancements",status:"Released"},
-       {key:"DSP-1839",summary:"Contextual targeting categories update",status:"Released"},
-       {key:"DSP-1837",summary:"Cross-device attribution model",status:"Released"},
-       {key:"DSP-1835",summary:"Retargeting pixel management",status:"Released"},
-       {key:"DSP-1834",summary:"SSP connection health monitoring",status:"Released"},
-       {key:"DSP-1833",summary:"Day-parting scheduling feature",status:"Released"},
-       {key:"DSP-1832",summary:"Whitelist/Blacklist domain management",status:"Released"}
+       {key:"DSP-1895",summary:"HTML5 Flow: File upload popup incorrectly shows .html format",status:"Released"},
+       {key:"DSP-1893",summary:"Remove .html text from Upload Creatives popup for HTML5 option",status:"Released"},
+       {key:"DSP-1892",summary:"User allowed to select past Start & End dates on Bulk Creatives Listing screen",status:"Released"},
+       {key:"DSP-1890",summary:"Bulk Upload: Third-Party HTML Tag Not Uploaded Properly for HTML Tag",status:"Released"},
+       {key:"DSP-1889",summary:"Validation, field consistency, and UI issues in Bulk upload Creative flow",status:"Released"},
+       {key:"DSP-1888",summary:"File type validation missing for Third Party Tag and ad type options",status:"Released"},
+       {key:"DSP-1887",summary:"Create/Edit/Bulk Upload APIs accept ZIP files when adType is FILE",status:"Released"},
+       {key:"DSP-1886",summary:"Bulk Creative | Backend allows ZIP + PNG for FILE ad type but frontend throws error",status:"Released"},
+       {key:"DSP-1885",summary:"Missing Clear All button in Line Item and Campaign Domain section",status:"Released"},
+       {key:"DSP-1884",summary:"Deleted and edited domain list domains still appear on Domain Edit page",status:"Released"},
+       {key:"DSP-1882",summary:"Bulk Creative API – Third-Party HTML Tag Upload Limited to 50 Creatives",status:"Released"},
+       {key:"DSP-1881",summary:"CSV upload fails for domains with subdomains in Domain List section",status:"Released"},
+       {key:"DSP-1880",summary:"Bulk Creative UI Updates as per Figma",status:"Released"},
+       {key:"DSP-1875",summary:"+ Add File button in Bulk Creatives should directly open file selector",status:"Released"},
+       {key:"DSP-1873",summary:"Cancel and Add File buttons should not be visible in Bulk Creatives upload flow",status:"Released"},
+       {key:"DSP-1870",summary:"Create Creative and Bulk creatives can be created with past Start Date",status:"Released"},
+       {key:"DSP-1869",summary:"Create Creative and Bulk Upload created successfully even when Start Date is missing",status:"Released"},
+       {key:"DSP-1867",summary:"Bulk Creative Upload – Unclear technical error shown when Start/End Date issues",status:"Released"},
+       {key:"DSP-1866",summary:"Uploading creatives popup missing Cancel button (UI mismatch with Figma)",status:"Released"},
+       {key:"DSP-1863",summary:"HTML5 & Images – ZIP upload fails with 'Please upload valid image files'",status:"Released"},
+       {key:"DSP-1862",summary:"Publisher Performance Report generation fails due to Decimal overflow",status:"Released"},
+       {key:"DSP-1859",summary:"UI error when entering high Advertiser CPM value after backend decimal change",status:"Released"},
+       {key:"DSP-1858",summary:"Remove Budget Field from all Modification history screens",status:"Released"},
+       {key:"DSP-1857",summary:"Bulk Creative - UI Does not match Figma design",status:"Released"},
+       {key:"DSP-1856",summary:"Remove Modification History option from the Kebab Menu",status:"Released"},
+       {key:"DSP-1855",summary:"For Inactive Creatives the Modification history is appearing with |",status:"Released"},
+       {key:"DSP-1854",summary:"Modification history option being provided differently on Campaign details screen",status:"Released"},
+       {key:"DSP-1853",summary:"Modification history option not appearing against Completed Statuses",status:"Released"},
+       {key:"DSP-1850",summary:"Clicking Download CSV CTA on Modification History screen not working properly",status:"Released"},
+       {key:"DSP-1849",summary:"Once user reaches Modification History screens there is no option to go back",status:"Released"},
+       {key:"DSP-1848",summary:"Domain dropdown displayed under Excluded Domain instead of Domain section",status:"Released"},
+       {key:"DSP-1844",summary:"URL/third-party tag not allowing to add in the creative section",status:"Released"},
+       {key:"DSP-1843",summary:"Jan 2026 Production Bugs",status:"Released"},
+       {key:"DSP-1842",summary:"Jan 2026 Regression Bugs",status:"Released"},
+       {key:"DSP-1840",summary:"Add Modification history option on Creative Details screen too",status:"Released"},
+       {key:"DSP-1839",summary:"Modification History shows combined Campaign and Line Item changes",status:"Released"},
+       {key:"DSP-1838",summary:"Naming expand needed on Modification History screen for Field Column",status:"Released"}
      ]}
   ],
   Exchange:[
-    {name:"APRIL PLANNED RELEASE 2026",id:"10964",released:false,releaseDate:"2026-04-14",total:21,
-     breakdown:{todo:0,ip:0,dc:0,qa:0,rtr:20,completed:1,released:0,blocked:0},
+    {name:"APRIL PLANNED RELEASE 2026",id:"10964",released:false,releaseDate:"2026-05-06",total:40,
+     breakdown:{todo:0,ip:0,dc:0,qa:1,rtr:38,completed:1,released:0,blocked:0},
      url:"https://alkimi.atlassian.net/projects/E2/versions/10964/tab/release-report-all-issues",
      issues:[
+       {key:"E2-1986",summary:"Change Log History",status:"Ready to release"},
+       {key:"E2-1374",summary:"Issues with value being sent in request when min. viewability threshold set",status:"Ready to release"},
+       {key:"E2-1350",summary:"[BE] Viewability matrix captured for initial requests where viewability threshold is absent",status:"Ready to release"},
+       {key:"E2-1337",summary:"DSP onboarding should support multiple endpoints — One for each cluster",status:"System Testing"},
+       {key:"E2-1335",summary:"[FE] Make Columns required for creating scheduled reports by Publisher and DSP",status:"Ready to release"},
+       {key:"E2-1334",summary:"DSP Editing screen: Remove Icon against allowedDomains.csv or allowedMobileAppIds.csv",status:"Ready to release"},
+       {key:"E2-1333",summary:"Publisher API throwing 400 Error when admin logs into account",status:"Ready to release"},
+       {key:"E2-1330",summary:"[BE] Old value stored for Bid Floor Price & Alkimi Exchange Fee fields not matching",status:"Ready to release"},
        {key:"E2-1324",summary:"[FE] Field Name on Change Log History popup should show UI field name",status:"Ready to release"},
        {key:"E2-1322",summary:"[BE] Repeated dsp-view API calls causing duplicate counter increments",status:"Ready to release"},
        {key:"E2-1321",summary:"[Prod] View Event URL not injected to file upload videos",status:"Ready to release"},
        {key:"E2-1320",summary:"[BE] Caching issue – Viewability matrix showing previous cached value",status:"Completed"},
+       {key:"E2-1319",summary:"[BE] Viewability Matrix: Athena Log Values Inconsistent with Clickhouse Data",status:"Ready to release"},
+       {key:"E2-1318",summary:"[Known Issue] BE: Athena Logs showing requests failing with partner not found",status:"Ready to release"},
        {key:"E2-1271",summary:"[Change Log History popup] Sort by tooltips issue",status:"Ready to release"},
        {key:"E2-1270",summary:"[BE] Field Name/Old/New Value not populated on Deal Change Log",status:"Ready to release"},
+       {key:"E2-1269",summary:"Deal Edit Screen: Allowed Domains, Allowed Mobile App IDs & Environment fields",status:"Ready to release"},
        {key:"E2-1266",summary:"[BE] Validation issues with Generate Changelog Report API",status:"Ready to release"},
        {key:"E2-1265",summary:"[Bug] CSV Date and Time format mismatch across Office apps",status:"Ready to release"},
        {key:"E2-1264",summary:"[Change Log History popup] Old/New value UI appearing cutoff",status:"Ready to release"},
+       {key:"E2-1263",summary:"DSP Edit Screen: Upload and Classification-based targeting cannot be used together",status:"Ready to release"},
        {key:"E2-1262",summary:"[BE] Field Name/Old/New Value not populated on DSP Change Log",status:"Ready to release"},
        {key:"E2-1259",summary:"Publisher Report: eCPM value not matching due to double rounding",status:"Ready to release"},
        {key:"E2-1258",summary:"[BE] Field Name/Old/New Value not populated on Publisher Change Log",status:"Ready to release"},
        {key:"E2-1257",summary:"[Change Log History] Records per page should be 10 not 5",status:"Ready to release"},
        {key:"E2-1256",summary:"[Change Log History] Cannot select current date as Start Date",status:"Ready to release"},
        {key:"E2-1253",summary:"[Change Log History] Empty state error messaging not per PRD",status:"Ready to release"},
+       {key:"E2-1244",summary:"Search issue in Classifications dropdown field on Added Domains screen",status:"Ready to release"},
        {key:"E2-1229",summary:"Shared Imp objects across DSP bid requests causes data corruption",status:"Ready to release"},
+       {key:"E2-1227",summary:"Publisher/DSP: Bulk invalid domains in uploaded file causes all invalid entries",status:"Ready to release"},
        {key:"E2-1226",summary:"Scheduled Reports using system timezone instead of user timezone",status:"Ready to release"},
        {key:"E2-1218",summary:"Deal-related data not appearing when grouped by Deal in reports",status:"Ready to release"},
+       {key:"E2-1207",summary:"Fetch dynamic Columns and GroupBy under Reports",status:"Ready to release"},
+       {key:"E2-1203",summary:"Viewability in bid request",status:"Ready to release"},
+       {key:"E2-1126",summary:"[BE] API to fetch list of Columns and GroupBy for Reports by Publisher and DSPs",status:"Ready to release"},
+       {key:"E2-1123",summary:"[FE] Pick dynamic columns for reports from BE instead of hardcoding",status:"Ready to release"},
        {key:"E2-1078",summary:"DSP Reports: Total against eCPM Column appearing with $ sign",status:"Ready to release"},
+       {key:"E2-1071",summary:"[FE] No proper error message when user clicks Download App-Ads.txt",status:"Ready to release"},
        {key:"E2-1044",summary:"[FE] New screen for changelog in exchange",status:"Ready to release"},
        {key:"E2-1043",summary:"[BE] Add endpoint to support change log history",status:"Ready to release"}
      ]},
     {name:"MARCH PRIORITY 2026",id:"10895",released:true,releaseDate:"2026-03-17",total:25,
      breakdown:{todo:0,ip:0,dc:0,qa:0,rtr:0,completed:0,released:25,blocked:0},
      url:"https://alkimi.atlassian.net/projects/E2/versions/10895/tab/release-report-all-issues",
-     issues:[
-       {key:"E2-1260",summary:"OpenRTB 2.6 compliance updates",status:"Released"},
-       {key:"E2-1257",summary:"Bid response compression",status:"Released"},
-       {key:"E2-1254",summary:"Exchange monitoring alerts",status:"Released"},
-       {key:"E2-1251",summary:"Auction log aggregation",status:"Released"},
-       {key:"E2-1248",summary:"Demand-side integration testing",status:"Released"},
-       {key:"E2-1245",summary:"Supply chain validation",status:"Released"},
-       {key:"E2-1242",summary:"Rate limiting per seat",status:"Released"},
-       {key:"E2-1239",summary:"Creative scanning service",status:"Released"},
-       {key:"E2-1236",summary:"Blocked advertiser management",status:"Released"},
-       {key:"E2-1233",summary:"Revenue reconciliation tools",status:"Released"},
-       {key:"E2-1230",summary:"Multi-format ad support",status:"Released"},
-       {key:"E2-1227",summary:"Exchange API documentation",status:"Released"},
-       {key:"E2-1224",summary:"Publisher floor rules engine",status:"Released"},
-       {key:"E2-1221",summary:"Traffic quality scoring",status:"Released"},
-       {key:"E2-1218",summary:"Auction win notification service",status:"Released"},
-       {key:"E2-1215",summary:"Buyer spend caps",status:"Released"},
-       {key:"E2-1212",summary:"Impression counting fix",status:"Released"},
-       {key:"E2-1209",summary:"Ad pod support for CTV",status:"Released"},
-       {key:"E2-1206",summary:"Seller.json auto-update",status:"Released"},
-       {key:"E2-1203",summary:"Demand path optimization",status:"Released"},
-       {key:"E2-1200",summary:"Private marketplace deals v2",status:"Released"},
-       {key:"E2-1197",summary:"Exchange error handling refactor",status:"Released"},
-       {key:"E2-1194",summary:"Bid floor currency conversion",status:"Released"},
-       {key:"E2-1191",summary:"Consent string propagation",status:"Released"},
-       {key:"E2-1188",summary:"Server-side bidding module",status:"Released"}
-     ]},
+     issues:[]},
     {name:"Priority Belt Feb",id:"10763",released:true,releaseDate:"2026-02-26",total:5,
      breakdown:{todo:0,ip:0,dc:0,qa:0,rtr:0,completed:1,released:4,blocked:0},
      url:"https://alkimi.atlassian.net/projects/E2/versions/10763/tab/release-report-all-issues",
-     issues:[
-       {key:"E2-1185",summary:"Priority bid routing logic",status:"Released"},
-       {key:"E2-1182",summary:"Exchange SLA monitoring",status:"Released"},
-       {key:"E2-1179",summary:"Auction debug mode",status:"Released"},
-       {key:"E2-1176",summary:"Timeout handler improvements",status:"Completed"},
-       {key:"E2-1173",summary:"Bid validation pipeline",status:"Released"}
-     ]}
+     issues:[]}
   ],
   "Alkimi Labs":[
-    {name:"LABS V4.0 - APR 2026",id:"10796",released:true,releaseDate:"2026-04-02",total:100,
-     breakdown:{todo:0,ip:0,dc:1,qa:0,rtr:0,completed:0,released:99,blocked:0},
+    {name:"LABS V4.0 - APR 2026",id:"10796",released:false,releaseDate:"2026-04-02",total:50,
+     breakdown:{todo:0,ip:0,dc:0,qa:0,rtr:1,completed:0,released:49,blocked:0},
      url:"https://alkimi.atlassian.net/projects/ALKIMILABS/versions/10796/tab/release-report-all-issues",
      issues:[
        {key:"ALKIMILABS-6136",summary:"Incorrect capitalization of exchange names in UI",status:"Released"},
@@ -3319,12 +4067,47 @@ const releaseData = {
        {key:"ALKIMILABS-6127",summary:"Wallet Sign-In Not Triggered from Support Page (Labs Flow)",status:"Released"},
        {key:"ALKIMILABS-6126",summary:"Rewards Claimable Till displaying incorrect value on UI",status:"Released"},
        {key:"ALKIMILABS-6125",summary:"Incorrect Pool Duration displayed on Staking Pool page",status:"Released"},
+       {key:"ALKIMILABS-6124",summary:"Wallet module not opening from sidebar profile Link Wallet button",status:"Released"},
        {key:"ALKIMILABS-6122",summary:"Close icon not working on Alkimi Explorer metrics selection",status:"Released"},
-       {key:"ALKIMILABS-6121",summary:"Claimed rewards not updating immediately after claim",status:"Released"},
-       {key:"ALKIMILABS-6120",summary:"Labs Landing Page – Missing videos & XP Portal Coming Soon",status:"Released"},
-       {key:"ALKIMILABS-6119",summary:"Staking not working on Mac – No ALKIMI tokens found error",status:"Released"},
-       {key:"ALKIMILABS-6093",summary:"No Withdrawal/Transfer Option for Google Sign-In wallets",status:"Dev Completed"},
-       {key:"ALKIMILABS-6092",summary:"Users Without NFT able to raise Invalidator Refund ticket",status:"Released"}
+       {key:"ALKIMILABS-6121",summary:"Claimed rewards not updating immediately after claim on staking page",status:"Released"},
+       {key:"ALKIMILABS-6120",summary:"Labs Landing Page – Missing videos & XP Portal should display Coming Soon",status:"Released"},
+       {key:"ALKIMILABS-6119",summary:"Staking not working on Mac (QA Environment) – No ALKIMI tokens found error",status:"Released"},
+       {key:"ALKIMILABS-6118",summary:"Update UI badge logic for staking statuses (Staked, Ready to Claim, Locked, Unstaked)",status:"Released"},
+       {key:"ALKIMILABS-6117",summary:"Graph values always visible on mobile instead of showing on hover",status:"Released"},
+       {key:"ALKIMILABS-6115",summary:"Settings tabs not sticky while scrolling",status:"Released"},
+       {key:"ALKIMILABS-6111",summary:"Learn more link navigating to 404 error page",status:"Released"},
+       {key:"ALKIMILABS-6109",summary:"Yearly graph shows incorrect order and does not start from user's first reward month",status:"Released"},
+       {key:"ALKIMILABS-6108",summary:"Stake form does not reset when switching wallets",status:"Released"},
+       {key:"ALKIMILABS-6106",summary:"Incorrect wallet allowed to claim rewards without proper validation/error",status:"Released"},
+       {key:"ALKIMILABS-6105",summary:"Replace Hardcoded APR Value with Live Label in Staking Section",status:"Released"},
+       {key:"ALKIMILABS-6104",summary:"Nautilus Logo Mismatch on Labs Landing Page",status:"Released"},
+       {key:"ALKIMILABS-6103",summary:"External Links Opening in Same Tab Instead of New Tab in Labs UI",status:"Released"},
+       {key:"ALKIMILABS-6102",summary:"Privacy Policy & Terms Not Working in Signup & Staking Flows",status:"Released"},
+       {key:"ALKIMILABS-6101",summary:"Privacy Policy & Terms Navigation Not Working Across UI",status:"Released"},
+       {key:"ALKIMILABS-6100",summary:"Users with unverified email can enable Auto Consent",status:"Released"},
+       {key:"ALKIMILABS-6099",summary:"Unlinked users are able to update Auto Stake preference",status:"Released"},
+       {key:"ALKIMILABS-6096",summary:"Multiple Docs Navigation Links Across Labs V4 Return 404",status:"Released"},
+       {key:"ALKIMILABS-6094",summary:"Footer Section Cleanup and Link Corrections (Sections 6.1 & 6.2)",status:"Released"},
+       {key:"ALKIMILABS-6093",summary:"No Withdrawal/Transfer Option for Wallets Created via Google Sign-In",status:"Ready to release"},
+       {key:"ALKIMILABS-6092",summary:"Users Without NFT Able to Raise Support Ticket for Invalidator Refund",status:"Released"},
+       {key:"ALKIMILABS-6091",summary:"Blob Count Showing as 0 in Both UI and API",status:"Released"},
+       {key:"ALKIMILABS-6088",summary:"Total Staked Calculation Includes Inactive Stakes Instead of Only Active Stakes",status:"Released"},
+       {key:"ALKIMILABS-6087",summary:"ETH Wallet Automatically Connecting by Default Without User Action",status:"Released"},
+       {key:"ALKIMILABS-6086",summary:"Invalid OTP Error Displayed After Successful Login via Magic Link",status:"Released"},
+       {key:"ALKIMILABS-6085",summary:"Text Display Issue in Alkimi Explorer Section",status:"Released"},
+       {key:"ALKIMILABS-6084",summary:"KYC Camera Access Fails After Granting Permissions",status:"Released"},
+       {key:"ALKIMILABS-6083",summary:"Wallet Provider Popup Triggering Automatically After Page Refresh",status:"Released"},
+       {key:"ALKIMILABS-6082",summary:"User Able to Stake Even After Wallet is Unlinked",status:"Released"},
+       {key:"ALKIMILABS-6079",summary:"Lock-in Period Not Displayed for User Stakes in UI",status:"Released"},
+       {key:"ALKIMILABS-6078",summary:"Incorrect Mapping of Daily Impressions and Total Impressions from API",status:"Released"},
+       {key:"ALKIMILABS-6077",summary:"Incorrect Total Staked Value Leading to Wrong TVL Calculation",status:"Released"},
+       {key:"ALKIMILABS-6076",summary:"Auto-stake consent update not working for linked wallets",status:"Released"},
+       {key:"ALKIMILABS-6075",summary:"Auto-stake toggle shows error icon without proper error message",status:"Released"},
+       {key:"ALKIMILABS-6074",summary:"Date Filter – Start Date After End Date – Missing Validation Error",status:"Released"},
+       {key:"ALKIMILABS-6073",summary:"Claim success popup not displayed after successful reward claim",status:"Released"},
+       {key:"ALKIMILABS-6072",summary:"Incorrect unstake confirmation popup for users eligible for legacy bonus",status:"Released"},
+       {key:"ALKIMILABS-6071",summary:"Incorrect percentage calculation for auto-compound users",status:"Released"},
+       {key:"ALKIMILABS-6070",summary:"Unstake button enabled for locked stakes (365 days) – missing frontend restriction",status:"Released"}
      ]}
   ],
   Trustnet:[
@@ -4379,20 +5162,55 @@ function renderGenericRoadmap(container,roadmapData,label){
 // SPRINT REVIEW DATA & RENDER
 // ============================
 
-// Assignee → team mapping (first name match from teamMembers)
+// Assignee → team mapping (Jira display names → team codes)
 var srTeamMap = {
-  'Pushpalatha Rangaswamy':'BE','Rekha S':'BE','velraj.m':'BE','Mithun Krishna':'BE','Chaithra P':'BE','Varun':'BE',
-  'Gedi':'FE','Daniel':'FE','Gaurav Handa':'FE','Anand Pandey':'FE',
-  'Manasa Mariswamy':'QA','Abhay Thakur':'QA','Vinay Krishna Bhat':'QA','Priyanka B':'QA','Sangamesh':'QA','Abhishek M Teli':'QA',
-  'Darshan':'NJ','Sriram':'NJ','Sandesh':'NJ',
-  'Prem Upadhyay':'AI','sagar jadhav':'AI','Subham Kumar Behuria':'AI','Sushanth':'AI','Mohit Lalbahadur Chaubey':'AI',
-  'Goutham':'DO','Harshith':'DO','Rajeev':'DO','Loknath':'DO','Sudarshan':'DO',
-  'Vignesh S':'EXT','kannan':'EXT','K Gunjan':'EXT','Vishnupriya Polraj':'EXT','Phanindra':'EXT','Varadharajan':'EXT','Kalidas':'EXT',
-  'Naveen Bharathiraman':'EXT','Gihith Syras':'EXT','darwie':'EXT','yana.zhbanova':'EXT',
-  'Sujit Kumar':'PM'
+  // Java
+  'Pushpalatha Rangaswamy':'Java','Rekha S':'Java','velraj.m':'Java','Velraj M':'Java',
+  'Mithun Krishna':'Java','Chaithra P':'Java','Radha':'Java',
+  // AI
+  'Prem Upadhyay':'AI','sagar jadhav':'AI','Sagar Jadhav':'AI',
+  'Subham Kumar Behuria':'AI','Subham':'AI','Aakash':'AI','Sushanth':'AI',
+  // FE
+  'Gedi':'FE','Daniel Calvo Lopez':'FE','Daniel':'FE','Gaurav Handa':'FE','Anand Pandey':'FE',
+  // Web3
+  'VJ':'Web3','Varadharajan':'Web3','Darshan Gaonkar':'Web3','Darshan':'Web3',
+  'Sandesh Rannore':'Web3','Sandesh':'Web3','K Gunjan':'Web3','Gunjan':'Web3',
+  'Sujan':'Web3','Niranjan':'Web3','Shourya':'Web3','Sriram':'Web3',
+  // QA
+  'Manasa Mariswamy':'QA','Manasa':'QA','Abhay Thakur':'QA','Priyanka B':'QA',
+  'Sangamesh':'QA','Vinay Krishna Bhat':'QA','Abhishek M Teli':'QA','Abhishek':'QA',
+  // DevOps
+  'Sudarshan':'DevOps','Loknath Prasad':'DevOps','Loknath':'DevOps',
+  'Goutham':'DevOps','Harshith Kumar':'DevOps','Harshith':'DevOps','Rajeev':'DevOps',
+  // Product
+  'Ram':'Product','Vishnupriya Polraj':'Product','Vishnupriya':'Product',
+  'Phanindra Gummaraju':'Product','Phanindra':'Product','Phani':'Product',
+  // BA
+  'Vignesh':'BA','Vignesh S':'BA','Jyotishikha':'BA',
+  // AdOps
+  'Vin':'AdOps','Priya Muduli':'AdOps','Priyambada':'AdOps',
+  'Lokeshwari':'AdOps','Vishwas':'AdOps','Harish':'AdOps',
+  // TechOps
+  'Kali':'TechOps','Kalidas Engaiahraj':'TechOps','Kalidas':'TechOps','Usha':'TechOps',
+  // Marketing
+  'Milly':'Marketing','Karishma':'Marketing','Tanya':'Marketing','Roisin':'Marketing',
+  // Design
+  'Yana':'Design','yana.zhbanova':'Design','Sana':'Design','Akshay':'Design','Gihith Syras':'Design','Gihith':'Design',
+  // Delivery
+  'Sujit Kumar':'Delivery','Sujit':'Delivery','Keshav':'Delivery',
+  // C++
+  'Kannan':'C++','kannan':'C++','Akhil':'C++','Naveen Bharathiraman':'C++','Naveen':'C++'
 };
-var srTeamLabels = {BE:'Backend (BE)',FE:'Frontend (FE)',QA:'QA',NJ:'Node.js (NJ)',AI:'AI',DO:'DevOps',EXT:'External / Other',PM:'PM'};
-var srTeamColors = {BE:'#3b82f6',FE:'#8b5cf6',QA:'#10b981',NJ:'#f59e0b',AI:'#ec4899',DO:'#6366f1',EXT:'#9ca3af',PM:'#14b8a6'};
+var srTeamLabels = {
+  'Java':'Java','AI':'AI','FE':'Frontend (FE)','Web3':'Web3','QA':'QA',
+  'DevOps':'DevOps','Product':'Product','BA':'BA','AdOps':'AdOps',
+  'TechOps':'TechOps','Marketing':'Marketing','Design':'Design','Delivery':'Delivery','C++':'C++'
+};
+var srTeamColors = {
+  'Java':'#3b82f6','AI':'#10b981','FE':'#8b5cf6','Web3':'#06b6d4','QA':'#f59e0b',
+  'DevOps':'#ef4444','Product':'#f97316','BA':'#84cc16','AdOps':'#ec4899',
+  'TechOps':'#14b8a6','Marketing':'#a855f7','Design':'#e879f9','Delivery':'#64748b','C++':'#0ea5e9'
+};
 
 var sprintReviewData = {
   DSP:{name:'DSP',fullName:'Demand-Side Platform',sprint:'DSP Sprint 52',start:'2026-04-13',end:'2026-04-24',jira:'https://alkimi.atlassian.net/jira/software/projects/DSP/boards',issues:[
@@ -5239,11 +6057,8 @@ function renderAspDetailView(key) {
 renderOverview();
 renderActiveSprintSection();
 renderProjects();
-renderWorkload();
-renderVelocity();
 renderFeatures();
 renderMeetings();
-renderBandwidth();
 renderReleases();
 renderDeliverables();
 renderRoadmap();
