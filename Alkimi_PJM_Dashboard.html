@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Alkimi PJM Dashboard — Live Sprint Data</title>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -488,9 +489,57 @@ a.jira-link:hover{text-decoration:underline}
 .asp-back-context{font-size:14px;color:var(--muted);font-weight:500}
 @media(max-width:900px){.sr-charts-grid{grid-template-columns:1fr}.sr-health-facts{grid-template-columns:1fr 1fr}.sr-kpi-row{grid-template-columns:1fr 1fr}.sr-proj-cards{gap:6px}.sr-proj-card-btn{min-width:90px;padding:10px 8px 8px}.asp-metrics{grid-template-columns:repeat(2,1fr)}}
 
+/* ── LOGIN OVERLAY ─────────────────────────────── */
+#login-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#050d1a 0%,#0f172a 45%,#1a1040 100%);z-index:10000;display:flex;align-items:center;justify-content:center;transition:opacity .4s ease}
+#login-overlay.hidden{opacity:0;pointer-events:none}
+.login-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);border-radius:24px;padding:48px 40px 36px;width:100%;max-width:400px;text-align:center;box-shadow:0 32px 80px rgba(0,0,0,.6)}
+.login-logo{font-size:36px;font-weight:800;color:#fff;letter-spacing:-1.5px;margin-bottom:2px}
+.login-logo span{color:#3b82f6}
+.login-tagline{font-size:12px;color:#6b7280;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px}
+.login-desc{font-size:13px;color:#9ca3af;line-height:1.6;margin-bottom:32px}
+#google-signin-btn{display:flex;justify-content:center;margin-bottom:8px}
+.login-error{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:10px;padding:10px 16px;font-size:13px;color:#fca5a5;margin-top:14px;display:none;line-height:1.5}
+.login-error.show{display:block}
+.login-footer{margin-top:28px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;gap:6px}
+/* ── SIDEBAR USER INFO ──────────────────────────── */
+#sidebar-user{display:none;padding:10px 16px 12px;border-top:1px solid #374151}
+#sidebar-user .su-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+#sidebar-user .su-avatar{width:28px;height:28px;border-radius:50%;border:2px solid #374151;object-fit:cover;flex-shrink:0;background:#1f2937}
+#sidebar-user .su-name{font-size:12px;color:#d1d5db;font-weight:500;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#sidebar-user .su-role{font-size:9px;padding:2px 6px;border-radius:4px;font-weight:700;text-transform:uppercase;flex-shrink:0}
+#sidebar-user .su-role.admin{background:rgba(59,130,246,.15);color:#60a5fa}
+#sidebar-user .su-role.viewer{background:rgba(16,185,129,.12);color:#34d399}
+#sidebar-user .su-logout{width:100%;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.18);color:#f87171;border-radius:7px;padding:6px;font-size:11px;cursor:pointer;font-weight:600;transition:background .15s}
+#sidebar-user .su-logout:hover{background:rgba(239,68,68,.18)}
+
 </style>
 </head>
 <body>
+
+<!-- ══ LOGIN OVERLAY ══════════════════════════════════════════ -->
+<div id="login-overlay">
+  <div class="login-card">
+    <div class="login-logo">&#x2B21; <span>Alkimi</span></div>
+    <div class="login-tagline">PJM Dashboard</div>
+    <p class="login-desc">Sign in with your Alkimi or Kensaltensi<br>Google account to continue.</p>
+    <div id="google-signin-btn"></div>
+    <div class="login-error" id="login-error"></div>
+    <div class="login-footer">&#x1F512; Secured with Google OAuth 2.0</div>
+  </div>
+</div>
+<script>
+// Immediately hide overlay if valid session exists (avoids flash)
+(function(){
+  try{
+    var s=JSON.parse(localStorage.getItem('alkimi_pjm_session')||'null');
+    if(s&&s.expiresAt>Date.now()){
+      var el=document.getElementById('login-overlay');
+      if(el) el.classList.add('hidden');
+    }
+  }catch(e){}
+})();
+</script>
+
 
 <div class="sidebar">
   <div class="logo">&#x2B21; <span>Alkimi</span> PJM</div>
@@ -518,6 +567,14 @@ a.jira-link:hover{text-decoration:underline}
       <div><span class="clock-label">IST:</span> <span class="clock-val" id="clockIST"></span></div>
       <div><span class="clock-label">UK:</span> <span class="clock-val" id="clockUK"></span></div>
     </div>
+  </div>
+  <div id="sidebar-user">
+    <div class="su-row">
+      <img class="su-avatar" id="user-avatar" src="" alt="">
+      <span class="su-name" id="user-name"></span>
+      <span class="su-role" id="user-role-badge"></span>
+    </div>
+    <button class="su-logout" onclick="doLogout()">&#x1F6AA; Sign Out</button>
   </div>
 </div>
 
@@ -6631,6 +6688,146 @@ function showAISlackToast(btn){
   toast.style.display='block';
   if(btn){btn.innerHTML='<span class="refresh-icon">✓</span> '+(n>0?n+' Imported':'Up to date');btn.classList.add('success');}
   setTimeout(function(){toast.style.display='none';if(btn){btn.innerHTML='<span class="refresh-icon">💬</span> Fetch from Slack';btn.classList.remove('success');}},4000);
+}
+
+
+
+// ============================================================
+// GOOGLE OAUTH + RBAC
+// ============================================================
+var GOOGLE_CLIENT_ID='488133499878-f69ubcl8mkn1vva27602ru751d04obqp.apps.googleusercontent.com';
+var SESSION_KEY='alkimi_pjm_session_v1';
+var SESSION_TTL=8*60*60*1000; // 8 hours
+
+var ROLE_MAP={
+  'sujit.kumar@kensaltensi.org':'admin',
+  'keshav.a@kensaltensi.org':'viewer',
+  'naresh@alkimi.org':'viewer',
+  'naresh@kensaltensi.org':'viewer',
+  'chandru@alkimi.org':'viewer'
+};
+var VIEWER_HIDDEN_TABS=['actionitems','meetings'];
+var currentUserSession=null;
+
+function pjmGetSession(){
+  try{
+    var s=JSON.parse(localStorage.getItem(SESSION_KEY)||'null');
+    if(s&&s.expiresAt>Date.now()) return s;
+    localStorage.removeItem(SESSION_KEY);
+  }catch(e){}
+  return null;
+}
+
+function pjmSaveSession(email,name,picture,role){
+  var s={email:email,name:name,picture:picture||'',role:role,expiresAt:Date.now()+SESSION_TTL};
+  try{localStorage.setItem(SESSION_KEY,JSON.stringify(s));}catch(e){}
+  return s;
+}
+
+function pjmParseJwt(token){
+  try{return JSON.parse(atob(token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));}
+  catch(e){return null;}
+}
+
+function pjmShowLoginError(msg){
+  var el=document.getElementById('login-error');
+  if(el){el.textContent=msg;el.classList.add('show');}
+}
+
+function pjmDismissOverlay(){
+  var el=document.getElementById('login-overlay');
+  if(el){el.classList.add('hidden');setTimeout(function(){el.style.display='none';},450);}
+}
+
+function pjmApplyRBAC(session){
+  // Hide restricted tabs for viewers
+  if(session.role==='viewer'){
+    VIEWER_HIDDEN_TABS.forEach(function(tab){
+      var link=document.querySelector('nav a[data-tab="'+tab+'"]');
+      if(link) link.style.display='none';
+      var btn=document.getElementById('sidebarMeetingsBtn');
+      if(tab==='meetings'&&btn) btn.style.display='none';
+    });
+    // If currently on a restricted tab, redirect to overview
+    if(VIEWER_HIDDEN_TABS.indexOf(currentTab||'')>=0) switchTab('overview');
+  }
+  // Show sidebar user info
+  var suDiv=document.getElementById('sidebar-user');
+  if(suDiv) suDiv.style.display='block';
+  var nameEl=document.getElementById('user-name');
+  if(nameEl) nameEl.textContent=session.name.split(' ')[0]||session.email;
+  var avatarEl=document.getElementById('user-avatar');
+  if(avatarEl&&session.picture) avatarEl.src=session.picture;
+  var roleEl=document.getElementById('user-role-badge');
+  if(roleEl){roleEl.textContent=session.role==='admin'?'Admin':'Viewer';roleEl.className='su-role '+(session.role==='admin'?'admin':'viewer');}
+}
+
+function handleGoogleCredential(response){
+  var payload=pjmParseJwt(response.credential);
+  if(!payload){pjmShowLoginError('Authentication failed. Please try again.');return;}
+  var email=(payload.email||'').toLowerCase().trim();
+  var role=ROLE_MAP[email];
+  if(!role){
+    pjmShowLoginError('Access denied for '+email+'. Please contact Sujit to request access.');
+    if(window.google&&google.accounts) google.accounts.id.disableAutoSelect();
+    return;
+  }
+  currentUserSession=pjmSaveSession(email,payload.name||email,payload.picture||'',role);
+  pjmDismissOverlay();
+  pjmApplyRBAC(currentUserSession);
+}
+
+function doLogout(){
+  localStorage.removeItem(SESSION_KEY);
+  if(window.google&&google.accounts) google.accounts.id.disableAutoSelect();
+  location.reload();
+}
+
+function pjmInitAuth(){
+  currentUserSession=pjmGetSession();
+  if(currentUserSession){
+    pjmDismissOverlay();
+    pjmApplyRBAC(currentUserSession);
+    return;
+  }
+  // No valid session — initialise Google Sign-In
+  if(window.google&&google.accounts&&google.accounts.id){
+    google.accounts.id.initialize({
+      client_id:GOOGLE_CLIENT_ID,
+      callback:handleGoogleCredential,
+      auto_select:true,
+      cancel_on_tap_outside:false,
+      context:'signin'
+    });
+    google.accounts.id.renderButton(
+      document.getElementById('google-signin-btn'),
+      {theme:'filled_black',size:'large',width:320,text:'signin_with',shape:'rectangular',logo_alignment:'left'}
+    );
+    google.accounts.id.prompt(function(notification){
+      // One Tap prompt — no extra handling needed
+    });
+  } else {
+    // GSI not yet loaded — retry
+    setTimeout(pjmInitAuth, 300);
+  }
+}
+
+// ── Patch switchTab to enforce RBAC even on direct calls ─────────────────────
+var _rbacOrigSwitch=switchTab;
+switchTab=function(tab){
+  if(currentUserSession&&currentUserSession.role==='viewer'&&VIEWER_HIDDEN_TABS.indexOf(tab)>=0){
+    // Silently redirect to overview instead
+    _rbacOrigSwitch('overview');
+    return;
+  }
+  _rbacOrigSwitch(tab);
+};
+
+// Boot auth when DOM is ready
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',pjmInitAuth);
+} else {
+  pjmInitAuth();
 }
 
 
