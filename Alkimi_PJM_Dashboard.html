@@ -319,6 +319,27 @@ tr:hover td{background:#f9fafb}
 .chart-container canvas{max-height:350px}
 .section-title{font-size:20px;font-weight:700;margin-bottom:16px}
 .section-sub{font-size:14px;color:var(--muted);margin-bottom:20px}
+/* Refresh button */
+.refresh-btn{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;white-space:nowrap;float:right;margin-top:2px}
+.refresh-btn:hover{border-color:var(--primary);color:var(--primary);background:#eff6ff}
+.refresh-btn.spinning .refresh-icon{display:inline-block;animation:spin .7s linear infinite}
+.refresh-btn.success{border-color:var(--green);color:var(--green);background:#f0fdf4}
+.refresh-btn.error{border-color:var(--red);color:var(--red);background:#fef2f2}
+@keyframes spin{to{transform:rotate(360deg)}}
+.section-title-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+.section-title-row .section-title{margin-bottom:0}
+/* Jira token setup modal */
+#jiraTokenModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center}
+#jiraTokenModal.open{display:flex}
+#jiraTokenModal .modal-box{background:var(--card);border-radius:16px;padding:32px;max-width:480px;width:100%;box-shadow:0 8px 40px rgba(0,0,0,.2)}
+#jiraTokenModal .modal-title{font-size:18px;font-weight:700;margin-bottom:8px}
+#jiraTokenModal .modal-sub{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6}
+#jiraTokenModal input{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:13px;margin-bottom:10px;outline:none}
+#jiraTokenModal input:focus{border-color:var(--primary)}
+#jiraTokenModal .modal-actions{display:flex;gap:10px;margin-top:8px}
+#jiraTokenModal .btn-primary{flex:1;padding:10px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
+#jiraTokenModal .btn-secondary{padding:10px 20px;background:transparent;border:1px solid var(--border);border-radius:8px;font-size:14px;cursor:pointer;color:var(--muted)}
+#jiraTokenStatus{font-size:12px;color:var(--green);min-height:18px;margin-bottom:4px}
 a.jira-link{color:var(--primary);text-decoration:none;font-size:12px}
 a.jira-link:hover{text-decoration:underline}
 .del-quarter{margin-bottom:24px}
@@ -485,6 +506,7 @@ a.jira-link:hover{text-decoration:underline}
     <a href="#" data-tab="deliverables"><span class="icon">&#x1F4E6;</span><span>Key Deliverables</span></a>
     <a href="#" data-tab="roadmap"><span class="icon">&#x1F5FA;</span><span>Product Roadmap</span></a>
     <a href="#" data-tab="prdashboard"><span class="icon">&#x1F4E5;</span><span>PR Dashboard</span></a>
+    <a href="#" data-tab="actionitems"><span class="icon">&#x1F4CB;</span><span>My Action Items</span></a>
   </nav>
   <div class="sidebar-bottom">
     <div class="sidebar-bottom-tabs">
@@ -513,7 +535,11 @@ a.jira-link:hover{text-decoration:underline}
 <div class="main">
   <div class="header">
     <h1 id="pageTitle">Overview</h1>
-    <div class="date" id="liveDateStamp">&#x1F4C5; <span id="liveDateText"></span> &mdash; Live from Jira</div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="date" id="liveDateStamp">&#x1F4C5; <span id="liveDateText"></span></div>
+      <button id="headerRefreshBtn" class="refresh-btn" style="float:none;margin:0" onclick="refreshCurrentSection(this)"><span class="refresh-icon">🔄</span> <span id="headerRefreshLabel">Refresh</span></button>
+      <button class="refresh-btn" style="float:none;margin:0;border-color:var(--orange);color:var(--orange)" onclick="openJiraTokenModal()" title="Configure Jira API token for live sync">🔑 Jira Token</button>
+    </div>
     <script>
       (function(){
         var d=new Date();
@@ -539,7 +565,7 @@ a.jira-link:hover{text-decoration:underline}
   <div class="section" id="sec-projects">
     <!-- Overview: KPI + cards grid -->
     <div id="aspOverview">
-      <div class="section-title">Active Sprints — Live Progress</div>
+      <div class="section-title-row"><div class="section-title">Active Sprints — Live Progress</div><button class="refresh-btn" onclick="refreshSection('projects',this)"><span class="refresh-icon">🔄</span> Refresh</button></div>
       <div class="section-sub">Current sprint status across all 6 active projects — refreshed from Jira</div>
       <div id="activeSprintKpis" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:20px"></div>
       <div class="filter-bar">
@@ -555,6 +581,7 @@ a.jira-link:hover{text-decoration:underline}
 
   <!-- TEAM WORKLOAD -->
   <div class="section" id="sec-workload">
+    <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:8px"><button class="refresh-btn" style="float:none" onclick="refreshSection('workload',this)"><span class="refresh-icon">🔄</span> Refresh</button></div>
     <!-- Inner sub-tabs -->
     <div class="sub-tabs" id="teamLoadTabs" style="margin-bottom:20px">
       <button class="active" onclick="switchTeamLoadTab('overview',this)">📊 Overview</button>
@@ -687,6 +714,7 @@ a.jira-link:hover{text-decoration:underline}
 
   <!-- VELOCITY -->
   <div class="section" id="sec-velocity">
+    <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:8px"><button class="refresh-btn" style="float:none" onclick="refreshSection('velocity',this)"><span class="refresh-icon">🔄</span> Refresh</button></div>
     <div class="sub-tabs" id="velocityTabs" style="margin-bottom:20px">
       <button class="active" onclick="switchVelocityTab('project',this)">📊 Project Velocity</button>
       <button onclick="switchVelocityTab('trend',this)">📈 Sprint Trend</button>
@@ -749,12 +777,14 @@ a.jira-link:hover{text-decoration:underline}
 
   <!-- SPRINT FEATURES -->
   <div class="section" id="sec-features">
+    <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:8px"><button class="refresh-btn" style="float:none" onclick="refreshSection('features',this)"><span class="refresh-icon">🔄</span> Refresh</button></div>
     <div class="sub-tabs" id="featureTabs"></div>
     <div class="table-wrap" id="featureTableWrap"><table id="featureTable"><thead><tr><th>Feature</th><th>Category</th><th>Size</th><th>FE</th><th>BE</th><th>QA</th><th>Status</th><th>Jira</th></tr></thead><tbody></tbody></table></div>
   </div>
 
   <!-- SPRINT REVIEW -->
   <div class="section" id="sec-sprintreview">
+    <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:8px"><button class="refresh-btn" style="float:none" onclick="refreshSection('sprintreview',this)"><span class="refresh-icon">🔄</span> Sync from Jira</button></div>
     <div class="sr-selector-wrap">
       <div class="sr-selector-hdr">
         <div class="sr-selector-title">📋 Sprint Review</div>
@@ -804,7 +834,7 @@ a.jira-link:hover{text-decoration:underline}
 
   <!-- MEETINGS -->
   <div class="section" id="sec-meetings">
-    <div class="section-title">Weekly Schedule</div>
+    <div class="section-title-row"><div class="section-title">Weekly Schedule</div><button class="refresh-btn" onclick="refreshSection('meetings',this)"><span class="refresh-icon">🔄</span> Sync Meetings</button></div>
     <div class="section-sub">Rolling 7-day view &mdash; click any day to see meetings. Click <strong>Notes</strong> to view transcribed &amp; analyzed meeting notes.</div>
     <div class="sub-tabs" id="weekTabs" style="flex-wrap:wrap;margin-bottom:16px"></div>
     <div class="section-sub" id="meetingCount" style="margin-bottom:12px"></div>
@@ -818,7 +848,7 @@ a.jira-link:hover{text-decoration:underline}
 
   <!-- RELEASES -->
   <div class="section" id="sec-releases">
-    <div class="section-title">Release Tracker</div>
+    <div class="section-title-row"><div class="section-title">Release Tracker</div><button class="refresh-btn" onclick="refreshSection('releases',this)"><span class="refresh-icon">🔄</span> Sync from Jira</button></div>
     <div class="section-sub">Planned & shipped releases across all projects — sourced from Jira fixVersion</div>
     <div class="sub-tabs" id="releaseTabs"></div>
     <div id="releaseContent"></div>
@@ -827,7 +857,7 @@ a.jira-link:hover{text-decoration:underline}
 
   <!-- KEY DELIVERABLES -->
   <div class="section" id="sec-deliverables">
-    <div class="section-title">Key Deliverables</div>
+    <div class="section-title-row"><div class="section-title">Key Deliverables</div><button class="refresh-btn" onclick="refreshSection('deliverables',this)"><span class="refresh-icon">🔄</span> Refresh</button></div>
     <div class="section-sub">Quarterly deliverables for Labs &amp; AdTech — sourced from ALKIMI KEY DELIVERABLES 2026 spreadsheet</div>
     <div class="sub-tabs" id="delTabs" style="flex-wrap:wrap">
       <button class="active" onclick="switchDelView('labs')">&#x1F9EA; Labs</button>
@@ -841,6 +871,8 @@ a.jira-link:hover{text-decoration:underline}
   </div>
 
   <!-- PR DASHBOARD — Native GitHub GraphQL Implementation -->
+  <div class="section" id="sec-actionitems"></div>
+
   <div class="section" id="sec-prdashboard">
 
     <!-- PAT Setup Screen -->
@@ -934,7 +966,7 @@ a.jira-link:hover{text-decoration:underline}
   </div>
 
   <div class="section" id="sec-roadmap">
-    <div class="section-title">Product Roadmap</div>
+    <div class="section-title-row"><div class="section-title">Product Roadmap</div><button class="refresh-btn" onclick="refreshSection('roadmap',this)"><span class="refresh-icon">🔄</span> Refresh</button></div>
     <div class="section-sub">Strategic roadmap by quarter — Labs from Confluence &amp; OKR planning; AdTech link pending</div>
     <div class="sub-tabs" id="roadmapTabs" style="flex-wrap:wrap">
       <button class="active" onclick="switchRoadmapView('labs')">&#x1F9EA; Labs</button>
@@ -945,6 +977,24 @@ a.jira-link:hover{text-decoration:underline}
       <button onclick="switchRoadmapView('agentic')">&#x1F310; Agentic Marketplace</button>
     </div>
     <div id="roadmapContent"></div>
+  </div>
+</div>
+
+<!-- JIRA TOKEN MODAL -->
+<div id="jiraTokenModal">
+  <div class="modal-box">
+    <div class="modal-title">🔑 Jira API Token</div>
+    <div class="modal-sub">Enter your Atlassian credentials to enable live data sync from Jira. Your token is stored only in your browser's localStorage and never sent anywhere except Jira.</div>
+    <input type="email" id="jiraEmailInput" placeholder="your@email.com" />
+    <input type="password" id="jiraTokenInput" placeholder="Jira API Token (from id.atlassian.com/manage-profile/security)" />
+    <div id="jiraTokenStatus"></div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeJiraTokenModal()">Cancel</button>
+      <button class="btn-primary" onclick="saveJiraToken()">Save & Test</button>
+    </div>
+    <div style="margin-top:14px;font-size:11px;color:var(--muted)">
+      Get your API token at: <a href="https://id.atlassian.com/manage-profile/security/api-tokens" target="_blank" style="color:var(--primary)">id.atlassian.com → Security → API tokens</a>
+    </div>
   </div>
 </div>
 
@@ -1147,106 +1197,68 @@ const sprintFeatures = {
 };
 
 const weekMeetings = {
+  "Apr 27": [
+    {title:"[Del] - AD Tech [DSP, EXCHANGE, AdFi] Weekly Syncup",time:"11:30 AM",end:"12:00 PM",desc:"Weekly delivery standup for AdTech Products. DSP dev/QA environments broken halting testing. CI/CD pipeline for Add5 broken requiring manual intervention. Team decided to clear 6-7 existing backlog items before initiating new feature development.",attendees:["pushpa.rangaswamy","gaurav.handa","ram","gedi","manasa.ms","abhay.thakur","nishanth","keshav.a","vishnupriya","anand","chaithra.p","goutham.m","vignesh","vinay.bhat"],link:"https://docs.google.com/document/d/12YcMkEJbeYyMtzBLJ6bzLQuR_ai3X8XiLcjFDpgTTLA/edit"},
+    {title:"ADTECH - CLUSTERED ENV STANDUP & PENDING ITEMS",time:"12:00 PM",end:"1:00 PM",desc:"DevOps bottlenecks prompted integrating development teams into deployment workflows. Dev teams assume 20 minutes daily admin tasks in lower environments. CI/CD pipeline for Exchange production to be set up. DSP config server Vault HTTPS fix to be implemented immediately.",attendees:["harshithkumar","rekha.s","goutham.m","sudarshan.shenvi","pushpa.rangaswamy","ram","loknath.prasad","mithun.k","naresh","rajeev"],link:"https://docs.google.com/document/d/1QoarX1IV3pFlyd01oXYWeEYXFj3xGHUrXEztiCP-1Co/edit"},
+    {title:"[DO] DevOps Everyday Standup",time:"1:00 PM",end:"1:30 PM",desc:"DevOps team daily standup — visibility across the board on work in progress.",attendees:["sudarshan.shenvi","loknath.prasad","goutham.m","harshithkumar","rajeev"],link:""},
+    {title:"[Del] Agentic Marketplace Standup",time:"2:30 PM",end:"3:00 PM",desc:"Daily standup for Agentic Marketplace addressing infrastructure and development status.",attendees:["sudarshan.shenvi","milly","ram","chandru","vj","prem.upadhyay","gedi","pushpa.rangaswamy","sagar.jadhav"],link:"https://docs.google.com/document/d/13LEl8y4K2wI7rGkeCjd-sCCxoXzK5JtwDp6HTxzDsWs/edit"},
+    {title:"[Del] Labs Daily Standup (LABS V4)",time:"3:00 PM",end:"3:30 PM",desc:"Daily standup for Labs V4 team addressing development progress.",attendees:["gedi","phani.g","daniel","sriram","vj","manasa.ms","kalidas","sandesh","nishanth","keshav.a","ajay.m","sangamesh.m","prem.upadhyay","niranjan.s","shourya.s","gaurav.handa","anand"],link:"https://docs.google.com/document/d/1jETMy94F4tgeNZ7ea2Hf0iJqbTCh0HA4LgxHctLj6Pw/edit"},
+    {title:"[DEL] MMP Engineering Standup",time:"3:30 PM",end:"4:00 PM",desc:"MMP engineering standup addressing engineering blockers and progress.",attendees:["sudarshan.shenvi","manasa.ms","chandru","kannan","prem.upadhyay","mohit.c","phani.g","keshav.a","naveen","vj","gunjan","gaurav.handa","akhil","anand","sangamesh.m"],link:"https://docs.google.com/document/d/1Nd0s6DnPYT0bWReIZ5QvOAgUyAVFCoOg4pUiQBFJ08c/edit"},
+    {title:"[Del] MBP/AMP Regular Weekly Standup",time:"4:00 PM",end:"4:30 PM",desc:"Team aligned on testing timelines. Developers committed to 6 immediate fixes today and 4-5 tickets by tomorrow morning. Testing completion target set for Apr 29. Final defect validation must occur before May 8th.",attendees:["sagar.jadhav","manasa.ms","ram","chandru","prem.upadhyay","mithun.k","priyanka.b","subham.kumar","gaurav.handa","vishnupriya","vignesh"],link:"https://docs.google.com/document/d/1axm58jidh9fBZOhXWBQZQMgQuoj3TTNEbSw2Ex2jSDs/edit"},
+    {title:"Jira setup review for AdFi",time:"4:00 PM",end:"5:00 PM",desc:"Jira setup review for AdFi project ensuring proper issue tracking configuration.",attendees:["kalidas","vignesh","vishnupriya"],link:"https://docs.google.com/document/d/1D7J-mRG-q_0B-9f0huT4eqoeWXfC4-eJAla0Mc66dPY/edit"},
+    {title:"[AdTech] New PRD Walkthrough & SignOff",time:"5:00 PM",end:"6:00 PM",desc:"Pipeline review prioritized current sprint tasks and deferred complex features. DSP QoS and traffic shaping moved to future sprints. Allow/Block list designs require simplification. Cluster information reporting added as high-priority enhancement.",attendees:["pushpa.rangaswamy","kalidas","gihith","manasa.ms","gaurav.handa","ram","vishnupriya","rekha.s","yana","priya.muduli","abhay.thakur"],link:"https://docs.google.com/document/d/10lolwyfb35IqvPHWQiFivqGFOB3c3QzCOT8cTyszfHk/edit"},
+    {title:"Sujit / Keshav",time:"6:00 PM",end:"6:30 PM",desc:"Daily PMO sync up.",attendees:["keshav.a"],link:""}
+  ],
+  "Apr 28": [
+    {title:"[Ad-Tech] Dev - QA Sync",time:"12:45 PM",end:"1:15 PM",desc:"Discussion of items in System testing & bugs in the pipeline. Reviewing list of items ready for QA handoff.",attendees:["pushpa.rangaswamy","manasa.ms","gaurav.handa","abhay.thakur","vishnupriya"],link:""},
+    {title:"[DO] DevOps Everyday Standup",time:"1:00 PM",end:"1:30 PM",desc:"DevOps team daily standup — visibility across the board on work in progress.",attendees:["sudarshan.shenvi","loknath.prasad","goutham.m","harshithkumar","rajeev"],link:""},
+    {title:"[Del] Agentic Marketplace Standup",time:"2:30 PM",end:"3:00 PM",desc:"Meeting reviewed documentation strategies and infrastructure status. Split PRD into separate feature-level requirements and technical design specs. GitHub and Railway environment setup complete. Teams prioritizing agent marketplace user journeys to define backend APIs.",attendees:["sudarshan.shenvi","milly","ram","chandru","vj","prem.upadhyay","gedi","boardroom","pushpa.rangaswamy","sagar.jadhav"],link:"https://docs.google.com/document/d/18eVoe9zLVQD15rIJoDBXbhlTs9mfU1tSYTBOPQKvSek/edit"},
+    {title:"OAuth - Agentic Marketplace",time:"3:00 PM",end:"3:30 PM",desc:"SSO layer to map users across platforms (Exchange Spring OAuth + DSP Keycloak). Publishers as multi-tenant entities; offline batch jobs to sync user IDs. Agentic Marketplace scope limited to negotiation and deal facilitation.",attendees:["sudarshan.shenvi","sagar.jadhav","ram","prem.upadhyay","pushpa.rangaswamy"],link:"https://docs.google.com/document/d/1xjl9w9KsXoHp13pVREGlxjqYEGGKoTNGB8I0YX7LwDc/edit"},
+    {title:"Folio For Confluence Alternative",time:"3:30 PM",end:"4:00 PM",desc:"Evaluated Folio as a passive storage layer. Prioritized document management, template operations, and rich content editing over collaboration features. Future updates include copy functionality and Slack notifications.",attendees:["alice","chandru","john","gedi","ben"],link:"https://docs.google.com/document/d/1RQuvbTZ4ZsuQQIx8VGLEOZAXaLndvU_Qj_EMZTKjkXM/edit"},
+    {title:"UK | India Teams Ad Platforms Tech Call",time:"4:00 PM",end:"4:30 PM",desc:"Weekly UK and India teams sync on prioritisation and development projects for ad platforms.",attendees:["vinay","kalidas","ram","raman","chandru","kasturi","naresh","boardroom","pushpa.rangaswamy","priya.muduli","sudarshan.shenvi","manasa.ms","vishnupriya"],link:""},
+    {title:"MMP Engineering Internal Syncup",time:"4:30 PM",end:"5:00 PM",desc:"Teams finalized integration testing timelines. Phase 2 demo targeted for early May with integration completion by Apr 30. Technical teams proposed auto-kill switch to mitigate trading risks. Deployment will use separate EC2 instances per exchange.",attendees:["sangamesh.m","akhil","naveen","kannan","anand","gunjan","mohit.c","phani.g","manasa.ms","goutham.m"],link:"https://docs.google.com/document/d/1QW3VMRpJ3nJB2MBh56h9CvNtYK6zOywO2P41zuGgtVY/edit"},
+    {title:"Feature Clarifications",time:"8:30 PM",end:"9:30 PM",desc:"Technical discussions on bot scaling and latency via C++ integration. Current Python management services introduce latency bottlenecks. Decision made to develop a C++ prototype for testing multi-exchange latency performance. Teams will centralize price services.",attendees:["huy","akhil","naveen","kannan","gunjan","phani.g"],link:"https://docs.google.com/document/d/1Y5KRSHItoy2eypfKZR_fCzK66hRulyC4Vc4WerfPxa8/edit"},
+    {title:"MMP - Test strategy discussion",time:"9:30 PM",end:"10:00 PM",desc:"Awaiting Gemini Notes",attendees:["huy","manasa.ms","phani.g"],link:""},
+    {title:"Sujit / Keshav",time:"10:00 PM",end:"10:30 PM",desc:"Daily PMO sync up.",attendees:["keshav.a"],link:""}
+  ],
+  "Apr 29": [
+    {title:"[Del] - AD Tech [DSP, EXCHANGE, AdFi] Weekly Syncup",time:"11:30 AM",end:"12:00 PM",desc:"Weekly delivery standup for AD Tech Products. Gemini noted insufficient conversation in a supported language to generate a full summary.",attendees:["pushpa.rangaswamy","gaurav.handa","ram","gedi","manasa.ms","abhay.thakur","nishanth","keshav.a","vishnupriya","anand","chaithra.p","goutham.m","vignesh","vinay.bhat"],link:"https://docs.google.com/document/d/1b7OsH27v7mDNjQaKuCsnGCOMMfAq3hlQaCABmlkmDss/edit"},
+    {title:"ADTECH - CLUSTERED ENV STANDUP & PENDING ITEMS",time:"12:00 PM",end:"12:30 PM",desc:"Meeting focused on environment stabilization and resolving technical sync issues. Teams prioritized environment stability. Deployment automation finalized via CI/CD pipelines. DSP migration requires Aerospike replication. Agentic Marketplace = Priority 1, DSP migration = Priority 2.",attendees:["harshithkumar","goutham.m","vishnupriya","sudarshan.shenvi","pushpa.rangaswamy","ram","loknath.prasad","rajeev"],link:"https://docs.google.com/document/d/1jNgRyzYMgwdwbd7cNbrxnicpTauwzXPKXnVeqR-xT64/edit"},
+    {title:"[Del] AdTech Design Request Syncup",time:"12:30 PM",end:"1:00 PM",desc:"Meeting reviewed cluster endpoint UI updates and prioritized report generation sorting and group-by functionality enhancements. Front-end report sorting approved for admin and DSP reporting.",attendees:["yana","gaurav.handa","pushpa.rangaswamy","ram","vishnupriya","abhay.thakur","manasa.ms","gihith"],link:"https://docs.google.com/document/d/1NkiCcgbnzzyoIiwK6GeV8tDAnY94o6EZpqLe4CIN0qQ/edit"},
+    {title:"[DO] DevOps Everyday Standup",time:"1:00 PM",end:"1:30 PM",desc:"DevOps team daily standup — visibility across the board on work in progress.",attendees:["sudarshan.shenvi","loknath.prasad","goutham.m","harshithkumar","rajeev"],link:""},
+    {title:"[Del] Agentic Marketplace Standup",time:"2:30 PM",end:"3:00 PM",desc:"Meeting covered scheduling adjustments and platform migration strategies. Team reviewed publisher onboarding draft flow. Decision to migrate all functionality into a single application dashboard. Infrastructure updates confirmed ready for testing.",attendees:["sudarshan.shenvi","milly","ram","chandru","vj","prem.upadhyay","gedi","pushpa.rangaswamy","sagar.jadhav"],link:"https://docs.google.com/document/d/1eAlaMmTPo-CAYppY3jM4FGAXzl5dvtMDUgB83U3T5IM/edit"},
+    {title:"[Del] MBP/AMP Regular Weekly Standup",time:"3:00 PM",end:"3:30 PM",desc:"Campaign budget logic, ID display, and deployment blockers discussed and resolved. Budget line items can exceed campaign totals without validation errors. Back end campaign ID formats take precedence over designs.",attendees:["sagar.jadhav","manasa.ms","ram","chandru","prem.upadhyay","daniel","mithun.k","priyanka.b","subham.kumar","gaurav.handa","vishnupriya","vignesh"],link:"https://docs.google.com/document/d/1KOZWhonTMxxluuyzXz3ZGpqLWcDQ60TI6dwdP0Qe_Qo/edit"},
+    {title:"[DEL] MMP Engineering Standup",time:"4:00 PM",end:"4:30 PM",desc:"Teams synchronized on environment deployments and testing readiness for exchange integrations. Dev environments updated for phase 2 testing. QA environment readiness depends on pending API key provisioning.",attendees:["sudarshan.shenvi","manasa.ms","chandru","kannan","prem.upadhyay","mohit.c","phani.g","keshav.a","naveen","vj","gunjan","gaurav.handa","akhil","anand","sangamesh.m","sujan","goutham.m"],link:"https://docs.google.com/document/d/1ONKs42hLulJkwNRKuWygZ5xsNP1rY5mITSvKgTzHG0Q/edit"},
+    {title:"[labs] XP Portal Demo",time:"4:30 PM",end:"5:00 PM",desc:"XP portal walkthrough for business stakeholders. XP platform planned for release on May 6, 2026.",attendees:["keshav.a","karishma","roisin","milly","chorley","chandru","vj","gedi","phani.g","ben","dave","kalidas","usha"],link:""},
+    {title:"CEX-DEX Technical Sync",time:"4:30 PM",end:"6:00 PM",desc:"Awaiting Gemini Notes",attendees:["huy","gunjan","phani.g","akhil","kannan","mohit.c","vj"],link:""},
+    {title:"Sujit / Keshav",time:"6:00 PM",end:"6:30 PM",desc:"Daily PMO sync up.",attendees:["keshav.a"],link:""}
+  ],
   "Apr 30": [
-    {
-      title: "AdTech Domain Classification discussion reminder",
-      time: "11:00 AM",
-      end: "11:30 AM",
-      desc: "Simplifying classification — removed publisher-side classification, moved domain blocking to DSP level. Critical runtime sync failure resolved by re-saving settings. Margin discrepancy (~20%) between publisher and DSP numbers attributed to bid price margin deduction logic; investigation ongoing.",
-      attendees: ["pushpalatha", "sujit.kumar", "vishnupriya", "priya.muduli"],
-      link: "https://docs.google.com/document/d/1EbXKCrrWHlEwDdsRVAUcsmg9usVaMANQ8p5Y8wDK58U/edit"
-    },
-    {
-      title: "Meridian PRD || Side development",
-      time: "11:30 AM",
-      end: "12:00 PM",
-      desc: "API usage standardised on mainnet for all calls. New C++ development track launched as separate initiative, isolated from Phase 2 demo milestones. Team will provide domain support without integrating C++ into the core latency strategy.",
-      attendees: ["sujit.kumar", "akhil", "naveen", "kannan", "sujan", "gunjan", "phani.g", "mohit.c"],
-      link: "https://docs.google.com/document/d/1NcOMjpcU74HSEZP_HcnH7Ee4teKgBpomFxZWCdf2N1U/edit"
-    },
-    {
-      title: "[DO] DevOps Everyday Standup",
-      time: "12:00 PM",
-      end: "12:30 PM",
-      desc: "Awaiting Gemini Notes",
-      attendees: ["sudarshan.shenvi", "sujit.kumar", "loknath.prasad", "goutham.m", "harshithkumar", "rajeev"],
-      link: ""
-    },
-    {
-      title: "AMP feedback",
-      time: "12:15 PM",
-      end: "12:45 PM",
-      desc: "AMP flagged as critical go-to-market priority. Severe blockers identified: missing draft campaign capability and inaccurate country targeting. Release delayed to integrate operational feedback. Weekly check-ins scheduled to track progress and maintain design alignment before final deployment.",
-      attendees: ["vinay", "karishma", "vignesh", "priya.muduli", "sujit.kumar", "vishnupriya"],
-      link: ""
-    },
-    {
-      title: "[Del] Labs Daily Standup (LABS V4)",
-      time: "2:00 PM",
-      end: "2:30 PM",
-      desc: "Experience platform feature pushed to production next Wednesday. Completed tickets deployed to QA. Token staking data normalisation and affiliate program updates addressed. Frontend for external projects begins after client sign-off; immediate focus on Agentic Marketplace light version.",
-      attendees: ["gedi", "phani.g", "daniel", "sujit.kumar", "sriram", "vj", "manasa.ms", "kalidas", "sandesh", "nishanth", "keshav.a", "ajay", "sangamesh", "prem.upadhyay", "niranjan", "shourya", "gaurav.handa", "anand"],
-      link: ""
-    },
-    {
-      title: "[Del] Agentic Marketplace Standup",
-      time: "2:30 PM",
-      end: "3:00 PM",
-      desc: "Prioritised Marketplace light UX over pro version to focus on onboarding Asset Management team. Agentic relay architecture submitted. Onboarding process identified as buggy — immediate fix prioritised. Linear adopted for bug tracking (business trial). PRDs to be revisited for ARBAC access controls.",
-      attendees: ["sudarshan.shenvi", "sujit.kumar", "milly", "ram", "chandru", "vj", "prem.upadhyay", "gedi", "pushpalatha", "sagar.jadhav"],
-      link: ""
-    },
-    {
-      title: "Prospecting/Sales & Alkimi Marketplace Lite Briefing",
-      time: "3:00 PM",
-      end: "4:30 PM",
-      desc: "Roadmap aligned on 3-phase transition: Microsites → Marketplace Light (managed services) → Marketplace Pro (full agentic). Development centres on automating microsite generation via Folio. Single external portal for clients; internal terminology kept separate. Parallel tracks: prospecting efficiency, AM tool evolution, Pro agent-to-agent negotiation features.",
-      attendees: ["vinay", "karishma", "milly", "aaron", "chandru", "deepa", "yana", "lauren", "priya.muduli", "ben", "hazret", "vishnupriya", "sudarshan.shenvi", "pushpalatha", "sujit.kumar", "roisin", "marco", "ram", "john", "gedi", "kalidas", "mehdi"],
-      link: ""
-    },
-    {
-      title: "MMP Engineering Internal Syncup",
-      time: "4:30 PM",
-      end: "5:00 PM",
-      desc: "Sujit declined – no notes available",
-      attendees: ["sangamesh", "akhil", "naveen", "kannan", "anand", "gunjan", "mohit.c", "phani.g", "manasa.ms", "goutham.m"],
-      link: ""
-    },
-    {
-      title: "Agentic - A2A Negotiation Layer",
-      time: "4:30 PM",
-      end: "5:00 PM",
-      desc: "Awaiting Gemini Notes — focus: create proper flow, identify gaps, revisit existing PRD.",
-      attendees: ["sagar.jadhav", "sujit.kumar", "ram", "chandru", "prem.upadhyay"],
-      link: ""
-    },
-    {
-      title: "AI Learning Workshops",
-      time: "5:00 PM",
-      end: "6:00 PM",
-      desc: "Awaiting Gemini Notes",
-      attendees: ["all-hands", "sujit.kumar", "kamilah", "boardroom", "usha"],
-      link: ""
-    },
-    {
-      title: "Sujit / Keshav",
-      time: "10:00 PM",
-      end: "10:30 PM",
-      desc: "Awaiting Gemini Notes",
-      attendees: ["keshav.a", "sujit.kumar"],
-      link: ""
-    }
+    {title:"AdTech Domain Classification discussion reminder",time:"11:00 AM",end:"11:30 AM",desc:"Simplified classification system — removed publisher-side classification, moved domain blocking to DSP level. Critical runtime sync failure resolved by re-saving settings. Margin discrepancy (~20%) between publisher and DSP numbers attributed to bid price margin deduction logic; investigation ongoing.",attendees:["pushpa.rangaswamy","vishnupriya","priya.muduli"],link:"https://docs.google.com/document/d/1EbXKCrrWHlEwDdsRVAUcsmg9usVaMANQ8p5Y8wDK58U/edit"},
+    {title:"Meridian PRD || Side development",time:"11:30 AM",end:"12:00 PM",desc:"API usage standardised on mainnet for all calls. New C++ development track launched as separate initiative, isolated from Phase 2 demo milestones. Team will provide domain support without integrating C++ into the core latency strategy.",attendees:["akhil","naveen","kannan","sujan","gunjan","phani.g","mohit.c"],link:"https://docs.google.com/document/d/1NcOMjpcU74HSEZP_HcnH7Ee4teKgBpomFxZWCdf2N1U/edit"},
+    {title:"[DO] DevOps Everyday Standup",time:"12:00 PM",end:"12:30 PM",desc:"Awaiting Gemini Notes",attendees:["sudarshan.shenvi","loknath.prasad","goutham.m","harshithkumar","rajeev"],link:""},
+    {title:"AMP feedback",time:"12:15 PM",end:"12:45 PM",desc:"AMP flagged as critical go-to-market priority. Severe blockers: missing draft campaign capability and inaccurate country targeting. Release delayed to integrate operational feedback. Weekly check-ins scheduled to track progress.",attendees:["vinay","alice","vignesh","priya.muduli","vishnupriya"],link:""},
+    {title:"[Del] Labs Daily Standup (LABS V4)",time:"2:00 PM",end:"2:30 PM",desc:"Experience platform feature pushed to production next Wednesday. Completed tickets deployed to QA. Token staking data normalisation and affiliate program updates addressed. Immediate focus on Agentic Marketplace light version.",attendees:["gedi","phani.g","daniel","sriram","vj","manasa.ms","kalidas","sandesh","nishanth","keshav.a","sangamesh.m","prem.upadhyay","gaurav.handa","anand"],link:""},
+    {title:"[Del] Agentic Marketplace Standup",time:"2:30 PM",end:"3:00 PM",desc:"Prioritised Marketplace light UX over pro version to focus on onboarding Asset Management team. Agentic relay architecture submitted. Onboarding process identified as buggy — immediate fix prioritised. Linear adopted for bug tracking (business trial).",attendees:["sudarshan.shenvi","milly","ram","chandru","vj","prem.upadhyay","gedi","pushpa.rangaswamy","sagar.jadhav"],link:""},
+    {title:"Prospecting/Sales & Alkimi Marketplace Lite Briefing",time:"3:00 PM",end:"4:30 PM",desc:"Roadmap aligned on 3-phase transition: Microsites → Marketplace Light → Marketplace Pro (full agentic). Development centres on automating microsite generation via Folio. Single external portal for clients; internal terminology kept separate.",attendees:["vinay","karishma","milly","aaron","chandru","deepa","yana","lauren","priya.muduli","ben","hazret","vishnupriya","sudarshan.shenvi","pushpa.rangaswamy","roisin","marco","ram","john","gedi","kalidas","mehdi"],link:""},
+    {title:"MMP Engineering Internal Syncup",time:"4:30 PM",end:"5:00 PM",desc:"Sujit declined – no notes available.",attendees:["sangamesh.m","akhil","naveen","kannan","anand","gunjan","mohit.c","phani.g","manasa.ms","goutham.m"],link:""},
+    {title:"Agentic - A2A Negotiation Layer",time:"4:30 PM",end:"5:00 PM",desc:"Awaiting Gemini Notes — focus: create proper flow, identify gaps, revisit existing PRD.",attendees:["sagar.jadhav","ram","chandru","prem.upadhyay"],link:""},
+    {title:"AI Learning Workshops",time:"5:00 PM",end:"6:00 PM",desc:"Multi-agent skill orchestration and modular skill design. Automation highlighted through daily reports aggregating calendar and communication tools. Automated triggers based on context discussed.",attendees:["all-hands","kamilah","boardroom","usha","deepa","manasa.ms","chandru","gaurav.handa"],link:"https://app.fireflies.ai/view/01KPX28BBAHN8ZCZZAWZR05BB3"},
+    {title:"Vignesh / Sujit",time:"5:00 PM",end:"5:30 PM",desc:"Awaiting Gemini Notes",attendees:["vignesh"],link:""},
+    {title:"Sujit / Keshav",time:"10:00 PM",end:"10:30 PM",desc:"Daily PMO sync up.",attendees:["keshav.a"],link:""}
+  ],
+  "May 1": [
+    {title:"[Del] - AD Tech [DSP, EXCHANGE, AdFi] Weekly Syncup",time:"11:30 AM",end:"12:00 PM",desc:"Weekly delivery standup for AdTech Products (DSP, Exchange, AdFi). Awaiting Gemini Notes.",attendees:["pushpa.rangaswamy","gaurav.handa","ram","gedi","manasa.ms","abhay.thakur","nishanth","keshav.a","vishnupriya","anand","chaithra.p","goutham.m","vignesh","vinay.bhat"],link:""},
+    {title:"[DO] DevOps Everyday Standup",time:"1:00 PM",end:"1:30 PM",desc:"DevOps team daily standup.",attendees:["sudarshan.shenvi","loknath.prasad","goutham.m","harshithkumar","rajeev"],link:""},
+    {title:"[Del] Agentic Marketplace Standup",time:"2:30 PM",end:"3:00 PM",desc:"Awaiting Gemini Notes",attendees:["sudarshan.shenvi","milly","ram","chandru","vj","prem.upadhyay","gedi","pushpa.rangaswamy","sagar.jadhav"],link:""},
+    {title:"[DEL] MMP Engineering Standup",time:"3:30 PM",end:"4:00 PM",desc:"Awaiting Gemini Notes",attendees:["sudarshan.shenvi","manasa.ms","chandru","kannan","prem.upadhyay","mohit.c","phani.g","keshav.a","naveen","vj","gunjan","gaurav.handa","akhil","anand","sangamesh.m"],link:""},
+    {title:"[Del] MBP/AMP Regular Weekly Standup",time:"4:00 PM",end:"4:30 PM",desc:"Awaiting Gemini Notes",attendees:["sagar.jadhav","manasa.ms","ram","chandru","prem.upadhyay","daniel","mithun.k","priyanka.b","subham.kumar","gaurav.handa","vishnupriya","vignesh"],link:""},
+    {title:"Sujit / Keshav",time:"6:00 PM",end:"6:30 PM",desc:"Daily PMO sync up.",attendees:["keshav.a"],link:""}
   ]
 };
-var activeWeekDay = "Apr 30";
-var todayMeetings = weekMeetings["Apr 30"] || [];
-
-var activeWeekDay = "Apr 30";
+var activeWeekDay = "May 1";
 var weekDays = Object.keys(weekMeetings);
-var todayMeetings = weekMeetings["Apr 30"] || [];
-var activeWeekDay = "Apr 30";
-var weekDays = Object.keys(weekMeetings);
-
+var todayMeetings = weekMeetings["May 1"] || [];
 
 // Gemini Meeting Notes (primary source) + Fireflies (secondary)
 // Project definitions for grouping
@@ -1271,6 +1283,7 @@ const geminiNotes = [
 {date:"Apr 30",title:"AMP Feedback – 2026/04/30 12:15 IST",source:"gemini",projects:["AMP"],summary:"AMP flagged as critical go-to-market priority requiring streamlined operational workflows. Severe blockers identified: missing draft campaign capability and inaccurate country targeting prevent the product from meeting operational production standards. Release delayed to integrate essential feedback and build operational confidence. Weekly check-ins to track progress and ensure design alignment before final deployment.",actionItems:["[Priya Muduli] Share PR: Share the completed PR with Alice and Vignesh for review","[Sujit Kumar Tripathy] Create Scoping: Create scoping plan with the technical team after PR is fully signed off","[Sujit Kumar Tripathy] Define Milestones: Define batch milestones and timelines for key feature development","[Sujit Kumar Tripathy] Finalize PR Design: Update design-level changes in Figma; ensure sign-off complete","[Sujit Kumar Tripathy] Schedule Weekly: Schedule a recurring weekly check-in call for this project","[Sujit Kumar Tripathy] Schedule Design Review: Organise next call with design team (Jana, Gith, or Gus) to review and fill implementation gaps"],decisions:["AMP release delayed to incorporate operational feedback","Weekly check-in cadence established"],attendees:["Vinay","Karishma","Vignesh S","Priya Muduli","Sujit Kumar Tripathy","Vishnupriya Polraj"],docUrl:""},
 {date:"Apr 30",title:"Meridian PRD || Side Development – 2026/04/30 11:29 IST",source:"gemini",projects:["MMP"],summary:"Meeting established API usage standards and initiated a separate C++ development track for the MMP engineering team. Development standardised on mainnet for all API calls to avoid test net / mainnet conflicts. A new C++ development initiative launched as a separate track, isolated from Phase 2 demo milestones. The team will provide domain support without integrating C++ work into the core latency strategy.",actionItems:["[Mohit Lalbahadur Chaubey] Share Codebase: Give Sujan Sudhakar the downloaded code base for local installation and review","[Sujit Kumar Tripathy] Add Channel: Add Sujan Sudhakar to the relevant project channel","[Sujit Kumar Tripathy] Provide Meridian P: Give Sujan Sudhakar access to the Meridian P documentation","[Sujit Kumar Tripathy] Provide Report: Give Sujan Sudhakar access to the comparison report documentation","[Sujit Kumar Tripathy] Schedule Call: Arrange a separate follow-up meeting with Sujan Sudhakar","[Akhil Tiwari, Nabin, Kannan] Provide Guidance: Guide Sujan Sudhakar on domain knowledge and C++ exchange connector implementation","[Mohit Lalbahadur Chaubey] Assist Conversion: Help Sujan Sudhakar convert the Python side controller to C++"],attendees:["Sujit Kumar Tripathy","Akhil Tiwari","Naveen Bharathiraman","Kannan Uthirapathy","Sujan Sudhakar","Gunjan Kumar","Phanindra Gummaraju","Mohit Lalbahadur Chaubey"],docUrl:"https://docs.google.com/document/d/1NcOMjpcU74HSEZP_HcnH7Ee4teKgBpomFxZWCdf2N1U/edit"},
 {date:"Apr 30",title:"AdTech Domain Classification Discussion – 2026/04/30 11:04 IST",source:"gemini",projects:["DSP","E2"],summary:"Team simplified the classification system — removing publisher-side classification entirely and implementing domain blocking at the DSP level. Publisher side retains only allowed domains and mobile app IDs. DSP gets a new blocked domain flag. A critical runtime sync failure preventing 'all' domain flags from updating was resolved by re-saving settings. Margin discrepancies between publisher and DSP attributed to bid price margin deduction logic — investigation ongoing.",actionItems:["[Mithun Krishna] Clean Classification: Undo all previous classification-related changes in the codebase","[Vishnupriya Polraj] Update DSP PRD: Revise PRD to include classification removal and new blocked domain feature","[Mithun Krishna] Implement Bidder Logic: Integrate allowed and blocked domain filtering into the bidder service","[Pushpa Rangaswamy] Check Deployment Status: Verify with Chaithra if the runtime sync fix has been moved to production","[Vishnupriya Polraj] Create Development Tickets: Generate 2 separate tickets for Mithun — one for removing classification from publisher onboarding, one for adding blocked domain feature to DSP","[Vishnupriya Polraj] Attach Design Documents: Attach updated PRDs with Figma design details to new tickets","[Priya Muduli] Verify Revenue Metrics: Generate report with revenue, DSP fees, gross/net metrics to verify 20% gap","[Pushpa Rangaswamy] Assign Tickets: Assign new publisher and DSP tickets to Mithun Krishna","[Mithun Krishna] Update Ticket Status: Change status of all recently completed tickets to Dev Completed","[Mithun Krishna] Coordinate Deployment: Sit down with Gautam to push required changes for the publisher dashboard"],attendees:["Pushpa Rangaswamy","Sujit Kumar Tripathy","Vishnupriya Polraj","Priya Muduli"],docUrl:"https://docs.google.com/document/d/1EbXKCrrWHlEwDdsRVAUcsmg9usVaMANQ8p5Y8wDK58U/edit"},
+{date:"Apr 30",title:"AI Learning Workshops (Fireflies)",source:"fireflies",projects:["GENERAL"],summary:"Discussion revolved around enhancing skills from simple scripts to dynamic workflows, emphasizing multi-agent skill orchestration. Modular skill design stressed. Automation highlighted through daily reports aggregating calendar and communication tools. Automated triggers based on context discussed.",actionItems:["[John Rausch] Share advanced skill examples and assist participants with creating and integrating skills (29:00)","[John Rausch] Encourage participants to continuously update their AI skills (15:30)","[Chandru Narayana] Evaluate approaches to splitting skills into modular units (18:54)","[Unassigned] Implement scheduled automation reports on Cowork platform integrating calendar, Slack, Gmail (23:49)","[Unassigned] Periodically review and clean up unused or redundant skills (20:49)"],decisions:[],attendees:["all-hands@alkimi.org","deepa@alkimi.org","kamilah@alkimi.org","boardroom@alkimi.org","usha@kensaltensi.org","manasa.ms@kensaltensi.org","sujit.kumar@kensaltensi.org","chandru@alkimi.org","gaurav.handa@kensaltensi.org"],docUrl:"https://app.fireflies.ai/view/01KPX28BBAHN8ZCZZAWZR05BB3"},
 {date:"Apr 29",title:"[DEL] MMP Engineering Standup – 2026/04/29 16:00 IST",source:"gemini",projects:["MMP"],summary:"Teams synchronized on environment deployments and testing readiness for decentralized and centralized exchange integrations via architecture reviews. Dev environments updated for phase 2 testing. QA environment readiness depends on pending API key provisioning. Teams must reconcile implementation gaps against original architecture documents. Adapters for KuCoin and other exchanges confirmed to handle specific account and trading structures. Test plans finalized for primary exchanges including Gate and KuCoin.",actionItems:["[Gunjan Kumar] Deploy Binary: Update dev tab and deploy latest binary in the dev setup","[Gunjan Kumar] Share Latency: Share current latency measurements and benchmark codebase for step-by-step latency data","[Anand Pandey] Check URL: Check with Gautam if domain mapping for API URL is complete","[Anand Pandey] Deploy Frontend: Deploy the frontend application to the QA branch","[Anand Pandey] Deploy Changes: Deploy pending application changes to the dev environment","[Manasa Mariswamy] Request Wallet: Request the new wallet address from Gautam","[Manasa Mariswamy] Request Funding: Request operational funds from the business for the new wallet address","[Kannan Uthirapathy] Verify Accounts: Verify exchange documentation regarding sub-accounts, API, and secret key usage","[Kannan Uthirapathy] Share CX Architecture: Refine the CX architecture document and share it in the CX channel","[Sujit Kumar Tripathy] Share Architecture: Share the existing Confluence architecture document prepared by Sudasan","[Mohit Lalbahadur Chaubey] Update API Key: Update the API key for Gate exchange in the database for mainnet","[Akhil Tiwari, Kannan Uthirapathy] Share Repositories: Share the code GitHub repositories with VJ in the appropriate channel","[varadharajan Jeevarethinam] Clarify Setup: Discuss with Hoi how exchange accounts will be configured"],attendees:["Sudarshan Shenvi","Sujit Kumar Tripathy","Manasa Mariswamy","Chandru Narayana","Kannan Uthirapathy","Prem Upadhyay","Mohit Lalbahadur Chaubey","Phanindra Gummaraju","Naveen Bharathiraman","varadharajan Jeevarethinam","Gunjan Kumar","Gaurav Handa","Abhishek Teli","Akhil Tiwari","Anand Pandey","Sangamesh Mudakannavar","Sujan Sudhakar","Goutham M"],docUrl:"https://docs.google.com/document/d/1ONKs42hLulJkwNRKuWygZ5xsNP1rY5mITSvKgTzHG0Q/edit"},
 {date:"Apr 29",title:"[Del] MBP/AMP Regular Weekly Standup – 2026/04/29 15:00 IST",source:"gemini",projects:["AMP"],summary:"Campaign budget logic, ID display, and deployment blockers were discussed and resolved via cross-functional collaboration. Budget line items can exceed campaign totals without validation errors. Back end campaign ID formats take precedence over designs. Team members committed to expediting high priority fixes and ensuring better communication regarding blockers in the infrastructure channel.",actionItems:["[Gaurav Handa] Send PR: Forward Pull Request link to Sujit Kumar Tripathy","[Gaurav Handa] Reproduce Issue: Investigate intermittent issue and coordinate reproduction steps with Priyanka B","[Subham Kumar Behuria] Deliver Fixes: Expedite delivery of fixes for reported tickets including 263, 262, and 249","[The group] Report DevOps Blockers: Create issue in alchemy infra channel and notify Sujit Kumar Tripathy immediately if deployment failures occur"],attendees:["Sagar Jadhav","Sujit Kumar Tripathy","Manasa Mariswamy","Ramachandra KBS","Chandru Narayana","Darwie Fang","Prem Upadhyay","Daniel Calvo Lopez","Mithun Krishna","Priyanka B","Subham Kumar Behuria","Gaurav Handa","Vishnupriya Polraj","S Vignesh","Vishnupriya Polraj"],docUrl:"https://docs.google.com/document/d/1KOZWhonTMxxluuyzXz3ZGpqLWcDQ60TI6dwdP0Qe_Qo/edit"},
 {date:"Apr 29",title:"[Del] Agentic Marketplace Standup – 2026/04/29 14:30 IST",source:"gemini",projects:["AMKT"],summary:"Meeting covered scheduling adjustments and platform migration strategies. Participants rescheduled the meeting due to attendance conflicts. Team reviewed the publisher onboarding draft flow and current PR status. Decision made to migrate all functionality (Exchange, AM, DSP) into a single application dashboard — separate from ongoing agentic marketplace dev. Infrastructure updates confirmed ready for testing. Artic integration deferred until after upcoming stakeholder meeting. Agentic Relay items in progress with two items already started by Prem and Sagar.",actionItems:["[Sujit Kumar Tripathy] Reschedule Call: Reschedule the current meeting to another time today","[Ramachandra KBS] Share PR: Share the Pull Request documentation on the Slack channel","[Sujit Kumar Tripathy] Add Pushpa: Add Pushpa to the daily meetings schedule","[Sujit Kumar Tripathy] Check Old Branches: Follow up with Prem confirming removal of branches older than 1 week","[Sujit Kumar Tripathy] Handover Follow Up: Follow up with Chandra regarding the infrastructure QA handover process"],attendees:["Sudarshan Shenvi","Sujit Kumar Tripathy","Ramachandra KBS","Chandru Narayana","varadharajan Jeevarethinam","Prem Upadhyay","Gediminas Strumila","Pushpa Rangaswamy","Milly Putley"],docUrl:"https://docs.google.com/document/d/1eAlaMmTPo-CAYppY3jM4FGAXzl5dvtMDUgB83U3T5IM/edit"},
@@ -2287,7 +2300,7 @@ const teamColors={
 // ============================
 // TAB NAVIGATION
 // ============================
-const titles={overview:"Overview",projects:"Projects",workload:"Resources",velocity:"Sprint Velocity & Comparison",features:"Sprint Feature Tracker",sprintreview:"Sprint Review",meetings:"Weekly Meetings & Notes",releases:"Release Tracker",q2priorities:"Project Priorities",deliverables:"Key Deliverables",roadmap:"Product Roadmap",prdashboard:"PR Dashboard"};
+const titles={actionitems:"My Action Items",overview:"Overview",projects:"Projects",workload:"Resources",velocity:"Sprint Velocity & Comparison",features:"Sprint Feature Tracker",sprintreview:"Sprint Review",meetings:"Weekly Meetings & Notes",releases:"Release Tracker",q2priorities:"Project Priorities",deliverables:"Key Deliverables",roadmap:"Product Roadmap",prdashboard:"PR Dashboard"};
 
 function switchTab(tab){
   // Deactivate all sidebar nav links
@@ -2318,6 +2331,7 @@ function switchTab(tab){
   if(tab==='prdashboard') { setTimeout(function(){ loadPrDashboard(); }, 50); }
   if(tab==='workload') { setTimeout(function(){ switchTeamLoadTab('overview', document.querySelector('#teamLoadTabs button.active')||document.querySelector('#teamLoadTabs button')); }, 50); }
   if(tab==='velocity') { setTimeout(function(){ renderVelocity(); }, 50); }
+  if(tab==='actionitems') { setTimeout(function(){ renderActionItems(); }, 50); }
 }
 
 // ============================================================
@@ -3352,15 +3366,18 @@ function showFeatureTable(proj){
 // MEETINGS
 // ============================
 function parseMeetingTime(tStr,dateKey){
-  // Parse "11:30 AM" or "2:30 PM" into a Date for the given activeWeekDay (e.g. "Apr 24")
+  // Parse "11:30 AM" or "2:30 PM" into a Date for the given day key (e.g. "Apr 24", "May 1")
   var parts=tStr.match(/(\d+):(\d+)\s*(AM|PM)/i);
   if(!parts) return new Date();
   var h=parseInt(parts[1],10),m=parseInt(parts[2],10),ampm=parts[3].toUpperCase();
   if(ampm==='PM'&&h!==12) h+=12;
   if(ampm==='AM'&&h===12) h=0;
-  // Map "Apr 24" → 2026-04-24
-  var dayNum=parseInt(dateKey.replace('Apr ',''),10);
-  return new Date(2026,3,dayNum,h,m,0); // month 3 = April (0-indexed)
+  // Parse month and day from keys like "Apr 24" or "May 1"
+  var monthMap={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+  var dk=(dateKey||'').split(' ');
+  var mo=(dk[0] in monthMap)?monthMap[dk[0]]:3;
+  var dy=parseInt(dk[1],10)||1;
+  return new Date(2026,mo,dy,h,m,0);
 }
 function getMeetingStatus(timeStr,endStr){
   var now=new Date();
@@ -3370,24 +3387,35 @@ function getMeetingStatus(timeStr,endStr){
   if(now>=start&&now<end) return {label:'In Progress',cls:'inprogress'};
   return {label:'Upcoming',cls:'upcoming'};
 }
-// Find matching Gemini note for a meeting title
-function findGeminiNote(meetTitle){
+// Find matching Gemini note for a meeting title + date
+// Prioritises same-date notes; falls back to any date if no same-date match
+function findGeminiNote(meetTitle, dateKey){
   if(!meetTitle) return null;
   var t=meetTitle.toLowerCase().replace(/[\[\]]/g,'').trim();
-  var best=null, bestScore=0;
-  geminiNotes.forEach(function(n){
+  function scoreNote(n){
     var nt=n.title.toLowerCase().replace(/[\[\]]/g,'').trim();
-    // Exact match
-    if(nt===t){best=n;bestScore=100;return;}
-    // Check if key words overlap
+    if(nt===t) return 100;
     var tWords=t.split(/[\s\-\/]+/).filter(function(w){return w.length>2});
     var nWords=nt.split(/[\s\-\/]+/).filter(function(w){return w.length>2});
     var matches=0;
     tWords.forEach(function(tw){
-      nWords.forEach(function(nw){if(nw.indexOf(tw)>=0||tw.indexOf(nw)>=0) matches++});
+      nWords.forEach(function(nw){if(nw.indexOf(tw)>=0||tw.indexOf(nw)>=0) matches++;});
     });
-    var score=tWords.length>0?(matches/tWords.length*100):0;
-    if(score>bestScore){bestScore=score;best=n;}
+    return tWords.length>0?(matches/tWords.length*100):0;
+  }
+  // First pass: same-date notes only
+  var best=null, bestScore=0;
+  var dateNotes=dateKey?geminiNotes.filter(function(n){return n.date===dateKey}):geminiNotes;
+  dateNotes.forEach(function(n){
+    var s=scoreNote(n);
+    if(s>bestScore){bestScore=s;best=n;}
+  });
+  if(bestScore>=40) return best;
+  // Second pass: any date (fallback)
+  best=null; bestScore=0;
+  geminiNotes.forEach(function(n){
+    var s=scoreNote(n);
+    if(s>bestScore){bestScore=s;best=n;}
   });
   return bestScore>=40?best:null;
 }
@@ -3395,7 +3423,7 @@ function findGeminiNote(meetTitle){
 // Open Notes panel for a specific meeting
 function openMeetingNotes(idx){
   var m=todayMeetings[idx];
-  var note=findGeminiNote(m.title);
+  var note=findGeminiNote(m.title, activeWeekDay);
   var panel=document.getElementById('notesPanel');
   var body=document.getElementById('notesPanelBody');
   document.querySelector('.np-header h3').innerHTML='&#x1F4DD; Meeting Notes';
@@ -3453,7 +3481,7 @@ function openMeetingNotes(idx){
 function analyzeMeetingNotes(idx){
   var m=todayMeetings[idx];
   if(!m) return;
-  var note=findGeminiNote(m.title);
+  var note=findGeminiNote(m.title, activeWeekDay);
   var panel=document.getElementById('notesPanel');
   var body=document.getElementById('notesPanelBody');
   document.querySelector('.np-header h3').innerHTML='&#x1F50D; Analyze &amp; Share';
@@ -3661,9 +3689,10 @@ function renderMeetings(){
   // Render week day tabs
   var tabsHtml=weekDays.map(function(d){
     var cnt=(weekMeetings[d]||[]).length;
-    var isToday=(d === "Apr 29");
+    var todayKey=(function(){var now=new Date();var months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];return months[now.getMonth()]+' '+now.getDate();})();
+    var isToday=(d===todayKey);
     var isActive=(d===activeWeekDay);
-    var dayNames={"Apr 22":"Wed","Apr 23":"Thu","Apr 24":"Fri","Apr 25":"Sat","Apr 26":"Sun","Apr 27":"Mon","Apr 28":"Tue","Apr 29":"Wed"};
+    var dayNames={"Apr 22":"Wed","Apr 23":"Thu","Apr 24":"Fri","Apr 25":"Sat","Apr 26":"Sun","Apr 27":"Mon","Apr 28":"Tue","Apr 29":"Wed","Apr 30":"Thu","May 1":"Fri","May 2":"Sat","May 3":"Sun","May 4":"Mon","May 5":"Tue"};
     var label=dayNames[d]||d;
     return '<button class="'+(isActive?'active':'')+'" onclick="switchWeekDay(\''+d+'\')" style="position:relative">'+
       '<span style="font-weight:600">'+label+'</span> <span style="font-size:11px;opacity:0.7">'+d.replace('Apr ','')+'</span>'+
@@ -3679,7 +3708,7 @@ function renderMeetings(){
   // Render meeting cards (Notes button only, no Action Items)
   document.getElementById('meetingsList').innerHTML=todayMeetings.map(function(m,idx){
     var st=getMeetingStatus(m.time,m.end);
-    var note=findGeminiNote(m.title);
+    var note=findGeminiNote(m.title, activeWeekDay);
     var hasNotes=!!note;
     var notesBtnCls=hasNotes?'mtg-btn notes':'mtg-btn notes dimmed';
     return '<div class="meeting-card">'+
@@ -6050,6 +6079,560 @@ function renderAspDetailView(key) {
   wrap.innerHTML = html;
   setTimeout(function(){ initAsdCharts(key); }, 80);
 }
+
+// ============================
+// JIRA LIVE REFRESH ENGINE
+// ============================
+var JIRA_BASE = 'https://alkimi.atlassian.net/rest/api/3';
+
+function getJiraCreds(){
+  var email=localStorage.getItem('alkimi_jira_email')||'';
+  var token=localStorage.getItem('alkimi_jira_token')||'';
+  return (email&&token) ? btoa(email+':'+token) : null;
+}
+
+function openJiraTokenModal(){
+  var modal=document.getElementById('jiraTokenModal');
+  document.getElementById('jiraEmailInput').value=localStorage.getItem('alkimi_jira_email')||'';
+  document.getElementById('jiraTokenInput').value=localStorage.getItem('alkimi_jira_token')||'';
+  document.getElementById('jiraTokenStatus').textContent='';
+  modal.classList.add('open');
+}
+function closeJiraTokenModal(){ document.getElementById('jiraTokenModal').classList.remove('open'); }
+
+function saveJiraToken(){
+  var email=document.getElementById('jiraEmailInput').value.trim();
+  var token=document.getElementById('jiraTokenInput').value.trim();
+  var statusEl=document.getElementById('jiraTokenStatus');
+  if(!email||!token){ statusEl.style.color='var(--red)'; statusEl.textContent='Please enter both email and token.'; return; }
+  statusEl.style.color='var(--muted)'; statusEl.textContent='Testing connection…';
+  var auth=btoa(email+':'+token);
+  fetch(JIRA_BASE+'/myself',{headers:{'Authorization':'Basic '+auth,'Accept':'application/json'}})
+    .then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function(data){
+      localStorage.setItem('alkimi_jira_email',email);
+      localStorage.setItem('alkimi_jira_token',token);
+      statusEl.style.color='var(--green)';
+      statusEl.textContent='✓ Connected as '+data.displayName;
+      setTimeout(closeJiraTokenModal, 1200);
+    })
+    .catch(function(e){
+      statusEl.style.color='var(--red)';
+      statusEl.textContent='Connection failed ('+e+'). Check your email and token.';
+    });
+}
+
+function jiraFetch(path){
+  var auth=getJiraCreds();
+  if(!auth) return Promise.reject('no_creds');
+  return fetch(JIRA_BASE+path,{headers:{'Authorization':'Basic '+auth,'Accept':'application/json'}})
+    .then(function(r){ if(!r.ok) throw r.status; return r.json(); });
+}
+
+function jiraSearch(jql, fields, maxResults){
+  var auth=getJiraCreds();
+  if(!auth) return Promise.reject('no_creds');
+  var qs='?jql='+encodeURIComponent(jql)+'&fields='+fields.join(',')+'&maxResults='+(maxResults||100);
+  return fetch(JIRA_BASE+'/search'+qs,{headers:{'Authorization':'Basic '+auth,'Accept':'application/json'}})
+    .then(function(r){ if(!r.ok) throw r.status; return r.json(); });
+}
+
+function setRefreshState(btn, state, msg){
+  btn.classList.remove('spinning','success','error');
+  if(state==='spin')  btn.classList.add('spinning');
+  if(state==='ok')    { btn.classList.add('success'); btn.querySelector('.refresh-icon').textContent='✓'; }
+  if(state==='err')   { btn.classList.add('error');   btn.querySelector('.refresh-icon').textContent='✕'; }
+  if(msg){ var lbl=btn.querySelector('span:not(.refresh-icon)'); if(lbl) lbl.textContent=msg; }
+  if(state!=='spin') setTimeout(function(){
+    btn.classList.remove('success','error');
+    btn.querySelector('.refresh-icon').textContent='🔄';
+    var lbl=btn.querySelector('span:not(.refresh-icon)'); if(lbl) lbl.textContent=btn.dataset.defaultLabel||'Refresh';
+  }, 2500);
+}
+
+// -- RELEASES live fetch from Jira --
+var RELEASE_PROJECTS = [
+  {key:'DSP',    label:'DSP'},
+  {key:'E2',     label:'Exchange'},
+  {key:'ALKIMILABS', label:'Alkimi Labs'},
+  {key:'TN',     label:'Trustnet'},
+  {key:'MMP',    label:'MMP'},
+  {key:'AMP',    label:'DSA AI / AMP'}
+];
+
+function liveRefreshReleases(btn){
+  var auth=getJiraCreds();
+  if(!auth){ openJiraTokenModal(); return; }
+  setRefreshState(btn,'spin','Fetching…');
+  var promises=RELEASE_PROJECTS.map(function(p){
+    return jiraSearch('project='+p.key+' AND fixVersion is not EMPTY ORDER BY fixVersion DESC',
+      ['summary','status','fixVersions'],100)
+      .then(function(res){ return {proj:p, issues:res.issues||[]}; })
+      .catch(function(){ return {proj:p, issues:[]}; });
+  });
+  Promise.all(promises).then(function(results){
+    results.forEach(function(r){
+      var grouped={};
+      r.issues.forEach(function(iss){
+        var fvs=iss.fields.fixVersions||[];
+        fvs.forEach(function(fv){
+          if(!grouped[fv.name]) grouped[fv.name]={
+            name:fv.name, id:fv.id, released:fv.released||false,
+            releaseDate:fv.releaseDate||null,
+            url:'https://alkimi.atlassian.net/projects/'+r.proj.key+'/versions/'+fv.id+'/tab/release-report-all-issues',
+            issues:[], breakdown:{todo:0,ip:0,dc:0,qa:0,rtr:0,completed:0,released:0,blocked:0,done:0}
+          };
+          var s=(iss.fields.status&&iss.fields.status.name)||'To Do';
+          var sl=s.toLowerCase();
+          var entry=grouped[fv.name];
+          entry.issues.push({key:iss.key, summary:(iss.fields.summary||'').substring(0,90), status:s});
+          if(sl==='to do'||sl==='open') entry.breakdown.todo++;
+          else if(sl==='in progress') entry.breakdown.ip++;
+          else if(sl==='dev complete'||sl==='dev completed') entry.breakdown.dc++;
+          else if(sl==='system testing'||sl==='qa') entry.breakdown.qa++;
+          else if(sl==='ready to release') entry.breakdown.rtr++;
+          else if(sl==='completed') entry.breakdown.completed++;
+          else if(sl==='released') entry.breakdown.released++;
+          else if(sl==='blocked') entry.breakdown.blocked++;
+          else if(sl==='done') entry.breakdown.done++;
+          else entry.breakdown.todo++;
+        });
+      });
+      var arr=Object.values(grouped).map(function(v){ v.total=v.issues.length; return v; });
+      arr.sort(function(a,b){ return (b.releaseDate||'').localeCompare(a.releaseDate||''); });
+      releaseData[r.proj.label]=arr;
+    });
+    renderReleases();
+    setRefreshState(btn,'ok','Synced');
+  }).catch(function(){
+    setRefreshState(btn,'err','Failed');
+  });
+}
+
+// -- PROJECTS live fetch (active sprint issues) --
+var PROJECT_KEYS=['DSP','E2','ALKIMILABS','TN','MMP','AMP'];
+
+function liveRefreshProjects(btn){
+  var auth=getJiraCreds();
+  if(!auth){ openJiraTokenModal(); return; }
+  setRefreshState(btn,'spin','Fetching…');
+  var promises=PROJECT_KEYS.map(function(k){
+    return jiraSearch('project='+k+' AND sprint in openSprints() ORDER BY updated DESC',
+      ['summary','status','assignee','priority'],100)
+      .then(function(res){ return {key:k, issues:res.issues||[]}; })
+      .catch(function(){ return {key:k, issues:[]}; });
+  });
+  Promise.all(promises).then(function(results){
+    var keyToName={'DSP':'DSP','E2':'Exchange','ALKIMILABS':'Alkimi Labs','TN':'Trustnet','MMP':'MMP','AMP':'DSA AI / AMP'};
+    results.forEach(function(r){
+      var proj=projects.find(function(p){ return p.key===r.key || p.key===keyToName[r.key]; });
+      if(!proj) return;
+      var counts={total:r.issues.length,todo:0,ip:0,dc:0,qa:0,done:0,blocked:0};
+      r.issues.forEach(function(iss){
+        var s=((iss.fields.status&&iss.fields.status.name)||'').toLowerCase();
+        if(s==='to do'||s==='open') counts.todo++;
+        else if(s==='in progress') counts.ip++;
+        else if(s==='dev complete'||s==='dev completed') counts.dc++;
+        else if(s==='system testing'||s==='qa') counts.qa++;
+        else if(s==='done'||s==='released'||s==='completed') counts.done++;
+        else if(s==='blocked') counts.blocked++;
+        else counts.todo++;
+      });
+      proj.items=counts;
+    });
+    renderActiveSprintSection();
+    renderOverview();
+    setRefreshState(btn,'ok','Synced');
+  }).catch(function(){
+    setRefreshState(btn,'err','Failed');
+  });
+}
+
+// -- Central dispatcher --
+var currentTab='overview';
+function refreshCurrentSection(btn){
+  refreshSection(currentTab, btn);
+}
+
+function refreshSection(tab, btn){
+  currentTab=tab;
+  btn.dataset.defaultLabel=btn.querySelector('span:not(.refresh-icon)')?btn.querySelector('span:not(.refresh-icon)').textContent:'Refresh';
+  switch(tab){
+    case 'overview':
+      setRefreshState(btn,'spin'); renderOverview(); renderActiveSprintSection();
+      setRefreshState(btn,'ok','Done'); break;
+    case 'projects':
+      if(getJiraCreds()) liveRefreshProjects(btn);
+      else { setRefreshState(btn,'spin'); renderActiveSprintSection(); setRefreshState(btn,'ok','Done'); }
+      break;
+    case 'releases':
+      if(getJiraCreds()) liveRefreshReleases(btn);
+      else { openJiraTokenModal(); }
+      break;
+    case 'sprintreview':
+      setRefreshState(btn,'spin'); initSprintReview(); setRefreshState(btn,'ok','Done'); break;
+    case 'workload':
+      setRefreshState(btn,'spin');
+      switchTeamLoadTab('overview', document.querySelector('#teamLoadTabs button.active')||document.querySelector('#teamLoadTabs button'));
+      setRefreshState(btn,'ok','Done'); break;
+    case 'velocity':
+      setRefreshState(btn,'spin'); renderVelocity(); setRefreshState(btn,'ok','Done'); break;
+    case 'features':
+      setRefreshState(btn,'spin'); renderFeatures(); setRefreshState(btn,'ok','Done'); break;
+    case 'meetings':
+      liveRefreshMeetings(btn); break;
+    case 'deliverables':
+      setRefreshState(btn,'spin'); renderDeliverables(); setRefreshState(btn,'ok','Done'); break;
+    case 'roadmap':
+      setRefreshState(btn,'spin'); renderRoadmap(); setRefreshState(btn,'ok','Done'); break;
+    default:
+      setRefreshState(btn,'ok','Done');
+  }
+}
+
+// ============================
+// MEETINGS SYNC — Claude-mediated via Cowork
+// ============================
+
+// -- Meetings sync: handled by Claude via Cowork (Calendar + Gmail + Fireflies MCPs) --
+function showMeetingsSyncToast(btn){
+  var toast = document.getElementById('meetingsSyncToast');
+  if(!toast){
+    toast = document.createElement('div');
+    toast.id = 'meetingsSyncToast';
+    toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1f2937;color:#fff;padding:14px 24px;border-radius:12px;font-size:13px;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.3);text-align:center;max-width:420px;line-height:1.5';
+    document.body.appendChild(toast);
+  }
+  toast.innerHTML = '📅 <strong>To sync meetings</strong> — just say to Claude:<br><em style="color:#93c5fd">"Sync my meetings for this week"</em><br><span style="font-size:11px;opacity:.7;margin-top:4px;display:block">Claude will fetch from your Calendar, Gmail & Fireflies and update the dashboard</span>';
+  toast.style.display = 'block';
+  if(btn) setRefreshState(btn, 'ok', 'Ask Claude');
+  setTimeout(function(){ toast.style.display='none'; }, 5000);
+}
+
+function liveRefreshMeetings(btn){ showMeetingsSyncToast(btn); }
+
+// Track current tab for header refresh button
+var _origSwitchTab=switchTab;
+switchTab=function(tab){
+  currentTab=tab;
+  var lbl=document.getElementById('headerRefreshLabel');
+  if(lbl){
+    var jiraTabs={releases:'Sync from Jira',projects:'Sync from Jira',sprintreview:'Sync from Jira'};
+    lbl.textContent=jiraTabs[tab]||'Refresh';
+  }
+  _origSwitchTab(tab);
+};
+
+
+// ============================================================
+// MY ACTION ITEMS
+// ============================================================
+var AI_TASKS_KEY='alkimi_action_items_v2';
+var aiFilter={status:'all',source:'all',type:'all',priority:'all'};
+var aiDoneCollapsed=true;
+var aiWaitingCollapsed=false;
+
+function loadAITasks(){try{return JSON.parse(localStorage.getItem(AI_TASKS_KEY)||'[]');}catch(e){return[];}}
+function saveAITasks(t){try{localStorage.setItem(AI_TASKS_KEY,JSON.stringify(t));}catch(e){}}
+
+// ============================================================
+// SLACK ACTION ITEMS (fetched Apr 27–May 1, 2026)
+// ============================================================
+var slackActionItems=[
+  {title:"Unblock Elastic Search access via DevOps",source:"slack",sourceRef:"Agentic Marketplace Standup",date:"Apr 28",type:"blocker",priority:"high",slackUrl:"https://alkimi-org.slack.com/archives/C0ATVDJLV35/p1777437601240479"},
+  {title:"Follow up with Chuli — tag in channel for roadmap clarity",source:"slack",sourceRef:"MMP Engineering Standup",date:"Apr 27",type:"action",priority:"medium",slackUrl:"https://alkimi-org.slack.com/archives/C0ASX3VEPJ9/p1777295742897719"},
+  {title:"Add DevOps engineer to daily standup (from Apr 28)",source:"slack",sourceRef:"MMP Engineering Standup",date:"Apr 27",type:"action",priority:"low",slackUrl:"https://alkimi-org.slack.com/archives/C0ASX3VEPJ9/p1777295742897719"},
+  {title:"Clarify Phase 2 scope — are performance improvements (SIMD, service migration) pre-demo or next version?",source:"slack",sourceRef:"MMP Engineering Standup",date:"Apr 27",type:"action",priority:"medium",slackUrl:"https://alkimi-org.slack.com/archives/C0ASX3VEPJ9/p1777295742897719"},
+  {title:"Approve Exchange dev yml changes — alkimi-config-data PR#76",source:"slack",sourceRef:"#exchange-dev (Mithun Krishna)",date:"Apr 29",type:"request",priority:"medium",slackUrl:"https://alkimi-org.slack.com/archives/C08PAJ74P0R/p1777458584368919"},
+  {title:"Approve Exchange QA yml changes for publisher dashboard — alkimi-config-data PR#77",source:"slack",sourceRef:"#exchange-dev + DM (Mithun Krishna)",date:"Apr 30",type:"request",priority:"high",slackUrl:"https://alkimi-org.slack.com/archives/C08PAJ74P0R/p1777534858788139"},
+  {title:"Approve AMP AI platform fixes (AMP-264/263/262/259/257/249/243/238/237) — amp-ai-platform PR#102",source:"slack",sourceRef:"#amp-dev (Subham Kumar Behuria)",date:"Apr 30",type:"request",priority:"medium",slackUrl:"https://alkimi-org.slack.com/archives/C0AC340NDLZ/p1777551578895399"},
+  {title:"Share PRD and comparison report with Sujan Sudhakar",source:"slack",sourceRef:"DM (Sujan Sudhakar)",date:"Apr 30",type:"action",priority:"medium",slackUrl:"https://alkimi-org.slack.com/archives/D0A8A25KJMC/p1777529569767859"},
+  {title:"Help Kannan identify the right contact for Gmail password reset",source:"slack",sourceRef:"DM (Kannan Uthirapathy)",date:"Apr 30",type:"request",priority:"low",slackUrl:"https://alkimi-org.slack.com/archives/D0A73FDCXU3/p1777530300260019"},
+  {title:"Add Mermaid rendering support to Confluence (network disconnection protocol page — Gunjan)",source:"slack",sourceRef:"#mmp (Gunjan Kumar)",date:"Apr 30",type:"action",priority:"medium",slackUrl:"https://alkimi-org.slack.com/archives/C0A1NCN94N5/p1777563498589389"},
+  {title:"Ask developers to read blocked merge reason in AMP QA (per Lokanath)",source:"slack",sourceRef:"#pjm-devops-sync (Lokanath Prasad)",date:"Apr 29",type:"action",priority:"medium",slackUrl:"https://alkimi-org.slack.com/archives/C08QD3H26H0/p1777442665913689"},
+  {title:"Unblock Priyanka B in AMP dev — she reported still blocked",source:"slack",sourceRef:"#amp-dev (Priyanka B)",date:"Apr 29",type:"blocker",priority:"high",slackUrl:"https://alkimi-org.slack.com/archives/C0AC340NDLZ/p1777438233587609"}
+];
+
+function autoImportSlackTasks(){
+  var tasks=loadAITasks();
+  var hashes={};tasks.forEach(function(t){hashes[t.hash]=true;});
+  var added=0;
+  slackActionItems.forEach(function(s){
+    var h='slack_'+aiHashStr(s.title+s.date);
+    if(hashes[h]) return;
+    tasks.push({id:aiGenId(),title:s.title,source:'slack',sourceRef:s.sourceRef||'Slack',date:s.date||'',type:s.type||'action',delegateTo:'',priority:s.priority||'medium',status:'pending',doneAt:null,addedAt:Date.now(),hash:h,slackUrl:s.slackUrl||''});
+    hashes[h]=true;added++;
+  });
+  if(added>0) saveAITasks(tasks);
+  return added;
+}
+
+function aiHashStr(s){var h=0;for(var i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return Math.abs(h).toString(36);}
+function aiGenId(){return 'ai_'+Date.now()+'_'+Math.random().toString(36).substr(2,6);}
+function escHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function aiDetectType(text){
+  var t=text.toLowerCase();
+  if(t.match(/block|urgent|critical/)) return 'blocker';
+  if(t.match(/delegate|handover|assign/)) return 'delegate';
+  if(t.match(/\bshare\b|\bsend\b|request|provide/)) return 'request';
+  return 'action';
+}
+
+function aiExtractTitle(item){
+  var m=item.match(/^\[([^\]]+)\]\s*[^:]*:\s*(.*)/);
+  if(m) return m[2].trim();
+  m=item.match(/^\[([^\]]+)\]\s*(.*)/);
+  if(m) return m[2].trim();
+  return item.replace(/^[-\s*]+/,'').trim();
+}
+
+function autoImportMeetingTasks(){
+  var tasks=loadAITasks();
+  var hashes={};
+  tasks.forEach(function(t){hashes[t.hash]=true;});
+  var added=0;
+  geminiNotes.forEach(function(note){
+    if(!note.actionItems||!note.actionItems.length) return;
+    note.actionItems.forEach(function(item){
+      var lower=item.toLowerCase();
+      if(lower.indexOf('sujit')<0) return;
+      var title=aiExtractTitle(item);
+      if(!title||title.length<6) return;
+      var hash=aiHashStr(title.toLowerCase().replace(/\s+/g,'').substr(0,60)+(note.date||''));
+      if(hashes[hash]) return;
+      hashes[hash]=true;
+      added++;
+      tasks.push({
+        id:aiGenId(),title:title,source:'gemini',
+        sourceRef:(note.title||'').replace(/\s*–\s*2026.*$/,'').trim(),
+        date:note.date||'',type:aiDetectType(title),delegateTo:'',
+        priority:'medium',status:'pending',doneAt:null,addedAt:Date.now(),hash:hash
+      });
+    });
+  });
+  if(added>0) saveAITasks(tasks);
+  return added;
+}
+
+function renderAITaskCard(t){
+  var done=t.status==='done';
+  var pClr={high:'#ef4444',medium:'#f59e0b',low:'#22c55e'};
+  var pEmj={high:'🔴',medium:'🟡',low:'🟢'};
+  var tLbl={action:'⚡ Action',blocker:'🚧 Blocker',delegate:'↗ Delegate',request:'📩 Request'};
+  var tClr={action:'#3b82f6',blocker:'#ef4444',delegate:'#f59e0b',request:'#8b5cf6'};
+  var sLbl={gemini:'📝 Meetings',slack:'💬 Slack',manual:'✏️ Manual'};
+  var h='<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;margin-bottom:6px;background:var(--card);border:1px solid var(--border);border-radius:10px;'+(done?'opacity:0.55':'')+'">';
+  // Checkbox
+  h+='<div onclick="aiToggleDone(\''+t.id+'\')" style="width:18px;height:18px;border-radius:5px;border:2px solid '+(done?'#22c55e':'#cbd5e1')+';background:'+(done?'#22c55e':'transparent')+';display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;margin-top:2px">'+(done?'<span style="color:#fff;font-size:10px;font-weight:700">✓</span>':'')+'</div>';
+  // Priority dot
+  h+='<div style="width:8px;height:8px;border-radius:50%;background:'+(pClr[t.priority]||'#94a3b8')+';flex-shrink:0;margin-top:6px"></div>';
+  // Body
+  h+='<div style="flex:1;min-width:0">';
+  h+='<div style="font-size:13px;font-weight:500;line-height:1.4;margin-bottom:5px;'+(done?'text-decoration:line-through;color:var(--muted)':'color:var(--text)')+'">'+escHtml(t.title)+'</div>';
+  h+='<div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center">';
+  h+='<span style="padding:1px 7px;border-radius:8px;font-size:10px;font-weight:600;background:'+tClr[t.type]+'20;color:'+tClr[t.type]+'">'+tLbl[t.type]+'</span>';
+  h+='<span style="padding:1px 7px;border-radius:8px;font-size:10px;font-weight:600;background:#f1f5f9;color:#64748b">'+(sLbl[t.source]||t.source)+'</span>';
+  if(t.date) h+='<span style="font-size:10px;color:var(--muted)">'+escHtml(t.date)+'</span>';
+  if(t.delegateTo) h+='<span style="font-size:10px;color:#f59e0b;font-weight:600">→ '+escHtml(t.delegateTo)+'</span>';
+  if(t.sourceRef) h+='<span style="font-size:10px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:220px" title="'+escHtml(t.sourceRef)+'">📋 '+escHtml(t.sourceRef.substring(0,55))+(t.sourceRef.length>55?'…':'')+'</span>';
+  if(t.slackUrl) h+='<a href="'+escHtml(t.slackUrl)+'" target="_blank" style="font-size:10px;color:#4f8ef7;text-decoration:none;white-space:nowrap">↗ View in Slack</a>';
+  h+='</div></div>';
+  // Priority select
+  h+='<select onchange="aiSetPriority(\''+t.id+'\',this.value)" title="Priority" style="border:1px solid var(--border);border-radius:6px;padding:3px 5px;font-size:11px;background:var(--card);cursor:pointer;flex-shrink:0">';
+  ['high','medium','low'].forEach(function(p){h+='<option value="'+p+'"'+(t.priority===p?' selected':'')+'>'+pEmj[p]+'</option>';});
+  h+='</select>';
+  // Delete
+  h+='<button onclick="aiDeleteTask(\''+t.id+'\')" title="Delete" style="border:none;background:transparent;cursor:pointer;color:#cbd5e1;font-size:15px;padding:2px 4px;flex-shrink:0;line-height:1">✕</button>';
+  h+='</div>';
+  return h;
+}
+
+function renderAISection(label, tasks, icon, collapsed, sid){
+  var clr=sid==='pending'?'var(--primary)':sid==='delegated'?'#f59e0b':'#22c55e';
+  var h='<div style="margin-bottom:20px">';
+  h+='<div onclick="toggleAISection(\''+sid+'\')" style="display:flex;align-items:center;gap:8px;margin-bottom:10px;cursor:pointer;user-select:none;padding-bottom:8px;border-bottom:2px solid '+clr+'40">';
+  h+='<span style="font-size:13px;font-weight:700;color:'+clr+'">'+icon+' '+label.toUpperCase()+'</span>';
+  h+='<span style="display:inline-block;padding:1px 8px;border-radius:10px;font-size:11px;font-weight:700;background:'+clr+'20;color:'+clr+'">'+tasks.length+'</span>';
+  h+='<span style="font-size:11px;color:var(--muted);margin-left:auto">'+(collapsed?'▶ show':'▼ hide')+'</span>';
+  h+='</div>';
+  if(!collapsed){
+    if(tasks.length===0){
+      h+='<div style="text-align:center;padding:24px;color:var(--muted);font-size:13px;border:1px dashed var(--border);border-radius:10px">';
+      if(sid==='pending') h+='🎉 No pending tasks — clear!';
+      else if(sid==='delegated') h+='No items delegated.';
+      else h+='No completed tasks yet.';
+      h+='</div>';
+    } else {
+      tasks.forEach(function(t){h+=renderAITaskCard(t);});
+    }
+  }
+  h+='</div>';
+  return h;
+}
+
+function renderActionItems(){
+  autoImportMeetingTasks();
+  var allTasks=loadAITasks();
+  var f=aiFilter;
+
+  // Apply filters (source, type, priority only — status handled by section)
+  var vis=allTasks.filter(function(t){
+    if(f.source!=='all'&&t.source!==f.source) return false;
+    if(f.type!=='all'&&t.type!==f.type) return false;
+    if(f.priority!=='all'&&t.priority!==f.priority) return false;
+    return true;
+  });
+
+  var prioOrd={high:0,medium:1,low:2};
+  var myActions=vis.filter(function(t){return t.status==='pending'&&t.type!=='delegate';});
+  var delegated=vis.filter(function(t){return t.status==='pending'&&t.type==='delegate';});
+  var done=vis.filter(function(t){return t.status==='done';});
+  myActions.sort(function(a,b){return (prioOrd[a.priority]||1)-(prioOrd[b.priority]||1);});
+  delegated.sort(function(a,b){return (prioOrd[a.priority]||1)-(prioOrd[b.priority]||1);});
+  done.sort(function(a,b){return (b.doneAt||0)-(a.doneAt||0);});
+
+  var totalPending=allTasks.filter(function(t){return t.status==='pending';}).length;
+  var totalDone=allTasks.filter(function(t){return t.status==='done';}).length;
+  var highCount=allTasks.filter(function(t){return t.status==='pending'&&t.priority==='high';}).length;
+
+  var h='<div style="padding:20px;max-width:920px">';
+
+  // ── Header stats + action buttons ──
+  h+='<div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;flex-wrap:wrap">';
+  h+='<div style="display:flex;gap:20px;align-items:center">';
+  h+='<div style="text-align:center"><div style="font-size:28px;font-weight:800;color:var(--primary);line-height:1">'+totalPending+'</div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em">Pending</div></div>';
+  if(highCount>0) h+='<div style="text-align:center"><div style="font-size:28px;font-weight:800;color:#ef4444;line-height:1">'+highCount+'</div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em">🔴 High</div></div>';
+  h+='<div style="text-align:center"><div style="font-size:28px;font-weight:800;color:#22c55e;line-height:1">'+totalDone+'</div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em">Done</div></div>';
+  h+='</div>';
+  h+='<div style="flex:1"></div>';
+  h+='<button class="refresh-btn" style="float:none;margin:0" onclick="showAISlackToast(this)"><span class="refresh-icon">💬</span> Fetch from Slack</button>';
+  h+='<button id="aiSyncMeetBtn" class="refresh-btn" style="float:none;margin:0;border-color:var(--green);color:var(--green)" onclick="manualAISyncMeetings(this)"><span class="refresh-icon">🔄</span> Sync Meetings</button>';
+  h+='</div>';
+
+  // ── Quick Add ──
+  h+='<div style="display:flex;gap:8px;margin-bottom:16px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 14px;box-shadow:0 1px 4px rgba(0,0,0,.04)">';
+  h+='<input id="aiNewTitle" type="text" placeholder="Add a task, blocker or action item..." style="flex:1;border:none;outline:none;font-size:13px;color:var(--text);background:transparent" onkeydown="if(event.key===\'Enter\')aiAddManual()">';
+  h+='<select id="aiNewType" style="border:1px solid var(--border);border-radius:7px;padding:5px 8px;font-size:12px;color:var(--text);background:var(--card);cursor:pointer"><option value="action">⚡ Action</option><option value="blocker">🚧 Blocker</option><option value="delegate">↗ Delegate</option><option value="request">📩 Request</option></select>';
+  h+='<select id="aiNewPriority" style="border:1px solid var(--border);border-radius:7px;padding:5px 8px;font-size:12px;color:var(--text);background:var(--card);cursor:pointer"><option value="medium">🟡 Medium</option><option value="high">🔴 High</option><option value="low">🟢 Low</option></select>';
+  h+='<button onclick="aiAddManual()" style="padding:6px 18px;border-radius:8px;border:none;background:var(--primary);color:#fff;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap">+ Add</button>';
+  h+='</div>';
+
+  // ── Filter bar ──
+  h+='<div style="display:flex;gap:5px;margin-bottom:18px;flex-wrap:wrap;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 12px">';
+  h+='<span style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-right:4px">Filter</span>';
+  function mkBtn(key,val,label,active){
+    return '<button onclick="setAIFilter(\''+key+'\',\''+val+'\')" style="padding:3px 10px;border-radius:20px;border:1px solid '+(active?'var(--primary)':'var(--border)')+';background:'+(active?'var(--primary)':'transparent')+';color:'+(active?'#fff':'var(--muted)')+';font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap">'+label+'</button>';
+  }
+  h+=mkBtn('source','all','All',f.source==='all');
+  h+=mkBtn('source','gemini','📝 Meetings',f.source==='gemini');
+  h+=mkBtn('source','slack','💬 Slack',f.source==='slack');
+  h+=mkBtn('source','manual','✏️ Manual',f.source==='manual');
+  h+='<span style="color:var(--border);margin:0 4px">|</span>';
+  h+=mkBtn('type','all','All Types',f.type==='all');
+  h+=mkBtn('type','action','⚡ Action',f.type==='action');
+  h+=mkBtn('type','blocker','🚧 Blocker',f.type==='blocker');
+  h+=mkBtn('type','delegate','↗ Delegate',f.type==='delegate');
+  h+=mkBtn('type','request','📩 Request',f.type==='request');
+  h+='<span style="color:var(--border);margin:0 4px">|</span>';
+  h+=mkBtn('priority','all','All',f.priority==='all');
+  h+=mkBtn('priority','high','🔴 High',f.priority==='high');
+  h+=mkBtn('priority','medium','🟡 Med',f.priority==='medium');
+  h+=mkBtn('priority','low','🟢 Low',f.priority==='low');
+  h+='</div>';
+
+  // ── My Actions ──
+  h+=renderAISection('My Actions',myActions,'⚡',false,'pending');
+
+  // ── Waiting on Others ──
+  h+=renderAISection('Waiting on Others',delegated,'↗',aiWaitingCollapsed,'delegated');
+
+  // ── Done ──
+  h+=renderAISection('Done',done,'✅',aiDoneCollapsed,'done');
+
+  h+='</div>';
+  var sec=document.getElementById('sec-actionitems');
+  if(sec) sec.innerHTML=h;
+}
+
+// Define mkBtn outside render so it's hoisted — it's defined inline above; helper below for JS closures
+function setAIFilter(key,val){aiFilter[key]=val;renderActionItems();}
+
+function toggleAISection(sid){
+  if(sid==='done') aiDoneCollapsed=!aiDoneCollapsed;
+  if(sid==='delegated') aiWaitingCollapsed=!aiWaitingCollapsed;
+  renderActionItems();
+}
+
+function aiToggleDone(id){
+  var tasks=loadAITasks().map(function(t){
+    if(t.id===id){t.status=t.status==='done'?'pending':'done';t.doneAt=t.status==='done'?Date.now():null;}
+    return t;
+  });
+  saveAITasks(tasks);renderActionItems();
+}
+
+function aiDeleteTask(id){
+  saveAITasks(loadAITasks().filter(function(t){return t.id!==id;}));
+  renderActionItems();
+}
+
+function aiSetPriority(id,val){
+  var tasks=loadAITasks().map(function(t){if(t.id===id)t.priority=val;return t;});
+  saveAITasks(tasks);renderActionItems();
+}
+
+function aiAddManual(){
+  var inp=document.getElementById('aiNewTitle');
+  var typeEl=document.getElementById('aiNewType');
+  var prioEl=document.getElementById('aiNewPriority');
+  if(!inp||!inp.value.trim()) return;
+  var title=inp.value.trim();
+  var type=typeEl?typeEl.value:'action';
+  var prio=prioEl?prioEl.value:'medium';
+  var hash=aiHashStr(title.toLowerCase().replace(/\s+/g,'').substr(0,60)+'manual'+Date.now());
+  var now=new Date();
+  var mons=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var tasks=loadAITasks();
+  tasks.push({id:aiGenId(),title:title,source:'manual',sourceRef:'',
+    date:mons[now.getMonth()]+' '+now.getDate(),type:type,delegateTo:'',
+    priority:prio,status:'pending',doneAt:null,addedAt:Date.now(),hash:hash});
+  saveAITasks(tasks);
+  inp.value='';
+  renderActionItems();
+}
+
+function manualAISyncMeetings(btn){
+  var n=autoImportMeetingTasks();
+  renderActionItems();
+  if(btn){
+    var orig=btn.innerHTML;
+    btn.innerHTML='<span class="refresh-icon">✓</span> '+(n>0?n+' imported':'Up to date');
+    btn.classList.add('success');
+    setTimeout(function(){btn.innerHTML=orig;btn.classList.remove('success');},3000);
+  }
+}
+
+function showAISlackToast(btn){
+  var n=autoImportSlackTasks();
+  renderActionItems();
+  var toast=document.getElementById('aiSlackToast');
+  if(!toast){
+    toast=document.createElement('div');
+    toast.id='aiSlackToast';
+    toast.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1f2937;color:#fff;padding:16px 24px;border-radius:12px;font-size:13px;z-index:9999;max-width:440px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.3);line-height:1.6';
+    document.body.appendChild(toast);
+  }
+  if(n>0){
+    toast.innerHTML='✅ <strong>'+n+' Slack action item'+(n===1?'':'s')+' imported</strong><br><span style="font-size:11px;color:#9ca3af;margin-top:4px;display:block">Fetched from your DMs &amp; channels (Apr 27–May 1)</span>';
+  } else {
+    toast.innerHTML='✓ <strong>Slack tasks are up to date</strong><br><span style="font-size:11px;color:#9ca3af;margin-top:4px;display:block">No new items since last sync</span>';
+  }
+  toast.style.display='block';
+  if(btn){btn.innerHTML='<span class="refresh-icon">✓</span> '+(n>0?n+' Imported':'Up to date');btn.classList.add('success');}
+  setTimeout(function(){toast.style.display='none';if(btn){btn.innerHTML='<span class="refresh-icon">💬</span> Fetch from Slack';btn.classList.remove('success');}},4000);
+}
+
 
 // ============================
 // INIT
