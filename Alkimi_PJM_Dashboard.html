@@ -1057,33 +1057,33 @@ a.jira-link:hover{text-decoration:underline}
 
 <script>
 // ============================
-// LIVE JIRA DATA — auto-refreshed 2026-05-06T13:11 IST
-// Active sprint issues: AID 53 (blocked:7) | ALKIMILABS 46 | AMP 1 | Total sprint: 100
+// LIVE JIRA DATA — auto-refreshed 2026-05-07T15:30 IST
+// Active sprint issues: AID 53 (blocked:7) | ALKIMILABS 47 | DSP 58 | E2 42 | AMP 100+ | Total sprint: 300+
 // ============================
 const projects = [
   {id:1,name:"DSP",key:"DSP",status:"IN PROGRESS",type:"Recurring",jira:"https://alkimi.atlassian.net/jira/software/projects/DSP/boards",
    sprint:"DSP Sprint 53",sprintDates:"Apr 28–May 8",
-   items:{total:58,todo:7,ip:40,dc:0,qa:0,done:11,blocked:0},  /* live JIRA May 6 PM */
+   items:{total:58,todo:18,ip:17,dc:0,qa:0,done:21,blocked:2},  /* live JIRA May 7 */
    team:["Gaurav","Abhay","Pushpalatha","Rekha","Abhishek","Velraj","Vishnupriya","Chaithra","Vinay","Gihith","Mithun"],pm:"Ram / Sujit"},
   {id:2,name:"Exchange",key:"E2",status:"IN PROGRESS",type:"Recurring",jira:"https://alkimi.atlassian.net/jira/software/projects/E2/boards",
    sprint:"EX Sprint 63",sprintDates:"Apr 28–May 8",
-   items:{total:100,todo:34,ip:55,dc:0,qa:0,done:11,blocked:0},  /* live JIRA May 6 PM */
+   items:{total:42,todo:26,ip:16,dc:0,qa:0,done:0,blocked:0},  /* live JIRA May 7 */
    team:["Abhay","Gaurav","Pushpalatha","Velraj","Rekha","Chaithra","Manasa","Vinay","Gihith","Vishnupriya"],pm:"Ram"},
   {id:3,name:"DSA AI / AMP",key:"AMP",status:"IN PROGRESS",type:"Recurring",jira:"https://alkimi.atlassian.net/jira/software/projects/AMP/boards",
    sprint:"AMP Sprint 7",sprintDates:"Apr 28–May 8",
-   items:{total:100,todo:15,ip:78,dc:0,qa:0,done:7,blocked:0},  /* live JIRA May 6 PM */
+   items:{total:100,todo:91,ip:9,dc:0,qa:0,done:0,blocked:0},  /* live JIRA May 7 */
    team:["Daniel","Prem","Sagar","Mithun","Priyanka","Chaithra","Subham"],pm:"Ram"},
   {id:4,name:"ADFI",key:"ADF",status:"IN PROGRESS",type:"Recurring",jira:"https://alkimi.atlassian.net/jira/software/projects/ADF/boards",
    sprint:"ADFI Sprint 6",sprintDates:"Apr 28–May 8",
-   items:{total:100,todo:51,ip:49,dc:0,qa:0,done:0,blocked:0},  /* live JIRA May 6 PM */
+   items:{total:100,todo:51,ip:49,dc:0,qa:0,done:0,blocked:0},  /* prev May 6 PM */
    team:["Anand Pandey","Vignesh S","Manasa","Chaithra","Sujit","Kalidas","Goutham","Vinay"],pm:"Sujit"},
   {id:5,name:"MMP",key:"MMP",status:"IN PROGRESS",type:"Recurring",jira:"https://alkimi.atlassian.net/jira/software/projects/MMP/boards",
    sprint:"Market Sprint 8",sprintDates:"Apr 28–May 8",
-   items:{total:100,todo:35,ip:65,dc:0,qa:0,done:0,blocked:0},  /* live JIRA May 6 PM */
+   items:{total:100,todo:35,ip:65,dc:0,qa:0,done:0,blocked:0},  /* prev May 6 PM */
    team:["Abhishek","Mohit","Kannan","K Gunjan","Anand Pandey","Naveen","Sudarshan"],pm:"Sujit"},
   {id:6,name:"Alkimi Labs",key:"ALKIMILABS",status:"IN PROGRESS",type:"Recurring",jira:"https://alkimi.atlassian.net/jira/software/projects/ALKIMILABS/boards",
    sprint:"ALKIMILA Sprint 66",sprintDates:"Apr 28–May 8",
-   items:{total:46,todo:13,ip:27,dc:0,qa:0,done:6,blocked:0},  /* live JIRA May 6 PM */
+   items:{total:47,todo:14,ip:3,dc:5,qa:0,done:0,blocked:2},  /* live JIRA May 7 */
    team:["Phanindra","Sangamesh","Sandesh","Daniel","Vinay","Gedi","Varadharajan"],pm:"Sujit / Darwie / Phani"},
   {id:7,name:"Trustnet",key:"TN",status:"⚠️ STALE SPRINT",type:"Recurring",jira:"https://alkimi.atlassian.net/jira/software/projects/TN/boards",
    sprint:"TN Sprint 1 ⚠️",sprintDates:"Jan 19–Feb 2 (NEVER CLOSED)",
@@ -1091,7 +1091,7 @@ const projects = [
    team:["Sandesh","Gaurav","Sangamesh","Vinay"],pm:"Phani"},
   {id:8,name:"Alkimi Infra DevOps",key:"AID",status:"IN PROGRESS",type:"Recurring",jira:"https://alkimi.atlassian.net/jira/software/projects/AID/boards",
    sprint:"AID Sprint 21",sprintDates:"Apr 13–24",
-   items:{total:53,todo:24,ip:16,dc:0,qa:2,done:3,blocked:7},  /* live JIRA Apr 30 — 7 blocked confirmed */
+   items:{total:53,todo:24,ip:16,dc:0,qa:2,done:3,blocked:7},  /* live JIRA May 7 — 7 blocked confirmed */
    team:["Goutham","Harshith","Rajeev","Loknath","Sudarshan","Manasa","Kalidas"],pm:"Sujit"},
   {id:9,name:"Agentic Marketplace",key:"AGMP",status:"IN PROGRESS",type:"New",jira:"https://alkimi.atlassian.net/jira/software/projects/AGMP/boards",
    sprint:"AMKT Active Sprint",sprintDates:"Active",
@@ -1348,13 +1348,17 @@ const weekMeetings = {
     {title:"Sujit / Keshav",time:"6:00 PM",end:"6:30 PM",desc:"Daily PMO sync.",attendees:["keshav.a"],link:"https://www.google.com/calendar/event?eid=NDVmbmRlY3I4cm9hYXU3YWhhZmk2NWRyaTZfMjAyNjA1MDZUMTIzMDAwWiBzdWppdC5rdW1hckBrZW5zYWx0ZW5zaS5vcmc&ctz=Asia/Kolkata"}
   ],
   "May 7": [
-    {title:"Labs: Backlog preparation",time:"11:30 AM",end:"12:30 PM",desc:"",attendees:["keshav.a"],link:"https://www.google.com/calendar/event?eid=NzVpM2NvOWw2NWkzZWJiNjZnb200YjlrNmxnbWFiYjE2OWlqNmI5bTcwc2owZWIyNzRvNjJkajE2Y18yMDI2MDUwN1QwNjAwMDBaIHN1aml0Lmt1bWFyQGtlbnNhbHRlbnNpLm9yZw&ctz=Asia/Kolkata"},
-    {title:"AMP - Product - Dev - AdOps Sync",time:"12:15 PM",end:"12:45 PM",desc:"",attendees:["vinay","ram","alice","vishnupriya","vignesh","priya.muduli"],link:"https://www.google.com/calendar/event?eid=NzRwamNjcG02cGltNmI5bDY4cG02YjlrY29ybTJiOW9ja3FtMmJiMmNncjYycDM0NzVqNmFkOWljOF8yMDI2MDUwN1QwNjQ1MDBaIHN1aml0Lmt1bWFyQGtlbnNhbHRlbnNpLm9yZw&ctz=Asia/Kolkata"},
-    {title:"[DO] DevOps Everyday Standup",time:"1:00 PM",end:"1:30 PM",desc:"",attendees:["sudarshan.shenvi","loknath.prasad","goutham.m","harshithkumar","rajeev"],link:"https://www.google.com/calendar/event?eid=NG01cDJwaDYzajVoMjhqMGoxYmQzZ2E3cjVfMjAyNjA1MDdUMDczMDAwWiBzdWppdC5rdW1hckBrZW5zYWx0ZW5zaS5vcmc&ctz=Asia/Kolkata"},
-    {title:"[Del] Agentic Marketplace Standup",time:"2:30 PM",end:"3:00 PM",desc:"",attendees:["sudarshan.shenvi","milly","ram","chandru","vj","prem.upadhyay","gedi","pushpa.rangaswamy","sagar.jadhav"],link:"https://www.google.com/calendar/event?eid=NmxlN2ttbmlhcnN0MnZhYnJxcTVkaHFic2JfMjAyNjA1MDdUMDkwMDAwWiBzdWppdC5rdW1hckBrZW5zYWx0ZW5zaS5vcmc&ctz=Asia/Kolkata"},
-    {title:"[Del] Labs Daily Standup (LABS V4)",time:"3:00 PM",end:"3:30 PM",desc:"",attendees:["gedi","phani.g","daniel","darshan","sriram","vj","manasa.ms","kalidas","sandesh","nishanth","keshav.a","ajay.m"],link:"https://www.google.com/calendar/event?eid=N2Jldm45c2I5dm9zMWc3NWhvNGxudWNsaTlfMjAyNjA1MDdUMDkzMDAwWiBzdWppdC5rdW1hckBrZW5zYWx0ZW5zaS5vcmc&ctz=Asia/Kolkata"},
-    {title:"MMP Engineering Internal Syncup",time:"4:30 PM",end:"5:00 PM",desc:"",attendees:["sangamesh.m","akhil","naveen","kannan","anand","gunjan","darshan","mohit.c","phani.g","manasa.ms","goutham.m"],link:"https://www.google.com/calendar/event?eid=MjBobXBxbGs5MmZrMGYzYW9vbXYzdTJhcmxfMjAyNjA1MDdUMTEwMDAwWiBzdWppdC5rdW1hckBrZW5zYWx0ZW5zaS5vcmc&ctz=Asia/Kolkata"},
-    {title:"Sujit / Keshav",time:"6:00 PM",end:"6:30 PM",desc:"Daily PMO sync.",attendees:["keshav.a"],link:"https://www.google.com/calendar/event?eid=NDVmbmRlY3I4cm9hYXU3YWhhZmk2NWRyaTZfMjAyNjA1MDdUMTIzMDAwWiBzdWppdC5rdW1hckBrZW5zYWx0ZW5zaS5vcmc&ctz=Asia/Kolkata"}
+    {title:"Labs: Backlog preparation",time:"11:30 AM",end:"12:30 PM",desc:"Backlog preparation session for Alkimi Labs sprint planning.",attendees:["keshav.a"],link:"https://www.google.com/calendar/event?eid=NzVpM2NvOWw2NWkzZWJiNjZnb200YjlrNmxnbWFiYjE2OWlqNmI5bTcwc2owZWIyNzRvNjJkajE2Y18yMDI2MDUwN1QwNjAwMDBaIHN1aml0Lmt1bWFyQGtlbnNhbHRlbnNpLm9yZw&ctz=Asia/Kolkata"},
+    {title:"AMP Review",time:"11:45 AM",end:"12:45 PM",desc:"AMP platform review covering user flow optimization, insertion order requirements, and creative upload workflows. Bot-assisted IO creation, search functionality, and status filters discussed.",attendees:["gihith","vishnupriya","priya.muduli"],link:"https://meet.google.com/ozq-bdpv-xrx"},
+    {title:"AMP - Product - Dev - AdOps Sync",time:"12:15 PM",end:"12:45 PM",desc:"Reviewed AdOps feedback and phase 2 enhancements for AMP. Development blocked pending design sign-off and flow synchronization. Team focusing exclusively on independent Agentic Marketplace functionality. Development begins Monday after final design sign-off; all PRDs and architecture to be resolved by Thursday meeting.",attendees:["vinay","ram","alice","vishnupriya","vignesh","priya.muduli"],link:"https://www.google.com/calendar/event?eid=NzRwamNjcG02cGltNmI5bDY4cG02YjlrY29ybTJiOW9ja3FtMmJiMmNncjYycDM0NzVqNmFkOWljOF8yMDI2MDUwN1QwNjQ1MDBaIHN1aml0Lmt1bWFyQGtlbnNhbHRlbnNpLm9yZw&ctz=Asia/Kolkata"},
+    {title:"[DO] DevOps Everyday Standup",time:"1:00 PM",end:"1:30 PM",desc:"DevOps team daily standup — visibility across the board on work in progress.",attendees:["sudarshan.shenvi","loknath.prasad","goutham.m","harshithkumar","rajeev"],link:"https://www.google.com/calendar/event?eid=NG01cDJwaDYzajVoMjhqMGoxYmQzZ2E3cjVfMjAyNjA1MDdUMDczMDAwWiBzdWppdC5rdW1hckBrZW5zYWx0ZW5zaS5vcmc&ctz=Asia/Kolkata"},
+    {title:"[Del] Agentic Marketplace Standup",time:"2:30 PM",end:"3:00 PM",desc:"Daily standup covering A2A negotiation, Web3 integration, Folio integration, Frontend, Backend, UI/UX, QA status, and Deployment. Zero critical blockers to carry over between standups.",attendees:["sudarshan.shenvi","milly","ram","chandru","vj","prem.upadhyay","gedi","pushpa.rangaswamy","sagar.jadhav"],link:"https://www.google.com/calendar/event?eid=NmxlN2ttbmlhcnN0MnZhYnJxcTVkaHFic2JfMjAyNjA1MDdUMDkwMDAwWiBzdWppdC5rdW1hckBrZW5zYWx0ZW5zaS5vcmc&ctz=Asia/Kolkata"},
+    {title:"[Del] Labs Daily Standup (LABS V4)",time:"3:00 PM",end:"3:30 PM",desc:"Daily Labs V4 standup covering XP portal, staking, and infrastructure updates.",attendees:["gedi","phani.g","daniel","darshan","sriram","vj","manasa.ms","kalidas","sandesh","nishanth","keshav.a","ajay.m"],link:"https://www.google.com/calendar/event?eid=N2Jldm45c2I5dm9zMWc3NWhvNGxudWNsaTlfMjAyNjA1MDdUMDkzMDAwWiBzdWppdC5rdW1hckBrZW5zYWx0ZW5zaS5vcmc&ctz=Asia/Kolkata"},
+    {title:"AdTech Deployment Issue",time:"3:30 PM",end:"4:00 PM",desc:"⚠️ URGENT: Recurring deployment issues across AdTech blocking progress. AdFi: QA environment not deployable (missing CI/CD). Exchange: Production deployment failure. DSP: Dev environment inconsistent. Need to assign clear ownership. Ref: IR-625.",attendees:["harshithkumar","sudarshan.shenvi","pushpa.rangaswamy","rajeev","ram","loknath.prasad"],link:"https://meet.google.com/xtj-cqqs-zyj"},
+    {title:"MMP Engineering Internal Syncup",time:"4:30 PM",end:"5:00 PM",desc:"Weekly engineering sync run by leads. Covering demo readiness, CEX-DEX integration status, and deployment blockers.",attendees:["sangamesh.m","akhil","naveen","kannan","anand","gunjan","darshan","mohit.c","phani.g","manasa.ms","goutham.m"],link:"https://www.google.com/calendar/event?eid=MjBobXBxbGs5MmZrMGYzYW9vbXYzdTJhcmxfMjAyNjA1MDdUMTEwMDAwWiBzdWppdC5rdW1hckBrZW5zYWx0ZW5zaS5vcmc&ctz=Asia/Kolkata"},
+    {title:"Marketplace Lite Standup",time:"5:00 PM",end:"5:30 PM",desc:"Daily standup for Marketplace Lite initiative.",attendees:["pushpa.rangaswamy","milly","ram","vishnupriya","chandru","gedi","roisin"],link:"https://meet.google.com/evt-jsku-eiw"},
+    {title:"Sujit / Keshav",time:"6:00 PM",end:"6:30 PM",desc:"Daily PMO sync.",attendees:["keshav.a"],link:"https://www.google.com/calendar/event?eid=NDVmbmRlY3I4cm9hYXU3YWhhZmk2NWRyaTZfMjAyNjA1MDdUMTIzMDAwWiBzdWppdC5rdW1hckBrZW5zYWx0ZW5zaS5vcmc&ctz=Asia/Kolkata"},
+    {title:"Linear Demo <> Alkimi",time:"8:00 PM",end:"8:45 PM",desc:"Product demo with Linear team for Alkimi project management evaluation.",attendees:["chandru","john","ben","sudarshan.shenvi","gedi","ram","vj","keshav.a"],link:"https://meet.google.com/jny-tgsm-shm"}
   ],
   "May 8": [
     {title:"[Del] - AD Tech [DSP, EXCHANGE, AdFi] Weekly Syncup",time:"11:30 AM",end:"12:00 PM",desc:"",attendees:["pushpa.rangaswamy","gaurav.handa","ram","gedi","manasa.ms","abhay.thakur","nishanth","keshav.a","vishnupriya","anand","chaithra.p","goutham.m"],link:"https://www.google.com/calendar/event?eid=NG83cHYybmFhaHBxOXJmcHR1am81MzJsamdfMjAyNjA1MDhUMDYwMDAwWiBzdWppdC5rdW1hckBrZW5zYWx0ZW5zaS5vcmc&ctz=Asia/Kolkata"},
@@ -1367,9 +1371,9 @@ const weekMeetings = {
     {title:"Sujit / Keshav",time:"6:00 PM",end:"6:30 PM",desc:"Daily PMO sync.",attendees:["keshav.a"],link:"https://www.google.com/calendar/event?eid=NDVmbmRlY3I4cm9hYXU3YWhhZmk2NWRyaTZfMjAyNjA1MDhUMTIzMDAwWiBzdWppdC5rdW1hckBrZW5zYWx0ZW5zaS5vcmc&ctz=Asia/Kolkata"}
   ]
 };
-var activeWeekDay = "May 6";
+var activeWeekDay = "May 7";
 var weekDays = Object.keys(weekMeetings);
-var todayMeetings = weekMeetings["May 6"] || [];
+var todayMeetings = weekMeetings["May 7"] || [];
 
 // Gemini Meeting Notes (primary source) + Fireflies (secondary)
 // Project definitions for grouping
@@ -1387,7 +1391,16 @@ const projectDefs = [
 ];
 
 const geminiNotes = [
-/* auto-refreshed 2026-05-06T13:11 IST — 2 confirmed Gemini notes; 7 meetings awaiting notes */
+/* auto-refreshed 2026-05-07T15:30 IST — 2 confirmed Gemini notes today (AMP Review, AMP Sync); 8 meetings awaiting notes */
+{date:"May 7",title:"AMP - Product - Dev- AdOps Sync – 2026/05/07 12:15 IST",source:"gemini",projects:["AMP"],summary:"Meeting reviewed AdOps feedback and phase 2 enhancements while prioritizing Agentic Marketplace development for timely launch. Development remains stalled pending design sign-off and flow synchronization. Team decided to focus exclusively on independent Agentic Marketplace functionality over Marketplace Light integration. Development begins Monday following final design sign-off; all product requirements and architecture plans must be resolved by Thursday meeting.",actionItems:["[Vishnupriya Polraj] Send the derived requirements list to all meeting participants","[Sujit Kumar Tripathy] Scope out the AM requirements list and obtain development team timelines; distribute timeline and scope details to the group","[Vinay Bhandari, Priya Muduli] Review finalized PRD and design documents this week; prepare for sign off at next Thursday meeting"],decisions:["Focus exclusively on Agentic Marketplace (independent) over Marketplace Light integration","Development begins Monday post design sign-off","Thursday meeting = final architecture + PRD resolution deadline"],nextSteps:["Vishnupriya to distribute requirements list","Sujit to scope AM work and get dev timelines","Vinay and Priya to review PRD and design docs"],attendees:["Sujit Kumar","Vishnupriya Polraj","Vinay Bhandari","Priya Muduli","Ram","Alice"],docUrl:""},
+{date:"May 7",title:"AMP Review – 2026/05/07 11:45 IST",source:"gemini",projects:["AMP"],summary:"Meeting addressed user flow optimization and finalized insertion order requirements alongside creative upload workflows. User flow updates include search functionality and status filters for advertiser listings; front page to default to active campaigns only. Bot-assisted IO creation will support multiple document formats; daily budget field removed to align with monthly IO billing standards. Creative upload processes to mirror external industry platforms for single and bulk files; bulk editing postponed due to time constraints.",actionItems:["[The group] Discuss IO structure — clarify whether AI IO creation is chatbot or document upload process","[Gihith Syras] Confirm with developers whether IO details generation supports CSV and Excel files","[Priya Muduli] Confirm with Vin the logic for 30% budget deduction (before or after campaign push)","[Gihith Syras] Remove daily budget field from the IO total details section","[Gihith Syras] Remove Alchemy service field from IO details section","[Gihith Syras] Send screenshot of IO details section to Vin to aid budget confirmation","[Gihith Syras] Change upload through CTV to 'upload through video' (CTV in parentheses)"],decisions:["Daily budget field removed to align with monthly IO billing","Bulk editing features postponed due to time constraints","Front page defaults to active campaigns only"],attendees:["Gihith Syras","Sujit Kumar","Vishnupriya Polraj","Priya Muduli"],docUrl:""},
+{date:"May 7",title:"AdTech Deployment Issue – 2026/05/07 15:30 IST",source:"awaiting",projects:["DSP","E2","ADF"],summary:"Awaiting notes — urgent meeting to address recurring deployment issues: AdFi QA CI/CD pipeline missing, Exchange production deployment failure, DSP dev environment inconsistent. Clear ownership assignment required. Ref IR-625.",actionItems:[],decisions:[],attendees:["Harshith Kumar","Sudarshan Shenvi","Pushpalatha Rangaswamy","Rajeev","Ramachandra KBS","Loknath Prasad","Sujit Kumar"],docUrl:""},
+{date:"May 7",title:"[Del] Agentic Marketplace Standup – 2026/05/07 14:30 IST",source:"awaiting",projects:["AMKT"],summary:"Awaiting Gemini Notes — daily agentic marketplace standup covering A2A negotiation, Web3, Folio, frontend, backend, UI/UX, QA, and deployment.",actionItems:[],decisions:[],attendees:["Sudarshan Shenvi","Sujit Kumar","Milly Putley","Ramachandra KBS","Chandru Narayana","VJ","Prem Upadhyay","Gediminas Strumila","Pushpalatha","Sagar Jadhav"],docUrl:""},
+{date:"May 7",title:"[Del] Labs Daily Standup (LABS V4) – 2026/05/07 15:00 IST",source:"awaiting",projects:["LABS"],summary:"Awaiting Gemini Notes — Labs V4 daily standup.",actionItems:[],decisions:[],attendees:["Gediminas Strumila","Phanindra Gummaraju","Daniel Calvo Lopez","Sriram Engaiahraj","Varadharajan Jeevarethinam","Manasa Mariswamy","Kalidas","Sandesh Rannore","Nishanth","Keshav Ambuga","Ajay M"],docUrl:""},
+{date:"May 7",title:"MMP Engineering Internal Syncup – 2026/05/07 16:30 IST",source:"awaiting",projects:["MMP"],summary:"Awaiting Gemini Notes — MMP engineering internal sync run by leads.",actionItems:[],decisions:[],attendees:["Sangamesh Mudakannavar","Akhil Tiwari","Naveen Bharathiraman","Kannan Uthirapathy","Anand Pandey","Gunjan Kumar","Darshan Gaonkar","Mohit Chaubey","Phanindra Gummaraju","Manasa Mariswamy","Goutham M"],docUrl:""},
+{date:"May 7",title:"Marketplace Lite Standup – 2026/05/07 17:00 IST",source:"awaiting",projects:["AMKT"],summary:"Awaiting Gemini Notes — daily Marketplace Lite standup.",actionItems:[],decisions:[],attendees:["Pushpalatha Rangaswamy","Sujit Kumar","Milly Putley","Ramachandra KBS","Vishnupriya","Chandru Narayana","Gediminas Strumila","Roisin"],docUrl:""},
+{date:"May 7",title:"Sujit / Keshav – 2026/05/07 18:00 IST",source:"awaiting",projects:["GENERAL"],summary:"Awaiting Gemini Notes — daily PMO sync.",actionItems:[],decisions:[],attendees:["Sujit Kumar","Keshav Ambuga"],docUrl:""},
+{date:"May 7",title:"Linear Demo <> Alkimi – 2026/05/07 20:00 IST",source:"awaiting",projects:["GENERAL"],summary:"Awaiting Gemini Notes — product demo with Linear team for Alkimi project management evaluation.",actionItems:[],decisions:[],attendees:["Chandru Narayana","John","Ben","Sudarshan Shenvi","Gediminas Strumila","Ramachandra KBS","VJ","Keshav Ambuga","Sujit Kumar"],docUrl:""},
 {date:"May 6",title:"Sujit / Keshav – 2026/05/06 18:00 IST",source:"awaiting",projects:["GENERAL"],summary:"Awaiting Gemini Notes — daily PMO sync between Sujit and Keshav.",actionItems:[],decisions:[],attendees:["Sujit Kumar","Keshav Ambuga"],docUrl:""},
 {date:"May 6",title:"[DEL] PM x PJM Sync Up – 2026/05/06 17:30 IST",source:"awaiting",projects:["GENERAL"],summary:"Awaiting Gemini Notes — PM x PJM sprint sync. Attendees: Keshav, Phani, Vishnupriya, Ram, Sujit.",actionItems:[],decisions:[],attendees:["Keshav Ambuga","Phanindra Gummaraju","Vishnupriya","Ramachandra KBS","Sujit Kumar"],docUrl:""},
 {date:"May 6",title:"CEX-DEX Technical Sync – 2026/05/06 16:30 IST",source:"awaiting",projects:["MMP","GENERAL"],summary:"Awaiting Gemini Notes — weekly CEX-DEX technical sync covering integration status and blockers.",actionItems:[],decisions:[],attendees:["Huy","Gunjan","Phani","Akhil","Darshan","Kannan","Sujit Kumar","VJ","Mohit","Chorley"],docUrl:""},
