@@ -561,7 +561,7 @@ a.jira-link:hover{text-decoration:underline}
     <div class="sidebar-bottom-tabs">
       <button id="sidebarMeetingsBtn" onclick="switchTab('meetings');this.classList.add('active')">&#x1F4C5; Meetings</button>
     </div>
-    <div class="meta">Live Jira Data<br>May 6, 2026<br>Refreshed: 13:11 IST</div>
+    <div class="meta">Live Jira Data<br>May 7, 2026<br>Refreshed: 17:05 IST</div>
     <div class="sidebar-clocks">
       <div><span class="clock-label">Date:</span> <span class="clock-val" id="clockDate"></span></div>
       <div><span class="clock-label">IST:</span> <span class="clock-val" id="clockIST"></span></div>
@@ -662,15 +662,15 @@ a.jira-link:hover{text-decoration:underline}
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
         <div class="card" style="padding:16px;border-left:4px solid var(--green)">
           <strong style="color:var(--green)">● Available</strong>
-          <div style="font-size:12px;color:var(--muted);margin-top:6px">Can take on more work<br>≤1 project &amp; ≤5 tickets</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:6px">Can take on more work<br>≤1 project &amp; ≤2 active tickets</div>
         </div>
         <div class="card" style="padding:16px;border-left:4px solid var(--orange)">
           <strong style="color:var(--orange)">● Balanced</strong>
-          <div style="font-size:12px;color:var(--muted);margin-top:6px">Moderate load<br>2–3 projects or 6–29 tickets</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:6px">Moderate load<br>3–14 active tickets</div>
         </div>
         <div class="card" style="padding:16px;border-left:4px solid var(--red)">
           <strong style="color:var(--red)">● Overloaded</strong>
-          <div style="font-size:12px;color:var(--muted);margin-top:6px">At or over capacity<br>4+ projects or 30+ tickets</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:6px">At or over capacity<br>15+ active tickets, or 3+ projects &amp; 8+ active</div>
         </div>
       </div>
     </div>
@@ -698,7 +698,7 @@ a.jira-link:hover{text-decoration:underline}
       </div>
       <div class="chart-container" style="margin-bottom:20px"><h3>Jira Tickets per Person (Top 20)</h3><canvas id="chartIndividual"></canvas></div>
       <div class="section-title" style="margin-bottom:12px">Individual Workload</div>
-      <div class="table-wrap"><table id="workloadTable"><thead><tr><th>Name</th><th>Team</th><th>Projects Assigned</th><th>Jira Tickets</th><th>Status</th><th>Load</th></tr></thead><tbody></tbody></table></div>
+      <div class="table-wrap"><table id="workloadTable"><thead><tr><th>Name</th><th>Team</th><th>Projects Assigned</th><th>Active Tickets</th><th>Status</th><th>Load</th></tr></thead><tbody></tbody></table></div>
     </div>
 
     <!-- PANE: Bandwidth Grid -->
@@ -1057,7 +1057,7 @@ a.jira-link:hover{text-decoration:underline}
 
 <script>
 // ============================
-// LIVE JIRA DATA — auto-refreshed 2026-05-07T15:25 IST
+// LIVE JIRA DATA — auto-refreshed 2026-05-07T17:05 IST
 // Active sprint issues: AID 53 (blocked:7) | ALKIMILABS 47 | DSP 58 | E2 42 | AMP 100+ | Total sprint: 300+
 // ============================
 const projects = [
@@ -1105,53 +1105,54 @@ const projects = [
    team:[],pm:"Sujit"}
 ];
 
-// teamMembers — updated 01 May 2026 | 14 teams | projects use canonical 9-project names
+// teamMembers — live JIRA counts refreshed 2026-05-07T17:05 IST | 14 teams | DSP,E2,AMP,MMP,ALKIMILABS,AID,TRUSTNET queried
 // Projects: DSP · Exchange · Alkimi Labs · AdFi · MMP · AMP · Agentic Lite · Agentic Pro · Trustnet
 // Agentic Lite & Pro tracked in Linear (assignments added manually)
 const teamMembers = [
   // Java Team
-  {name:"Pushpa",team:"Java",projects:["DSP","Exchange","AdFi","Agentic Pro"],jiraTickets:24,lead:true},
-  {name:"Rekha S",team:"Java",projects:["DSP","Exchange"],jiraTickets:10},
-  {name:"Chaithra P",team:"Java",projects:["AMP","DSP","Exchange","AdFi"],jiraTickets:11},
-  {name:"Velraj M",team:"Java",projects:["DSP","Exchange"],jiraTickets:16},
-  {name:"Mithun Krishna",team:"Java",projects:["AMP","Exchange"],jiraTickets:27},
+  {name:"Pushpa",team:"Java",projects:["DSP","Exchange","AdFi","Agentic Pro"],jiraTickets:15,lead:true},
+  {name:"Rekha S",team:"Java",projects:["DSP","Exchange"],jiraTickets:4},
+  {name:"Chaithra P",team:"Java",projects:["AMP","DSP","Exchange","AdFi"],jiraTickets:5},
+  {name:"Velraj M",team:"Java",projects:["DSP","Exchange"],jiraTickets:14},
+  {name:"Mithun Krishna",team:"Java",projects:["AMP","Exchange"],jiraTickets:7},
   {name:"Radha",team:"Java",projects:[],jiraTickets:0},
   // AI Team
-  {name:"Prem",team:"AI",projects:["AMP","DSP","MMP","Agentic Pro"],jiraTickets:19,lead:true},
-  {name:"Sagar Jadhav",team:"AI",projects:["AMP","Agentic Pro"],jiraTickets:80},
-  {name:"Subham",team:"AI",projects:["AMP","Agentic Lite"],jiraTickets:20},
+  {name:"Prem",team:"AI",projects:["AMP","DSP","MMP","Agentic Pro"],jiraTickets:13,lead:true},
+  {name:"Sagar Jadhav",team:"AI",projects:["AMP","Agentic Pro"],jiraTickets:44},
+  {name:"Subham",team:"AI",projects:["AMP","Agentic Lite"],jiraTickets:0},
+  {name:"Mohit Chaubey",team:"AI",projects:["MMP"],jiraTickets:30},
   {name:"Aakash",team:"AI",projects:[],jiraTickets:0},
   {name:"Sushanth",team:"AI",projects:[],jiraTickets:0},
   // FE Team
-  {name:"Gedi",team:"FE",projects:["Alkimi Labs","Agentic Lite","Agentic Pro"],jiraTickets:4,lead:true},
-  {name:"Daniel Calvo Lopez",team:"FE",projects:["AMP","Alkimi Labs"],jiraTickets:23},
-  {name:"Gaurav Handa",team:"FE",projects:["AMP","DSP","Exchange","AdFi"],jiraTickets:36},
-  {name:"Anand Pandey",team:"FE",projects:["Exchange","MMP","Alkimi Labs","AdFi"],jiraTickets:28},
+  {name:"Gedi",team:"FE",projects:["Alkimi Labs","Agentic Lite","Agentic Pro"],jiraTickets:2,lead:true},
+  {name:"Daniel Calvo Lopez",team:"FE",projects:["AMP","Alkimi Labs"],jiraTickets:1},
+  {name:"Gaurav Handa",team:"FE",projects:["AMP","DSP","Exchange","AdFi"],jiraTickets:25},
+  {name:"Anand Pandey",team:"FE",projects:["Exchange","MMP","Alkimi Labs","AdFi"],jiraTickets:22},
   // Web3 Team
-  {name:"VJ",team:"Web3",projects:["Alkimi Labs","Agentic Pro"],jiraTickets:4,lead:true},
-  {name:"Darshan Gaonkar",team:"Web3",projects:["MMP","Alkimi Labs"],jiraTickets:10},
-  {name:"Sandesh Rannore",team:"Web3",projects:["Exchange","Alkimi Labs"],jiraTickets:2},
-  {name:"Gunjan",team:"Web3",projects:["MMP"],jiraTickets:32},
+  {name:"VJ",team:"Web3",projects:["Alkimi Labs","Agentic Pro"],jiraTickets:2,lead:true},
+  {name:"Darshan Gaonkar",team:"Web3",projects:["MMP","Alkimi Labs"],jiraTickets:1},
+  {name:"Sandesh Rannore",team:"Web3",projects:["Exchange","Alkimi Labs"],jiraTickets:1},
+  {name:"Gunjan",team:"Web3",projects:["MMP"],jiraTickets:10},
   {name:"Sujan",team:"Web3",projects:[],jiraTickets:0},
   {name:"Niranjan",team:"Web3",projects:[],jiraTickets:0},
   {name:"Shourya",team:"Web3",projects:[],jiraTickets:0},
-  {name:"Sriram",team:"Web3",projects:["Alkimi Labs"],jiraTickets:2},
+  {name:"Sriram",team:"Web3",projects:["Alkimi Labs"],jiraTickets:1},
   // QA Team
-  {name:"Manasa",team:"QA",projects:["AMP","DSP","Exchange","MMP","Alkimi Labs","AdFi"],jiraTickets:37,lead:true},
-  {name:"Abhay Thakur",team:"QA",projects:["DSP","Exchange"],jiraTickets:60},
-  {name:"Priyanka B",team:"QA",projects:["AMP","Exchange"],jiraTickets:43},
-  {name:"Sangamesh",team:"QA",projects:["Alkimi Labs"],jiraTickets:40},
-  {name:"Vinay Krishna Bhat",team:"QA",projects:["DSP","Exchange","Alkimi Labs","AdFi"],jiraTickets:5},
-  {name:"Abhishek",team:"QA",projects:["MMP"],jiraTickets:28},
+  {name:"Manasa",team:"QA",projects:["AMP","DSP","Exchange","MMP","Alkimi Labs","AdFi"],jiraTickets:22,lead:true},
+  {name:"Abhay Thakur",team:"QA",projects:["DSP","Exchange"],jiraTickets:18},
+  {name:"Priyanka B",team:"QA",projects:["AMP","Exchange"],jiraTickets:34},
+  {name:"Sangamesh",team:"QA",projects:["Alkimi Labs"],jiraTickets:31},
+  {name:"Vinay Krishna Bhat",team:"QA",projects:["DSP","Exchange","Alkimi Labs","AdFi"],jiraTickets:10},
+  {name:"Abhishek",team:"QA",projects:["MMP"],jiraTickets:0},
   // DevOps Team  (AID & IR boards — product project assignments shown here)
-  {name:"Sudarshan",team:"DevOps",projects:["Exchange","MMP","Agentic Pro"],jiraTickets:8,lead:true},
-  {name:"Loknath Prasad",team:"DevOps",projects:["Exchange"],jiraTickets:16},
-  {name:"Goutham",team:"DevOps",projects:["AMP","Exchange","MMP","Alkimi Labs","AdFi"],jiraTickets:22},
-  {name:"Harshith Kumar",team:"DevOps",projects:[],jiraTickets:11},
+  {name:"Sudarshan",team:"DevOps",projects:["Exchange","MMP","Agentic Pro"],jiraTickets:3,lead:true},
+  {name:"Loknath Prasad",team:"DevOps",projects:["Exchange"],jiraTickets:12},
+  {name:"Goutham",team:"DevOps",projects:["AMP","Exchange","MMP","Alkimi Labs","AdFi"],jiraTickets:10},
+  {name:"Harshith Kumar",team:"DevOps",projects:[],jiraTickets:8},
   {name:"Rajeev",team:"DevOps",projects:[],jiraTickets:0},
   // Product Team
   {name:"Ram",team:"Product",projects:["Agentic Lite","Agentic Pro"],jiraTickets:0,lead:true},
-  {name:"Vishnupriya",team:"Product",projects:["DSP","Exchange","Agentic Lite"],jiraTickets:18},
+  {name:"Vishnupriya",team:"Product",projects:["DSP","Exchange","Agentic Lite"],jiraTickets:4},
   {name:"Phani",team:"Product",projects:["MMP","Alkimi Labs"],jiraTickets:1},
   // BA
   {name:"Vignesh",team:"BA",projects:["AdFi"],jiraTickets:20},
@@ -1163,7 +1164,7 @@ const teamMembers = [
   {name:"Vishwas",team:"AdOps",projects:[],jiraTickets:0},
   {name:"Harish",team:"AdOps",projects:[],jiraTickets:0},
   // TechOps  (DES board for Design tickets)
-  {name:"Kali",team:"TechOps",projects:["Exchange","AdFi"],jiraTickets:5,lead:true},
+  {name:"Kali",team:"TechOps",projects:["Exchange","AdFi"],jiraTickets:1,lead:true},
   {name:"Usha",team:"TechOps",projects:[],jiraTickets:0},
   // Marketing
   {name:"Milly",team:"Marketing",projects:["Agentic Lite","Agentic Pro"],jiraTickets:0,lead:true},
@@ -1174,14 +1175,14 @@ const teamMembers = [
   {name:"Yana",team:"Design",projects:["AMP","DSP","AdFi","Agentic Lite","Agentic Pro"],jiraTickets:6,lead:true},
   {name:"Sana",team:"Design",projects:[],jiraTickets:0},
   {name:"Akshay",team:"Design",projects:["Alkimi Labs"],jiraTickets:2},
-  {name:"Gihith",team:"Design",projects:["Exchange"],jiraTickets:6},
+  {name:"Gihith",team:"Design",projects:["Exchange"],jiraTickets:1},
   // Delivery
   {name:"Sujit",team:"Delivery",projects:["DSP","Exchange","Alkimi Labs","AdFi","MMP","AMP","Agentic Lite","Agentic Pro","Trustnet"],jiraTickets:0,type:"I"},
   {name:"Keshav",team:"Delivery",projects:["Trustnet","Alkimi Labs"],jiraTickets:0,type:"E"},
   // C++ Team
-  {name:"Kannan",team:"C++",projects:["MMP"],jiraTickets:39,lead:true},
+  {name:"Kannan",team:"C++",projects:["MMP"],jiraTickets:2,lead:true},
   {name:"Akhil",team:"C++",projects:[],jiraTickets:0},
-  {name:"Naveen",team:"C++",projects:["MMP"],jiraTickets:15}
+  {name:"Naveen",team:"C++",projects:["MMP"],jiraTickets:1}
 ];
 
 // Sprint Feature Tracker — sourced from Confluence "High Level Sprint Backlog - Sprint 8" + live Jira status
@@ -1391,14 +1392,14 @@ const projectDefs = [
 ];
 
 const geminiNotes = [
-/* auto-refreshed 2026-05-07T15:25 IST — 3 confirmed Gemini notes today (AMP Review, AMP Sync, Labs Standup); 7 meetings awaiting notes */
+/* auto-refreshed 2026-05-07T17:05 IST — 7 confirmed Gemini notes today (AMP Review, AMP Sync, Labs Standup, Agentic Marketplace Standup, AdTech Deployment Issue, MMP Engineering Syncup, Marketplace Lite Standup); 2 meetings awaiting notes */
 {date:"May 7",title:"AMP - Product - Dev- AdOps Sync – 2026/05/07 12:15 IST",source:"gemini",projects:["AMP"],summary:"Meeting reviewed AdOps feedback and phase 2 enhancements while prioritizing Agentic Marketplace development for timely launch. Development remains stalled pending design sign-off and flow synchronization. Team decided to focus exclusively on independent Agentic Marketplace functionality over Marketplace Light integration. Development begins Monday following final design sign-off; all product requirements and architecture plans must be resolved by Thursday meeting.",actionItems:["[Vishnupriya Polraj] Send the derived requirements list to all meeting participants","[Sujit Kumar Tripathy] Scope out the AM requirements list and obtain development team timelines; distribute timeline and scope details to the group","[Vinay Bhandari, Priya Muduli] Review finalized PRD and design documents this week; prepare for sign off at next Thursday meeting"],decisions:["Focus exclusively on Agentic Marketplace (independent) over Marketplace Light integration","Development begins Monday post design sign-off","Thursday meeting = final architecture + PRD resolution deadline"],nextSteps:["Vishnupriya to distribute requirements list","Sujit to scope AM work and get dev timelines","Vinay and Priya to review PRD and design docs"],attendees:["Sujit Kumar","Vishnupriya Polraj","Vinay Bhandari","Priya Muduli","Ram","Alice"],docUrl:""},
 {date:"May 7",title:"AMP Review – 2026/05/07 11:45 IST",source:"gemini",projects:["AMP"],summary:"Meeting addressed user flow optimization and finalized insertion order requirements alongside creative upload workflows. User flow updates include search functionality and status filters for advertiser listings; front page to default to active campaigns only. Bot-assisted IO creation will support multiple document formats; daily budget field removed to align with monthly IO billing standards. Creative upload processes to mirror external industry platforms for single and bulk files; bulk editing postponed due to time constraints.",actionItems:["[The group] Discuss IO structure — clarify whether AI IO creation is chatbot or document upload process","[Gihith Syras] Confirm with developers whether IO details generation supports CSV and Excel files","[Priya Muduli] Confirm with Vin the logic for 30% budget deduction (before or after campaign push)","[Gihith Syras] Remove daily budget field from the IO total details section","[Gihith Syras] Remove Alchemy service field from IO details section","[Gihith Syras] Send screenshot of IO details section to Vin to aid budget confirmation","[Gihith Syras] Change upload through CTV to 'upload through video' (CTV in parentheses)"],decisions:["Daily budget field removed to align with monthly IO billing","Bulk editing features postponed due to time constraints","Front page defaults to active campaigns only"],attendees:["Gihith Syras","Sujit Kumar","Vishnupriya Polraj","Priya Muduli"],docUrl:""},
-{date:"May 7",title:"AdTech Deployment Issue – 2026/05/07 15:30 IST",source:"awaiting",projects:["DSP","E2","ADF"],summary:"Awaiting notes — urgent meeting to address recurring deployment issues: AdFi QA CI/CD pipeline missing, Exchange production deployment failure, DSP dev environment inconsistent. Clear ownership assignment required. Ref IR-625.",actionItems:[],decisions:[],attendees:["Harshith Kumar","Sudarshan Shenvi","Pushpalatha Rangaswamy","Rajeev","Ramachandra KBS","Loknath Prasad","Sujit Kumar"],docUrl:""},
-{date:"May 7",title:"[Del] Agentic Marketplace Standup – 2026/05/07 14:30 IST",source:"awaiting",projects:["AMKT"],summary:"Awaiting Gemini Notes — daily agentic marketplace standup covering A2A negotiation, Web3, Folio, frontend, backend, UI/UX, QA, and deployment.",actionItems:[],decisions:[],attendees:["Sudarshan Shenvi","Sujit Kumar","Milly Putley","Ramachandra KBS","Chandru Narayana","VJ","Prem Upadhyay","Gediminas Strumila","Pushpalatha","Sagar Jadhav"],docUrl:""},
+{date:"May 7",title:"AdTech Deployment Issue – 2026/05/07 15:30 IST",source:"gemini",projects:["DSP","E2","ADF","DEVOPS"],summary:"Technical deployment blockers and process inefficiencies discussed regarding DSP, AdFi and Exchange pipeline status and ownership. DSP deployment in the UK faces persistent errors while manual AdFi processes create significant work bottlenecks. Developers frequently misidentify application dependency errors as CI/CD failures; a training session on log monitoring will be scheduled. Team decided to prioritize fixing Exchange server SSH issues and Grafana log access to ensure future deployments avoid manual workarounds.",actionItems:["[Harshith Kumar] Debug and resolve errors causing continuous restarting of US/UK DSP deployment","[Harshith Kumar] Notify Loknath or Sujit when DSP deployment issue is fixed and ready for QA testing","[Loknath Prasad, Harshith Kumar] Schedule 10-15 min training session showing team where to check CI/CD pipeline logs for dependency errors","[Loknath Prasad] Fix Exchange CI/CD pipeline SSH key issue by tomorrow","[Loknath Prasad] Investigate and resolve Grafana log access issues and slow Exchange UI publisher edit screen"],decisions:["Prioritize Exchange server SSH issue and Grafana log access fixes over other work","Training session on CI/CD log monitoring to be scheduled for all developers"],attendees:["Harshith Kumar","Sudarshan Shenvi","Pushpalatha Rangaswamy","Rajeev","Ramachandra KBS","Loknath Prasad","Sujit Kumar"],docUrl:""},
+{date:"May 7",title:"[Del] Agentic Marketplace Standup – 2026/05/07 14:30 IST",source:"gemini",projects:["AMKT"],summary:"Meeting reviewed onboarding technical status and defined long-term strategic architectural standards for agentic AdTech solutions. Onboarding process fixes require local testing before deployment; user normalization and centralized account modules remain priority for architectural consistency. Team adopted modular architecture for managed and headless agent integration. Defining a new industry standard for agentic negotiation is the primary opportunity to be integrated into the marketplace development phase.",actionItems:["[Ramachandra KBS] Perform thorough local testing on code fixes before raising any Pull Request","[Chandru Narayana] Review the ATC PR provided by Ramachandra KBS","[Prem Upadhyay] Update tags for negotiation PRD and send to Chandru Narayana for formal review","[Sujit Kumar] Create new architecture task for Sudarshan Shenvi","[Sudarshan Shenvi] Update architecture review ticket with scalability and security comparison details","[Chandru Narayana] Assume ownership of UIUX development ticket","[VJ] Create feature branch and use seed data for Folio integration testing","[VJ] Finish Web3 Pull Request today","[Ramachandra KBS] Lead conversation with Ben and Aaron regarding AMD integration data requirements","[Chandru Narayana] Share strategy diagram with development team for research and brainstorming","[Sujit Kumar] Block time for follow-up brainstorming session","[Sujit Kumar] Share meeting summary in communication channel today"],decisions:["Adopt modular architecture for managed and headless agent integration","Focus on defining new industry standard for agentic negotiation","Incorporate go-to-market strategy into current product version"],attendees:["Sudarshan Shenvi","Sujit Kumar","Milly Putley","Ramachandra KBS","Chandru Narayana","VJ","Prem Upadhyay","Gediminas Strumila","Pushpalatha Rangaswamy","Sagar Jadhav"],docUrl:""},
 {date:"May 7",title:"[Del] Labs Daily Standup (LABS V4) – 2026/05/07 15:00 IST",source:"gemini",projects:["LABS"],summary:"Quarter 1 rewards logic and production bug priorities were reviewed for project alignment and technical stability. Finance confirmed Q1 rewards will be partial pending final calculation methodology; implementation complexity remains high regarding compounding interest and verification logic. Team decided to lower priority for the KYC email bug as OTP functionality is stable. XP social login issues require dedicated tracking tickets; backend cleanup and priority 4-I tickets are progressing through review.",actionItems:["[Chirley, Milly] Discuss Q1 rewards communication strategy to the community","[Phanindra Gummaraju] Create social login ticket and assign task to Karishma","[Darshan Gaonkar] Share backend cleanup story ticket with Keshav","[Phanindra Gummaraju] Add comment to production bug ticket to reduce priority","[Keshav Ambuga] Check status of 2 priority tickets assigned to Anand (reopened ticket, landing page video)"],decisions:["Q1 rewards to be partial — final calculation methodology pending finance approval","KYC email bug priority lowered — OTP functionality is stable and allows standard release schedule"],nextSteps:["Phanindra to create social login ticket and assign to Karishma","Darshan to share backend cleanup story ticket with Keshav","Keshav to verify Anand's two priority ticket statuses"],attendees:["Gediminas Strumila","Phanindra Gummaraju","Daniel Calvo Lopez","Sriram Engaiahraj","Varadharajan Jeevarethinam","Manasa Mariswamy","Kalidas","Sandesh Rannore","Nishanth","Keshav Ambuga","Ajay M"],docUrl:""},
-{date:"May 7",title:"MMP Engineering Internal Syncup – 2026/05/07 16:30 IST",source:"awaiting",projects:["MMP"],summary:"Awaiting Gemini Notes — MMP engineering internal sync run by leads.",actionItems:[],decisions:[],attendees:["Sangamesh Mudakannavar","Akhil Tiwari","Naveen Bharathiraman","Kannan Uthirapathy","Anand Pandey","Gunjan Kumar","Darshan Gaonkar","Mohit Chaubey","Phanindra Gummaraju","Manasa Mariswamy","Goutham M"],docUrl:""},
-{date:"May 7",title:"Marketplace Lite Standup – 2026/05/07 17:00 IST",source:"awaiting",projects:["AMKT"],summary:"Awaiting Gemini Notes — daily Marketplace Lite standup.",actionItems:[],decisions:[],attendees:["Pushpalatha Rangaswamy","Sujit Kumar","Milly Putley","Ramachandra KBS","Vishnupriya","Chandru Narayana","Gediminas Strumila","Roisin"],docUrl:""},
+{date:"May 7",title:"MMP Engineering Internal Syncup – 2026/05/07 16:30 IST",source:"gemini",projects:["MMP"],summary:"Deployment status review identified critical technical fixes and operational requirements for upcoming system demonstrations. System components operate on a single EC2 instance currently undergoing log-based testing. Developers are actively resolving issues with order event rendering and system transition states. Completed tasks and identified issues are being formalized into Jira tickets. Teams decided to display token amounts instead of dollar values for asset positions. New log filters enable visibility into rebalance triggering for upcoming demonstrations.",actionItems:["[Kannan Uthirapathy] Add shared list of completed tasks into Jira for tracking (@Kannan)","[Gunjan Kumar] Build latest update; restart Dexbot using the latest binary","[Phanindra Gummaraju] Review the system setup and move ahead quickly (@Phanindra)","[Phanindra Gummaraju] Check with Gunjan if any issues arise during testing (@Phanindra)"],decisions:["Display token amounts instead of dollar values for asset positions","Completed tasks to be formalized into Jira tickets for tracking"],nextSteps:["Kannan to add completed tasks to Jira","Gunjan to rebuild and restart Dexbot","Phanindra to review system setup and coordinate with Gunjan on testing issues"],attendees:["Sangamesh Mudakannavar","Akhil Tiwari","Naveen Bharathiraman","Kannan Uthirapathy","Anand Pandey","Gunjan Kumar","Darshan Gaonkar","Mohit Chaubey","Phanindra Gummaraju","Manasa Mariswamy","Goutham M"],docUrl:""},
+{date:"May 7",title:"Marketplace Lite Standup – 2026/05/07 16:00 IST",source:"gemini",projects:["AMKT"],summary:"Meeting reviewed Agentic Marketplace development dependencies, integration scenarios, and strategic alignment for future infrastructure standards. Development of Marketplace Light depends on internal Agentic Marketplace success. Stakeholder sign-offs and workflow definitions proceed in parallel. Teams are aligning product features with 3 distinct usage scenarios. Resolution of existing cosmetic and fundamental bugs remains a priority. Leadership pivoted to building standard-conforming products for external infrastructure integration.",actionItems:["[Sujit Kumar] Derive estimates and timelines for technical development items from individual developers (@Sujit)","[Vishnupriya Polraj] Share AM status, open issues, ETAs and product maturity updates on the Marketplace Light channel","[Ramachandra KBS] Share standalone UI design HTML with Vishnupriya Polraj (@Ram)","[Sujit Kumar] Discuss internal architectural changes with Ram and Sudarshan; ensure no product behavior impact (@Sujit)","[Milly Putley] Add Chandru Narayana and John to the Micro site 2.0 Slack channel (@Milly)","[Chandru Narayana] Chase Aaron for examples of good and bad briefing-to-proposal mapping documentation (@Chandru)","[Chandru Narayana, Milly Putley] Schedule separate WPP call discussion and review the enhanced diagram on Agentic Human Depth Planning channel","[Ramachandra KBS] Handle outstanding PRD reviews and bug fixes temporarily substituting for Chandru (@Ram)"],decisions:["Marketplace Light development depends on Agentic Marketplace internal success","Standard-conforming products strategy for external infrastructure integration adopted","Parallel streams for UI and account normalization to continue"],nextSteps:["Sujit to scope AM work and get dev timelines","Vishnupriya to share AM status on Marketplace Light channel","Ram to handle PRD reviews and share UI design with Vishnupriya","Chandru to schedule WPP call and review planning diagram"],attendees:["Pushpalatha Rangaswamy","Sujit Kumar","Milly Putley","Ramachandra KBS","Vishnupriya","Chandru Narayana","Gediminas Strumila","Roisin"],docUrl:""},
 {date:"May 7",title:"Sujit / Keshav – 2026/05/07 18:00 IST",source:"awaiting",projects:["GENERAL"],summary:"Awaiting Gemini Notes — daily PMO sync.",actionItems:[],decisions:[],attendees:["Sujit Kumar","Keshav Ambuga"],docUrl:""},
 {date:"May 7",title:"Linear Demo <> Alkimi – 2026/05/07 20:00 IST",source:"awaiting",projects:["GENERAL"],summary:"Awaiting Gemini Notes — product demo with Linear team for Alkimi project management evaluation.",actionItems:[],decisions:[],attendees:["Chandru Narayana","John","Ben","Sudarshan Shenvi","Gediminas Strumila","Ramachandra KBS","VJ","Keshav Ambuga","Sujit Kumar"],docUrl:""},
 {date:"May 6",title:"Sujit / Keshav – 2026/05/06 18:00 IST",source:"awaiting",projects:["GENERAL"],summary:"Awaiting Gemini Notes — daily PMO sync between Sujit and Keshav.",actionItems:[],decisions:[],attendees:["Sujit Kumar","Keshav Ambuga"],docUrl:""},
@@ -2432,9 +2433,9 @@ function statusBadge(s){
 }
 function pct(v,t){return t?Math.round(v/t*100):0}
 function getLoad(m){
-  const p=m.projects.length, t=m.jiraTickets;
-  if(p<=1&&t<=5) return {label:"Available",cls:"available"};
-  if(p>=4||t>=30) return {label:"Overloaded",cls:"overloaded"};
+  const p=m.projects.length, t=m.jiraTickets; // t = ACTIVE tickets only (excl. Done/Completed/Released)
+  if(t<=2&&p<=1) return {label:"Available",cls:"available"};
+  if(t>=15||(p>=3&&t>=8)) return {label:"Overloaded",cls:"overloaded"};
   return {label:"Balanced",cls:"balanced"};
 }
 const teamColors={
