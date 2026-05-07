@@ -561,7 +561,7 @@ a.jira-link:hover{text-decoration:underline}
     <div class="sidebar-bottom-tabs">
       <button id="sidebarMeetingsBtn" onclick="switchTab('meetings');this.classList.add('active')">&#x1F4C5; Meetings</button>
     </div>
-    <div class="meta">Live Jira Data<br>May 7, 2026<br>Refreshed: 17:05 IST</div>
+    <div class="meta">Live Jira Data<br>May 7, 2026<br>Refreshed: 20:13 IST</div>
     <div class="sidebar-clocks">
       <div><span class="clock-label">Date:</span> <span class="clock-val" id="clockDate"></span></div>
       <div><span class="clock-label">IST:</span> <span class="clock-val" id="clockIST"></span></div>
@@ -1057,7 +1057,7 @@ a.jira-link:hover{text-decoration:underline}
 
 <script>
 // ============================
-// LIVE JIRA DATA — auto-refreshed 2026-05-07T17:05 IST
+// LIVE JIRA DATA — auto-refreshed 2026-05-07T20:13 IST
 // Active sprint issues: AID 53 (blocked:7) | ALKIMILABS 47 | DSP 58 | E2 42 | AMP 100+ | Total sprint: 300+
 // ============================
 const projects = [
@@ -1105,7 +1105,8 @@ const projects = [
    team:[],pm:"Sujit"}
 ];
 
-// teamMembers — live JIRA counts refreshed 2026-05-07T17:05 IST | 14 teams | DSP,E2,AMP,MMP,ALKIMILABS,AID,TRUSTNET queried
+// teamMembers — live JIRA counts refreshed 2026-05-07T20:04 IST | 14 teams | DSP,E2,AMP,MMP,ALKIMILABS,AID,TRUSTNET queried
+// Active = excl. Done / Completed / Released / Dev Completed / Ready to Release / Ready to Go Live
 // Projects: DSP · Exchange · Alkimi Labs · AdFi · MMP · AMP · Agentic Lite · Agentic Pro · Trustnet
 // Agentic Lite & Pro tracked in Linear (assignments added manually)
 const teamMembers = [
@@ -1392,7 +1393,7 @@ const projectDefs = [
 ];
 
 const geminiNotes = [
-/* auto-refreshed 2026-05-07T17:05 IST — 7 confirmed Gemini notes today (AMP Review, AMP Sync, Labs Standup, Agentic Marketplace Standup, AdTech Deployment Issue, MMP Engineering Syncup, Marketplace Lite Standup); 2 meetings awaiting notes */
+/* auto-refreshed 2026-05-07T20:13 IST — 7 confirmed Gemini notes today (AMP Review, AMP Sync, Labs Standup, Agentic Marketplace Standup, AdTech Deployment Issue, MMP Engineering Syncup, Marketplace Lite Standup); Sujit/Keshav + Linear Demo notes pending (meetings in progress/recently ended) */
 {date:"May 7",title:"AMP - Product - Dev- AdOps Sync – 2026/05/07 12:15 IST",source:"gemini",projects:["AMP"],summary:"Meeting reviewed AdOps feedback and phase 2 enhancements while prioritizing Agentic Marketplace development for timely launch. Development remains stalled pending design sign-off and flow synchronization. Team decided to focus exclusively on independent Agentic Marketplace functionality over Marketplace Light integration. Development begins Monday following final design sign-off; all product requirements and architecture plans must be resolved by Thursday meeting.",actionItems:["[Vishnupriya Polraj] Send the derived requirements list to all meeting participants","[Sujit Kumar Tripathy] Scope out the AM requirements list and obtain development team timelines; distribute timeline and scope details to the group","[Vinay Bhandari, Priya Muduli] Review finalized PRD and design documents this week; prepare for sign off at next Thursday meeting"],decisions:["Focus exclusively on Agentic Marketplace (independent) over Marketplace Light integration","Development begins Monday post design sign-off","Thursday meeting = final architecture + PRD resolution deadline"],nextSteps:["Vishnupriya to distribute requirements list","Sujit to scope AM work and get dev timelines","Vinay and Priya to review PRD and design docs"],attendees:["Sujit Kumar","Vishnupriya Polraj","Vinay Bhandari","Priya Muduli","Ram","Alice"],docUrl:""},
 {date:"May 7",title:"AMP Review – 2026/05/07 11:45 IST",source:"gemini",projects:["AMP"],summary:"Meeting addressed user flow optimization and finalized insertion order requirements alongside creative upload workflows. User flow updates include search functionality and status filters for advertiser listings; front page to default to active campaigns only. Bot-assisted IO creation will support multiple document formats; daily budget field removed to align with monthly IO billing standards. Creative upload processes to mirror external industry platforms for single and bulk files; bulk editing postponed due to time constraints.",actionItems:["[The group] Discuss IO structure — clarify whether AI IO creation is chatbot or document upload process","[Gihith Syras] Confirm with developers whether IO details generation supports CSV and Excel files","[Priya Muduli] Confirm with Vin the logic for 30% budget deduction (before or after campaign push)","[Gihith Syras] Remove daily budget field from the IO total details section","[Gihith Syras] Remove Alchemy service field from IO details section","[Gihith Syras] Send screenshot of IO details section to Vin to aid budget confirmation","[Gihith Syras] Change upload through CTV to 'upload through video' (CTV in parentheses)"],decisions:["Daily budget field removed to align with monthly IO billing","Bulk editing features postponed due to time constraints","Front page defaults to active campaigns only"],attendees:["Gihith Syras","Sujit Kumar","Vishnupriya Polraj","Priya Muduli"],docUrl:""},
 {date:"May 7",title:"AdTech Deployment Issue – 2026/05/07 15:30 IST",source:"gemini",projects:["DSP","E2","ADF","DEVOPS"],summary:"Technical deployment blockers and process inefficiencies discussed regarding DSP, AdFi and Exchange pipeline status and ownership. DSP deployment in the UK faces persistent errors while manual AdFi processes create significant work bottlenecks. Developers frequently misidentify application dependency errors as CI/CD failures; a training session on log monitoring will be scheduled. Team decided to prioritize fixing Exchange server SSH issues and Grafana log access to ensure future deployments avoid manual workarounds.",actionItems:["[Harshith Kumar] Debug and resolve errors causing continuous restarting of US/UK DSP deployment","[Harshith Kumar] Notify Loknath or Sujit when DSP deployment issue is fixed and ready for QA testing","[Loknath Prasad, Harshith Kumar] Schedule 10-15 min training session showing team where to check CI/CD pipeline logs for dependency errors","[Loknath Prasad] Fix Exchange CI/CD pipeline SSH key issue by tomorrow","[Loknath Prasad] Investigate and resolve Grafana log access issues and slow Exchange UI publisher edit screen"],decisions:["Prioritize Exchange server SSH issue and Grafana log access fixes over other work","Training session on CI/CD log monitoring to be scheduled for all developers"],attendees:["Harshith Kumar","Sudarshan Shenvi","Pushpalatha Rangaswamy","Rajeev","Ramachandra KBS","Loknath Prasad","Sujit Kumar"],docUrl:""},
@@ -2433,7 +2434,7 @@ function statusBadge(s){
 }
 function pct(v,t){return t?Math.round(v/t*100):0}
 function getLoad(m){
-  const p=m.projects.length, t=m.jiraTickets; // t = ACTIVE tickets only (excl. Done/Completed/Released)
+  const p=m.projects.length, t=m.jiraTickets; // t = ACTIVE tickets only (excl. Done/Completed/Released/Ready to Release/Dev Completed/Ready to Go Live)
   if(t<=2&&p<=1) return {label:"Available",cls:"available"};
   if(t>=15||(p>=3&&t>=8)) return {label:"Overloaded",cls:"overloaded"};
   return {label:"Balanced",cls:"balanced"};
@@ -4114,7 +4115,7 @@ function renderOrgChart(){
 // ============================
 const releaseData = {
   DSP:[
-    {name:"APR 2026",id:"10896",released:true,releaseDate:"2026-04-14",total:13,
+    {name:"APR 2026",id:"10896",released:true,releaseDate:"2026-04-21",total:13,
      breakdown:{todo:0,ip:0,dc:0,qa:0,rtr:0,completed:0,released:13,blocked:0},
      url:"https://alkimi.atlassian.net/projects/DSP/versions/10896/tab/release-report-all-issues",
      issues:[
@@ -4132,8 +4133,8 @@ const releaseData = {
        {key:"DSP-1775",summary:"When editing one Line Item it should only show that Line Item",status:"Released"},
        {key:"DSP-1774",summary:"Line items in Campaign Details should display based on status",status:"Released"}
      ]},
-    {name:"JAN 2026",id:"10663",released:true,releaseDate:"2026-02-09",total:37,
-     breakdown:{todo:0,ip:0,dc:0,qa:0,rtr:0,completed:0,released:37,blocked:0},
+    {name:"JAN 2026",id:"10663",released:true,releaseDate:"2026-02-09",total:65,
+     breakdown:{todo:0,ip:0,dc:0,qa:0,rtr:0,completed:0,released:65,blocked:0},
      url:"https://alkimi.atlassian.net/projects/DSP/versions/10663/tab/release-report-all-issues",
      issues:[
        {key:"DSP-1895",summary:"HTML5 Flow: File upload popup incorrectly shows .html format",status:"Released"},
@@ -4176,63 +4177,63 @@ const releaseData = {
      ]}
   ],
   Exchange:[
-    {name:"APRIL PLANNED RELEASE 2026",id:"10964",released:false,releaseDate:"2026-05-06",total:40,
-     breakdown:{todo:0,ip:0,dc:0,qa:1,rtr:38,completed:1,released:0,blocked:0},
+    {name:"APRIL PLANNED RELEASE 2026",id:"10964",released:true,releaseDate:"2026-05-06",total:46,
+     breakdown:{todo:0,ip:0,dc:0,qa:0,rtr:0,completed:1,released:45,blocked:0},
      url:"https://alkimi.atlassian.net/projects/E2/versions/10964/tab/release-report-all-issues",
      issues:[
-       {key:"E2-1986",summary:"Change Log History",status:"Ready to release"},
-       {key:"E2-1374",summary:"Issues with value being sent in request when min. viewability threshold set",status:"Ready to release"},
-       {key:"E2-1350",summary:"[BE] Viewability matrix captured for initial requests where viewability threshold is absent",status:"Ready to release"},
-       {key:"E2-1337",summary:"DSP onboarding should support multiple endpoints — One for each cluster",status:"System Testing"},
-       {key:"E2-1335",summary:"[FE] Make Columns required for creating scheduled reports by Publisher and DSP",status:"Ready to release"},
-       {key:"E2-1334",summary:"DSP Editing screen: Remove Icon against allowedDomains.csv or allowedMobileAppIds.csv",status:"Ready to release"},
-       {key:"E2-1333",summary:"Publisher API throwing 400 Error when admin logs into account",status:"Ready to release"},
-       {key:"E2-1330",summary:"[BE] Old value stored for Bid Floor Price & Alkimi Exchange Fee fields not matching",status:"Ready to release"},
-       {key:"E2-1324",summary:"[FE] Field Name on Change Log History popup should show UI field name",status:"Ready to release"},
-       {key:"E2-1322",summary:"[BE] Repeated dsp-view API calls causing duplicate counter increments",status:"Ready to release"},
-       {key:"E2-1321",summary:"[Prod] View Event URL not injected to file upload videos",status:"Ready to release"},
+       {key:"E2-1986",summary:"Change Log History",status:"Released"},
+       {key:"E2-1374",summary:"Issues with value being sent in request when min. viewability threshold set",status:"Released"},
+       {key:"E2-1350",summary:"[BE] Viewability matrix captured for initial requests where viewability threshold is absent",status:"Released"},
+       {key:"E2-1337",summary:"DSP onboarding should support multiple endpoints — One for each cluster",status:"Released"},
+       {key:"E2-1335",summary:"[FE] Make Columns required for creating scheduled reports by Publisher and DSP",status:"Released"},
+       {key:"E2-1334",summary:"DSP Editing screen: Remove Icon against allowedDomains.csv or allowedMobileAppIds.csv",status:"Released"},
+       {key:"E2-1333",summary:"Publisher API throwing 400 Error when admin logs into account",status:"Released"},
+       {key:"E2-1330",summary:"[BE] Old value stored for Bid Floor Price & Alkimi Exchange Fee fields not matching",status:"Released"},
+       {key:"E2-1324",summary:"[FE] Field Name on Change Log History popup should show UI field name",status:"Released"},
+       {key:"E2-1322",summary:"[BE] Repeated dsp-view API calls causing duplicate counter increments",status:"Released"},
+       {key:"E2-1321",summary:"[Prod] View Event URL not injected to file upload videos",status:"Released"},
        {key:"E2-1320",summary:"[BE] Caching issue – Viewability matrix showing previous cached value",status:"Completed"},
-       {key:"E2-1319",summary:"[BE] Viewability Matrix: Athena Log Values Inconsistent with Clickhouse Data",status:"Ready to release"},
-       {key:"E2-1318",summary:"[Known Issue] BE: Athena Logs showing requests failing with partner not found",status:"Ready to release"},
-       {key:"E2-1271",summary:"[Change Log History popup] Sort by tooltips issue",status:"Ready to release"},
-       {key:"E2-1270",summary:"[BE] Field Name/Old/New Value not populated on Deal Change Log",status:"Ready to release"},
-       {key:"E2-1269",summary:"Deal Edit Screen: Allowed Domains, Allowed Mobile App IDs & Environment fields",status:"Ready to release"},
-       {key:"E2-1266",summary:"[BE] Validation issues with Generate Changelog Report API",status:"Ready to release"},
-       {key:"E2-1265",summary:"[Bug] CSV Date and Time format mismatch across Office apps",status:"Ready to release"},
-       {key:"E2-1264",summary:"[Change Log History popup] Old/New value UI appearing cutoff",status:"Ready to release"},
-       {key:"E2-1263",summary:"DSP Edit Screen: Upload and Classification-based targeting cannot be used together",status:"Ready to release"},
-       {key:"E2-1262",summary:"[BE] Field Name/Old/New Value not populated on DSP Change Log",status:"Ready to release"},
-       {key:"E2-1259",summary:"Publisher Report: eCPM value not matching due to double rounding",status:"Ready to release"},
-       {key:"E2-1258",summary:"[BE] Field Name/Old/New Value not populated on Publisher Change Log",status:"Ready to release"},
-       {key:"E2-1257",summary:"[Change Log History] Records per page should be 10 not 5",status:"Ready to release"},
-       {key:"E2-1256",summary:"[Change Log History] Cannot select current date as Start Date",status:"Ready to release"},
-       {key:"E2-1253",summary:"[Change Log History] Empty state error messaging not per PRD",status:"Ready to release"},
-       {key:"E2-1244",summary:"Search issue in Classifications dropdown field on Added Domains screen",status:"Ready to release"},
-       {key:"E2-1229",summary:"Shared Imp objects across DSP bid requests causes data corruption",status:"Ready to release"},
-       {key:"E2-1227",summary:"Publisher/DSP: Bulk invalid domains in uploaded file causes all invalid entries",status:"Ready to release"},
-       {key:"E2-1226",summary:"Scheduled Reports using system timezone instead of user timezone",status:"Ready to release"},
-       {key:"E2-1218",summary:"Deal-related data not appearing when grouped by Deal in reports",status:"Ready to release"},
-       {key:"E2-1207",summary:"Fetch dynamic Columns and GroupBy under Reports",status:"Ready to release"},
-       {key:"E2-1203",summary:"Viewability in bid request",status:"Ready to release"},
-       {key:"E2-1126",summary:"[BE] API to fetch list of Columns and GroupBy for Reports by Publisher and DSPs",status:"Ready to release"},
-       {key:"E2-1123",summary:"[FE] Pick dynamic columns for reports from BE instead of hardcoding",status:"Ready to release"},
-       {key:"E2-1078",summary:"DSP Reports: Total against eCPM Column appearing with $ sign",status:"Ready to release"},
-       {key:"E2-1071",summary:"[FE] No proper error message when user clicks Download App-Ads.txt",status:"Ready to release"},
-       {key:"E2-1044",summary:"[FE] New screen for changelog in exchange",status:"Ready to release"},
-       {key:"E2-1043",summary:"[BE] Add endpoint to support change log history",status:"Ready to release"}
+       {key:"E2-1319",summary:"[BE] Viewability Matrix: Athena Log Values Inconsistent with Clickhouse Data",status:"Released"},
+       {key:"E2-1318",summary:"[Known Issue] BE: Athena Logs showing requests failing with partner not found",status:"Released"},
+       {key:"E2-1271",summary:"[Change Log History popup] Sort by tooltips issue",status:"Released"},
+       {key:"E2-1270",summary:"[BE] Field Name/Old/New Value not populated on Deal Change Log",status:"Released"},
+       {key:"E2-1269",summary:"Deal Edit Screen: Allowed Domains, Allowed Mobile App IDs & Environment fields",status:"Released"},
+       {key:"E2-1266",summary:"[BE] Validation issues with Generate Changelog Report API",status:"Released"},
+       {key:"E2-1265",summary:"[Bug] CSV Date and Time format mismatch across Office apps",status:"Released"},
+       {key:"E2-1264",summary:"[Change Log History popup] Old/New value UI appearing cutoff",status:"Released"},
+       {key:"E2-1263",summary:"DSP Edit Screen: Upload and Classification-based targeting cannot be used together",status:"Released"},
+       {key:"E2-1262",summary:"[BE] Field Name/Old/New Value not populated on DSP Change Log",status:"Released"},
+       {key:"E2-1259",summary:"Publisher Report: eCPM value not matching due to double rounding",status:"Released"},
+       {key:"E2-1258",summary:"[BE] Field Name/Old/New Value not populated on Publisher Change Log",status:"Released"},
+       {key:"E2-1257",summary:"[Change Log History] Records per page should be 10 not 5",status:"Released"},
+       {key:"E2-1256",summary:"[Change Log History] Cannot select current date as Start Date",status:"Released"},
+       {key:"E2-1253",summary:"[Change Log History] Empty state error messaging not per PRD",status:"Released"},
+       {key:"E2-1244",summary:"Search issue in Classifications dropdown field on Added Domains screen",status:"Released"},
+       {key:"E2-1229",summary:"Shared Imp objects across DSP bid requests causes data corruption",status:"Released"},
+       {key:"E2-1227",summary:"Publisher/DSP: Bulk invalid domains in uploaded file causes all invalid entries",status:"Released"},
+       {key:"E2-1226",summary:"Scheduled Reports using system timezone instead of user timezone",status:"Released"},
+       {key:"E2-1218",summary:"Deal-related data not appearing when grouped by Deal in reports",status:"Released"},
+       {key:"E2-1207",summary:"Fetch dynamic Columns and GroupBy under Reports",status:"Released"},
+       {key:"E2-1203",summary:"Viewability in bid request",status:"Released"},
+       {key:"E2-1126",summary:"[BE] API to fetch list of Columns and GroupBy for Reports by Publisher and DSPs",status:"Released"},
+       {key:"E2-1123",summary:"[FE] Pick dynamic columns for reports from BE instead of hardcoding",status:"Released"},
+       {key:"E2-1078",summary:"DSP Reports: Total against eCPM Column appearing with $ sign",status:"Released"},
+       {key:"E2-1071",summary:"[FE] No proper error message when user clicks Download App-Ads.txt",status:"Released"},
+       {key:"E2-1044",summary:"[FE] New screen for changelog in exchange",status:"Released"},
+       {key:"E2-1043",summary:"[BE] Add endpoint to support change log history",status:"Released"}
      ]},
     {name:"MARCH PRIORITY 2026",id:"10895",released:true,releaseDate:"2026-03-17",total:25,
      breakdown:{todo:0,ip:0,dc:0,qa:0,rtr:0,completed:0,released:25,blocked:0},
      url:"https://alkimi.atlassian.net/projects/E2/versions/10895/tab/release-report-all-issues",
      issues:[]},
-    {name:"Priority Belt Feb",id:"10763",released:true,releaseDate:"2026-02-26",total:5,
-     breakdown:{todo:0,ip:0,dc:0,qa:0,rtr:0,completed:1,released:4,blocked:0},
+    {name:"Priority Belt Feb",id:"10763",released:true,releaseDate:"2026-02-26",total:29,
+     breakdown:{todo:0,ip:0,dc:0,qa:0,rtr:0,completed:1,released:28,blocked:0},
      url:"https://alkimi.atlassian.net/projects/E2/versions/10763/tab/release-report-all-issues",
      issues:[]}
   ],
   "Alkimi Labs":[
-    {name:"LABS V4.0 - APR 2026",id:"10796",released:false,releaseDate:"2026-04-02",total:50,
-     breakdown:{todo:0,ip:0,dc:0,qa:0,rtr:1,completed:0,released:49,blocked:0},
+    {name:"LABS V4.0 - APR 2026",id:"10796",released:true,releaseDate:"2026-04-02",total:100,
+     breakdown:{todo:0,ip:0,dc:0,qa:0,rtr:1,completed:0,released:99,blocked:0},
      url:"https://alkimi.atlassian.net/projects/ALKIMILABS/versions/10796/tab/release-report-all-issues",
      issues:[
        {key:"ALKIMILABS-6136",summary:"Incorrect capitalization of exchange names in UI",status:"Released"},
