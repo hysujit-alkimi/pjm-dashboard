@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>High Level Sprint Backlog — Sprint 11</title>
+  <style>
+    :root {
+      --brand:        #1e40af;
+      --brand-light:  #eff6ff;
+      --bg:           #f8fafc;
+      --surface:      #ffffff;
+      --border:       #e2e8f0;
+      --text:         #0f172a;
+      --muted:        #64748b;
+
+      --badge-todo-bg:       #f1f5f9; --badge-todo-fg:       #475569;
+      --badge-progress-bg:   #fef3c7; --badge-progress-fg:   #92400e;
+      --badge-testing-bg:    #dbeafe; --badge-testing-fg:    #1e40af;
+      --badge-done-bg:       #dcfce7; --badge-done-fg:       #166534;
+      --badge-release-bg:    #bbf7d0; --badge-release-fg:    #14532d;
+      --badge-review-bg:     #f3e8ff; --badge-review-fg:     #6b21a8;
+      --badge-prd-bg:        #cffafe; --badge-prd-fg:        #155e75;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+
+    /* ── HEADER ── */
+    .page-header { background: linear-gradient(135deg,#1e3a8a 0%,#1e40af 50%,#3730a3 100%); color:#fff; padding:32px 40px 28px; }
+    .page-header h1 { font-size:26px; font-weight:700; letter-spacing:-.3px; }
+    .page-header p  { opacity:.75; margin-top:4px; font-size:13px; }
+    .meta-row { display:flex; gap:16px; margin-top:24px; flex-wrap:wrap; }
+    .meta-card { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:10px; padding:12px 20px; min-width:130px; }
+    .meta-card .label { font-size:10px; text-transform:uppercase; letter-spacing:.8px; opacity:.7; }
+    .meta-card .value { font-size:18px; font-weight:700; margin-top:2px; }
+
+    /* ── NAV ── */
+    nav { background:var(--surface); border-bottom:1px solid var(--border); padding:0 40px; position:sticky; top:0; z-index:50; display:flex; gap:4px; overflow-x:auto; }
+    nav a { text-decoration:none; color:var(--muted); font-size:12.5px; font-weight:500; padding:12px 14px; border-bottom:2px solid transparent; white-space:nowrap; transition:color .15s,border-color .15s; }
+    nav a:hover { color:var(--brand); border-color:var(--brand); }
+
+    /* ── MAIN ── */
+    main { padding:36px 40px 60px; max-width:1300px; margin:0 auto; }
+
+    /* ── SECTION HEADER ── */
+    .section { margin-bottom:52px; }
+    .section-header { display:flex; align-items:center; gap:12px; margin-bottom:18px; padding-bottom:12px; border-bottom:2px solid var(--border); }
+    .section-icon { width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0; }
+    .section-title { font-size:17px; font-weight:700; }
+    .section-sub   { font-size:12px; color:var(--muted); margin-top:2px; }
+    .priority-pill { margin-left:auto; font-size:11px; font-weight:600; padding:3px 10px; border-radius:99px; background:var(--brand-light); color:var(--brand); flex-shrink:0; }
+
+    /* ── TABLE ── */
+    .tbl-wrap { overflow-x:auto; border-radius:10px; border:1px solid var(--border); }
+    table { width:100%; border-collapse:collapse; background:var(--surface); }
+    thead tr { background:#f8fafc; }
+    th { text-align:left; padding:11px 16px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); border-bottom:1px solid var(--border); }
+    td { padding:12px 16px; border-bottom:1px solid #f1f5f9; vertical-align:top; }
+    tr:last-child td { border-bottom:none; }
+    tr:hover td { background:#fafbfc; }
+    .sl { color:var(--muted); font-size:12px; min-width:36px; }
+    .item-name { font-weight:500; }
+    .item-sub  { color:var(--muted); font-size:12px; margin-top:2px; }
+    .tags { display:flex; flex-wrap:wrap; gap:4px; margin-top:4px; }
+    .tag { font-size:11px; padding:2px 8px; border-radius:99px; background:#f1f5f9; color:#475569; font-weight:500; }
+    .rc { font-size:12px; font-weight:500; min-width:150px; }
+    .rc-na      { color:var(--muted); font-style:italic; }
+    .rc-hotfix  { color:#dc2626; font-weight:700; }
+    .rc-adhoc   { color:#7c3aed; font-weight:700; }
+    .rc-may     { color:#0369a1; }
+    .rc-jun     { color:#0f766e; }
+    .rc-date    { color:#b45309; font-weight:700; }
+
+    /* ── BADGES ── */
+    .badge { display:inline-block; font-size:11px; font-weight:600; padding:3px 10px; border-radius:99px; white-space:nowrap; }
+    .badge-todo     { background:var(--badge-todo-bg);     color:var(--badge-todo-fg); }
+    .badge-progress { background:var(--badge-progress-bg); color:var(--badge-progress-fg); }
+    .badge-testing  { background:var(--badge-testing-bg);  color:var(--badge-testing-fg); }
+    .badge-done     { background:var(--badge-done-bg);     color:var(--badge-done-fg); }
+    .badge-release  { background:var(--badge-release-bg);  color:var(--badge-release-fg); }
+    .badge-review   { background:var(--badge-review-bg);   color:var(--badge-review-fg); }
+    .badge-prd      { background:var(--badge-prd-bg);      color:var(--badge-prd-fg); }
+
+    /* ── SECTION ICON COLOURS ── */
+    .icon-marketplace { background:#fdf4ff; }
+    .icon-mp-pro      { background:#f5f3ff; }
+    .icon-exchange    { background:#eff6ff; }
+    .icon-amp         { background:#f0fdf4; }
+    .icon-adfi        { background:#fff7ed; }
+    .icon-dsp         { background:#fef2f2; }
+    .icon-mmp         { background:#f0f9ff; }
+    .icon-labs        { background:#fefce8; }
+    .icon-devops      { background:#f8fafc; }
+
+    /* ═══════════════════════════════════════
+       PRIORITY MATRIX
+    ═══════════════════════════════════════ */
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 4px;
+    }
+    .matrix-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px 16px;
+      border-left: 4px solid #e2e8f0;
+      transition: box-shadow .15s;
+    }
+    .matrix-card:hover { box-shadow: 0 4px 14px rgba(0,0,0,.07); }
+    .matrix-card.p1 { border-left-color: #7c3aed; }
+    .matrix-card.p2 { border-left-color: #1e40af; }
+    .matrix-card.p3 { border-left-color: #d97706; }
+    .matrix-card.p4 { border-left-color: #dc2626; }
+    .matrix-card.p5 { border-left-color: #6b7280; }
+    .matrix-card.ongoing { border-left-color: #0891b2; }
+    .matrix-card.infra   { border-left-color: #374151; }
+
+    .mc-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+    .mc-name { font-weight:700; font-size:13.5px; }
+    .mc-sprint { font-size:11px; color:var(--muted); margin-top:2px; }
+    .mc-p { font-size:10px; font-weight:700; padding:2px 8px; border-radius:99px; letter-spacing:.4px; }
+    .mc-p.p1 { background:#f3e8ff; color:#6d28d9; }
+    .mc-p.p2 { background:#dbeafe; color:#1e40af; }
+    .mc-p.p3 { background:#fef3c7; color:#92400e; }
+    .mc-p.p4 { background:#fee2e2; color:#b91c1c; }
+    .mc-p.p5 { background:#f1f5f9; color:#475569; }
+    .mc-p.ongoing { background:#cffafe; color:#155e75; }
+    .mc-p.infra   { background:#f1f5f9; color:#374151; }
+
+    .mc-stats { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
+    .mc-stat { display:flex; align-items:center; gap:4px; font-size:11px; }
+    .mc-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .dot-done    { background:#22c55e; }
+    .dot-prog    { background:#f59e0b; }
+    .dot-test    { background:#3b82f6; }
+    .dot-todo    { background:#cbd5e1; }
+    .dot-release { background:#10b981; }
+
+    .mc-rc { font-size:11px; color:var(--muted); border-top:1px solid #f1f5f9; padding-top:8px; margin-top:4px; }
+    .mc-rc strong { color:var(--text); }
+
+    /* ═══════════════════════════════════════
+       KEY FOCUS AREAS
+    ═══════════════════════════════════════ */
+    .focus-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 14px;
+      margin-top: 4px;
+    }
+    .focus-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .focus-icon-wrap {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .focus-title { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+    .focus-desc  { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    .focus-tag   { display:inline-block; font-size:10px; font-weight:600; padding:2px 8px; border-radius:99px; margin-top:6px; }
+
+    .urgent  { border-left: 3px solid #dc2626; }
+    .urgent .focus-icon-wrap  { background:#fef2f2; }
+    .urgent .focus-tag { background:#fee2e2; color:#b91c1c; }
+
+    .warning { border-left: 3px solid #f59e0b; }
+    .warning .focus-icon-wrap { background:#fef3c7; }
+    .warning .focus-tag { background:#fef3c7; color:#92400e; }
+
+    .success { border-left: 3px solid #10b981; }
+    .success .focus-icon-wrap { background:#d1fae5; }
+    .success .focus-tag { background:#d1fae5; color:#065f46; }
+
+    .info    { border-left: 3px solid #3b82f6; }
+    .info .focus-icon-wrap    { background:#dbeafe; }
+    .info .focus-tag { background:#dbeafe; color:#1e40af; }
+
+    .purple  { border-left: 3px solid #8b5cf6; }
+    .purple .focus-icon-wrap  { background:#f5f3ff; }
+    .purple .focus-tag { background:#f5f3ff; color:#6d28d9; }
+
+    /* ═══════════════════════════════════════
+       TEAM LOAD
+    ═══════════════════════════════════════ */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 4px;
+    }
+    .team-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+    }
+    .tc-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+    .tc-name { font-weight:700; font-size:14px; display:flex; align-items:center; gap:8px; }
+    .tc-emoji { font-size:18px; }
+    .load-badge { font-size:10px; font-weight:700; padding:3px 10px; border-radius:99px; letter-spacing:.3px; }
+    .load-high   { background:#fee2e2; color:#b91c1c; }
+    .load-medium { background:#fef3c7; color:#92400e; }
+    .load-normal { background:#dcfce7; color:#166534; }
+
+    .tc-bar-wrap { background:#f1f5f9; border-radius:99px; height:6px; margin-bottom:14px; overflow:hidden; }
+    .tc-bar { height:100%; border-radius:99px; }
+    .bar-high   { background:#ef4444; }
+    .bar-medium { background:#f59e0b; }
+    .bar-normal { background:#22c55e; }
+
+    .tc-count { font-size:24px; font-weight:800; color:var(--text); }
+    .tc-count-label { font-size:11px; color:var(--muted); margin-bottom:10px; }
+    .tc-sections { font-size:11px; color:var(--muted); line-height:1.7; }
+    .tc-section-tag { display:inline-block; background:#f8fafc; border:1px solid var(--border); border-radius:6px; padding:1px 7px; margin:2px 2px 0 0; font-size:11px; color:var(--text); }
+
+    footer { text-align:center; padding:24px; color:var(--muted); font-size:12px; border-top:1px solid var(--border); }
+  </style>
+</head>
+<body>
+
+<!-- ─────────────── PAGE HEADER ─────────────── -->
+<div class="page-header">
+  <h1>High Level Sprint Backlog — Sprint 11</h1>
+  <p>Alkimi Exchange · Sprint Planning · Prepared by Sujit Kumar</p>
+  <div class="meta-row">
+    <div class="meta-card"><div class="label">Sprint Start</div><div class="value">11 May 2026</div></div>
+    <div class="meta-card"><div class="label">Sprint End</div><div class="value">22 May 2026</div></div>
+    <div class="meta-card"><div class="label">Working Days</div><div class="value">10</div></div>
+    <div class="meta-card"><div class="label">Public Holidays</div><div class="value">None</div></div>
+    <div class="meta-card"><div class="label">Total Items</div><div class="value">57</div></div>
+    <div class="meta-card"><div class="label">Squads</div><div class="value">8</div></div>
+  </div>
+</div>
+
+<!-- ─────────────── NAV ─────────────── -->
+<nav>
+  <a href="#overview">📋 Priority Matrix</a>
+  <a href="#focus">🎯 Focus Areas</a>
+  <a href="#marketplace-lite">🚀 Mkpl Lite</a>
+  <a href="#marketplace-pro">🤖 Mkpl Pro</a>
+  <a href="#exchange">📊 Exchange</a>
+  <a href="#amp">📱 AMP / MBP</a>
+  <a href="#adfi">💼 AdFi</a>
+  <a href="#dsp">🎯 DSP</a>
+  <a href="#mmp">💱 MMP</a>
+  <a href="#labs">🧪 Labs</a>
+  <a href="#devops">⚙️ DevOps</a>
+  <a href="#team-load">👥 Team Load</a>
+</nav>
+
+<main>
+
+  <!-- ═══════════════════════════════════════
+       PRIORITY MATRIX
+  ═══════════════════════════════════════ -->
+  <div class="section" id="overview">
+    <div class="section-header">
+      <div class="section-icon" style="background:#f0f4ff;">📋</div>
+      <div>
+        <div class="section-title">Priority Matrix — Sprint 11</div>
+        <div class="section-sub">All workstreams at a glance · status breakdown per squad</div>
+      </div>
+    </div>
+    <div class="matrix-grid">
+
+      <!-- Marketplace Lite -->
+      <div class="matrix-card p1">
+        <div class="mc-top">
+          <div><div class="mc-name">🚀 Marketplace Lite</div><div class="mc-sprint">Sprint 11</div></div>
+          <span class="mc-p p1">P1 · HIGHEST</span>
+        </div>
+        <div class="mc-stats">
+          <div class="mc-stat"><div class="mc-dot dot-todo"></div> 5 To Do</div>
+        </div>
+        <div class="mc-rc">Release: <strong>N/A</strong> — Discovery &amp; planning phase</div>
+      </div>
+
+      <!-- Marketplace Pro -->
+      <div class="matrix-card p1">
+        <div class="mc-top">
+          <div><div class="mc-name">🤖 Marketplace Pro</div><div class="mc-sprint">Sprint 11</div></div>
+          <span class="mc-p p1">P1 · HIGHEST</span>
+        </div>
+        <div class="mc-stats">
+          <div class="mc-stat"><div class="mc-dot dot-prog"></div> 4 In Progress</div>
+          <div class="mc-stat"><div class="mc-dot dot-todo"></div> 4 To Do</div>
+          <div class="mc-stat"><div class="mc-dot dot-test" style="background:#a855f7;"></div> 1 In Review</div>
+        </div>
+        <div class="mc-rc">Release: <strong>May 2026</strong></div>
+      </div>
+
+      <!-- Exchange -->
+      <div class="matrix-card p2">
+        <div class="mc-top">
+          <div><div class="mc-name">📊 Exchange</div><div class="mc-sprint">Sprint 64</div></div>
+          <span class="mc-p p2">P2</span>
+        </div>
+        <div class="mc-stats">
+          <div class="mc-stat"><div class="mc-dot dot-prog"></div> 7 In Progress</div>
+          <div class="mc-stat"><div class="mc-dot dot-test"></div> 3 System Testing</div>
+        </div>
+        <div class="mc-rc">🔥 Hot Fix: <strong>11 May</strong> · ⚡ AdHoc: <strong>19 May</strong> · Planned: May 2026</div>
+      </div>
+
+      <!-- AMP / MBP -->
+      <div class="matrix-card p2">
+        <div class="mc-top">
+          <div><div class="mc-name">📱 AMP / MBP</div><div class="mc-sprint">Sprint 6</div></div>
+          <span class="mc-p p2">P2</span>
+        </div>
+        <div class="mc-stats">
+          <div class="mc-stat"><div class="mc-dot dot-done"></div> 4 Completed</div>
+          <div class="mc-stat"><div class="mc-dot dot-test" style="background:#a855f7;"></div> 1 In Review</div>
+          <div class="mc-stat"><div class="mc-dot dot-todo"></div> 3 To Do</div>
+        </div>
+        <div class="mc-rc">Release: <strong>June 2026</strong></div>
+      </div>
+
+      <!-- AdFi -->
+      <div class="matrix-card p3">
+        <div class="mc-top">
+          <div><div class="mc-name">💼 AdFi</div><div class="mc-sprint">Sprint 5</div></div>
+          <span class="mc-p p3">P3</span>
+        </div>
+        <div class="mc-stats">
+          <div class="mc-stat"><div class="mc-dot dot-release"></div> 1 Ready to Release</div>
+          <div class="mc-stat"><div class="mc-dot dot-test"></div> 1 System Testing</div>
+          <div class="mc-stat"><div class="mc-dot dot-prog"></div> 2 In Progress</div>
+          <div class="mc-stat"><div class="mc-dot dot-test" style="background:#06b6d4;"></div> 1 PRD Ready</div>
+        </div>
+        <div class="mc-rc">Publisher Dashboard: <strong>May 2026</strong> · Others: June 2026</div>
+      </div>
+
+      <!-- DSP -->
+      <div class="matrix-card p4">
+        <div class="mc-top">
+          <div><div class="mc-name">🎯 DSP</div><div class="mc-sprint">Sprint 54</div></div>
+          <span class="mc-p p4">P4</span>
+        </div>
+        <div class="mc-stats">
+          <div class="mc-stat"><div class="mc-dot dot-done"></div> 1 Dev Done</div>
+          <div class="mc-stat"><div class="mc-dot dot-prog"></div> 1 In Progress</div>
+          <div class="mc-stat"><div class="mc-dot dot-test"></div> 5 System Testing</div>
+        </div>
+        <div class="mc-rc">Release: <strong>May 2026</strong></div>
+      </div>
+
+      <!-- MMP -->
+      <div class="matrix-card ongoing">
+        <div class="mc-top">
+          <div><div class="mc-name">💱 MMP</div><div class="mc-sprint">Sprint 7</div></div>
+          <span class="mc-p ongoing">ONGOING</span>
+        </div>
+        <div class="mc-stats">
+          <div class="mc-stat"><div class="mc-dot dot-todo"></div> 6 To Do</div>
+        </div>
+        <div class="mc-rc">Release: <strong>May 2026</strong> — Sprint kickoff critical</div>
+      </div>
+
+      <!-- Labs -->
+      <div class="matrix-card p5">
+        <div class="mc-top">
+          <div><div class="mc-name">🧪 Labs</div><div class="mc-sprint">Sprint 67</div></div>
+          <span class="mc-p p5">P5</span>
+        </div>
+        <div class="mc-stats">
+          <div class="mc-stat"><div class="mc-dot dot-done"></div> 1 Dev Done</div>
+          <div class="mc-stat"><div class="mc-dot dot-prog"></div> 3 In Progress</div>
+        </div>
+        <div class="mc-rc">Hard deadline: <strong>14 May</strong> (3 items)</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       KEY FOCUS AREAS
+  ═══════════════════════════════════════ -->
+  <div class="section" id="focus">
+    <div class="section-header">
+      <div class="section-icon" style="background:#fff7ed;">🎯</div>
+      <div>
+        <div class="section-title">Key Focus Areas — Sprint 11</div>
+        <div class="section-sub">What the team must prioritise to make this sprint successful</div>
+      </div>
+    </div>
+    <div class="focus-grid">
+
+      <div class="focus-card urgent">
+        <div class="focus-icon-wrap">🔥</div>
+        <div>
+          <div class="focus-title">Time-Critical: Exchange Hot Fixes & AdHoc</div>
+          <div class="focus-desc">Two Exchange hot fixes must ship by <strong>11 May</strong>. AdPod AdHoc Priority Belt is due <strong>19 May</strong>. These are the sprint's earliest hard deadlines — QA must clear these first.</div>
+          <span class="focus-tag">URGENT — 11 May &amp; 19 May</span>
+        </div>
+      </div>
+
+      <div class="focus-card urgent">
+        <div class="focus-icon-wrap">📅</div>
+        <div>
+          <div class="focus-title">Labs Hard Deadline — 14 May</div>
+          <div class="focus-desc">Q1 Rewards Claim, Production Bugs &amp; Social Login must all ship by <strong>14 May</strong>. These are already In Progress — ensure no blockers exist from Day 1.</div>
+          <span class="focus-tag">HARD DEADLINE — 14 May</span>
+        </div>
+      </div>
+
+      <div class="focus-card success">
+        <div class="focus-icon-wrap">✅</div>
+        <div>
+          <div class="focus-title">AdFi Publisher Dashboard — Ready to Go Live</div>
+          <div class="focus-desc">Publisher Dashboard &amp; Onboarding Data are both <strong>Ready to Release</strong>. Coordinate the May go-live deployment — this is the clearest sprint win available.</div>
+          <span class="focus-tag">SHIP IN MAY</span>
+        </div>
+      </div>
+
+      <div class="focus-card purple">
+        <div class="focus-icon-wrap">🚀</div>
+        <div>
+          <div class="focus-title">Marketplace Pro — Demo Environment Must Be QA-Ready</div>
+          <div class="focus-desc">Agentic Relay, A2A Negotiation &amp; Folio Integration are all in flight. Demo Environment Stability &amp; QA Handover must reach a testable state before sprint end.</div>
+          <span class="focus-tag">MAY 2026 PUSH</span>
+        </div>
+      </div>
+
+      <div class="focus-card info">
+        <div class="focus-icon-wrap">📋</div>
+        <div>
+          <div class="focus-title">AMP / MBP — PRD &amp; Design Sign-off This Sprint</div>
+          <div class="focus-desc">Business walkthrough and dev estimates must be completed this sprint to unblock June development. Four items are already completed — maintain momentum into sign-off.</div>
+          <span class="focus-tag">JUNE UNBLOCK</span>
+        </div>
+      </div>
+
+      <div class="focus-card warning">
+        <div class="focus-icon-wrap">💱</div>
+        <div>
+          <div class="focus-title">MMP Phase 2 — Immediate Kickoff Needed</div>
+          <div class="focus-desc">All 6 MMP items are <strong>TO DO</strong> with a May 2026 release target. An early sprint kickoff is critical. Phase 2 Demo should be the first item activated on Day 1.</div>
+          <span class="focus-tag">ALL TO DO — START NOW</span>
+        </div>
+      </div>
+
+      <div class="focus-card info">
+        <div class="focus-icon-wrap">🔧</div>
+        <div>
+          <div class="focus-title">QA Pipeline — Highest Team Load This Sprint</div>
+          <div class="focus-desc">QA carries the heaviest load with <strong>16+ items</strong> across DSP, Exchange, AdFi, MMP &amp; Labs. Prioritise DSP &amp; Exchange testing early to avoid end-of-sprint bottleneck.</div>
+          <span class="focus-tag">QA BOTTLENECK RISK</span>
+        </div>
+      </div>
+
+      <div class="focus-card purple">
+        <div class="focus-icon-wrap">🎨</div>
+        <div>
+          <div class="focus-title">Marketplace Lite — Discovery Must Start</div>
+          <div class="focus-desc">P1 priority but all 5 items are <strong>TO DO</strong>. Product &amp; Design must initiate Account Management PRD and AdOps requirement gathering early, as downstream teams (FE, DevOps) are blocked.</div>
+          <span class="focus-tag">P1 — DISCOVERY PHASE</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       DETAILED SPRINT TABLES
+  ═══════════════════════════════════════ -->
+
+  <!-- MARKETPLACE LITE -->
+  <div class="section" id="marketplace-lite">
+    <div class="section-header">
+      <div class="section-icon icon-marketplace">🚀</div>
+      <div><div class="section-title">Agentic Marketplace Lite</div><div class="section-sub">Sprint 11 · Priority 1 — Highest</div></div>
+      <span class="priority-pill">P1 · Highest</span>
+    </div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>#</th><th style="width:44%">Work Item</th><th>Status</th><th>Team</th><th>Release Cycle</th></tr></thead>
+      <tbody>
+        <tr><td class="sl">1</td><td><div class="item-name">AMP Integration — AdOps Sign Off</div><div class="item-sub">API-first architecture when AMP integrates</div></td><td><span class="badge badge-todo">TO DO</span></td><td><div class="tags"><span class="tag">Web 3</span><span class="tag">AI</span><span class="tag">FE</span><span class="tag">PRODUCT</span></div></td><td class="rc rc-na">N/A</td></tr>
+        <tr><td class="sl">2</td><td><div class="item-name">UI / UX</div></td><td><span class="badge badge-todo">TO DO</span></td><td><div class="tags"><span class="tag">DESIGN</span><span class="tag">FE</span><span class="tag">Marketing</span></div></td><td class="rc rc-na">N/A</td></tr>
+        <tr><td class="sl">3</td><td><div class="item-name">Account Normalisation Architecture</div></td><td><span class="badge badge-todo">TO DO</span></td><td><div class="tags"><span class="tag">DevOps</span></div></td><td class="rc rc-na">N/A</td></tr>
+        <tr><td class="sl">4</td><td><div class="item-name">Define Account Management PRD</div></td><td><span class="badge badge-todo">TO DO</span></td><td><div class="tags"><span class="tag">PRODUCT</span></div></td><td class="rc rc-na">N/A</td></tr>
+        <tr><td class="sl">5</td><td><div class="item-name">AdOps Requirement Gathering &amp; Gap Analysis</div><div class="item-sub">Sync-up from AMP development &amp; flow</div></td><td><span class="badge badge-todo">TO DO</span></td><td><div class="tags"><span class="tag">PRODUCT</span></div></td><td class="rc rc-na">N/A</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <!-- MARKETPLACE PRO -->
+  <div class="section" id="marketplace-pro">
+    <div class="section-header">
+      <div class="section-icon icon-mp-pro">🤖</div>
+      <div><div class="section-title">Agentic Marketplace Pro</div><div class="section-sub">Sprint 11 · Priority 1 — Highest</div></div>
+      <span class="priority-pill">P1 · Highest</span>
+    </div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>#</th><th style="width:44%">Work Item</th><th>Status</th><th>Team</th><th>Release Cycle</th></tr></thead>
+      <tbody>
+        <tr><td class="sl">1</td><td><div class="item-name">Missing PRDs</div></td><td><span class="badge badge-review">IN REVIEW</span></td><td><div class="tags"><span class="tag">PRODUCT</span></div></td><td class="rc rc-may">May 2026</td></tr>
+        <tr><td class="sl">2</td><td><div class="item-name">Agentic Relay</div></td><td><span class="badge badge-progress">IN PROGRESS</span></td><td><div class="tags"><span class="tag">AI</span></div></td><td class="rc rc-may">May 2026</td></tr>
+        <tr><td class="sl">3</td><td><div class="item-name">A2A Negotiation</div></td><td><span class="badge badge-progress">IN PROGRESS</span></td><td><div class="tags"><span class="tag">AI</span></div></td><td class="rc rc-may">May 2026</td></tr>
+        <tr><td class="sl">4</td><td><div class="item-name">AdTech Integration</div></td><td><span class="badge badge-todo">TO DO</span></td><td><div class="tags"><span class="tag">AdTech</span></div></td><td class="rc rc-may">May 2026</td></tr>
+        <tr><td class="sl">5</td><td><div class="item-name">Folio Integration</div></td><td><span class="badge badge-progress">IN PROGRESS</span></td><td><div class="tags"><span class="tag">FE</span><span class="tag">AI</span><span class="tag">Web 3</span></div></td><td class="rc rc-may">May 2026</td></tr>
+        <tr><td class="sl">6</td><td><div class="item-name">UI / UX</div></td><td><span class="badge badge-todo">TO DO</span></td><td><div class="tags"><span class="tag">DESIGN</span></div></td><td class="rc rc-may">May 2026</td></tr>
+        <tr><td class="sl">7</td><td><div class="item-name">Onboarding Process Fix</div></td><td><span class="badge badge-progress">IN PROGRESS</span></td><td><div class="tags"><span class="tag">AI</span><span class="tag">AdTech</span></div></td><td class="rc rc-may">May 2026</td></tr>
+        <tr><td class="sl">8</td><td><div class="item-name">Demo Environment Stability &amp; QA Handover</div></td><td><span class="badge badge-progress">IN PROGRESS</span></td><td><div class="tags"><span class="tag">PRODUCT</span><span class="tag">AI</span></div></td><td class="rc rc-may">May 2026</td></tr>
+        <tr><td class="sl">9</td><td><div class="item-name">QA Team — Manual Testing</div><div class="item-sub">No Agentic testing — Human QA only</div></td><td><span class="badge badge-todo">TO DO</span></td><td><div class="tags"><span class="tag">QA</span></div></td><td class="rc rc-may">May 2026</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <!-- EXCHANGE -->
+  <div class="section" id="exchange">
+    <div class="section-header">
+      <div class="section-icon icon-exchange">📊</div>
+      <div><div class="section-title">Exchange — Sprint 64</div><div class="section-sub">Ad Tech · Sprint 11 · Priority 2</div></div>
+      <span class="priority-pill">P2</span>
+    </div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>#</th><th style="width:44%">Work Item</th><th>Status</th><th>Team</th><th>Release Cycle</th></tr></thead>
+      <tbody>
+        <tr><td class="sl">1</td><td><div class="item-name">Adding Cluster Information in Report</div></td><td><span class="badge badge-progress">IN PROGRESS</span></td><td><div class="tags"><span class="tag">JAVA</span><span class="tag">FE</span></div></td><td class="rc rc-may">May 2026 Planned</td></tr>
+        <tr><td class="sl">2</td><td><div class="item-name">Environment Type Report</div></td><td><span class="badge badge-progress">IN PROGRESS</span></td><td><div class="tags"><span class="tag">JAVA</span><span class="tag">FE</span></div></td><td class="rc rc-may">May 2026 Planned</td></tr>
+        <tr><td class="sl">3</td><td><div class="item-name">Net eCPM in Reporting</div></td><td><span class="badge badge-progress">IN PROGRESS</span></td><td><div class="tags"><span class="tag">JAVA</span><span class="tag">FE</span></div></td><td class="rc rc-may">May 2026 Planned</td></tr>
+        <tr><td class="sl">4</td><td><div class="item-name">Sorting Button in Exchange Report</div></td><td><span class="badge badge-progress">IN PROGRESS</span></td><td><div class="tags"><span class="tag">JAVA</span><span class="tag">FE</span></div></td><td class="rc rc-may">May 2026 Planned</td></tr>
+        <tr><td class="sl">5</td><td><div class="item-name">Publisher RRR (Request Rejection Reason)</div></td><td><span class="badge badge-progress">IN PROGRESS</span></td><td><div class="tags"><span class="tag">JAVA</span><span class="tag">FE</span></div></td><td class="rc rc-may">May 2026 Planned</td></tr>
+        <tr><td class="sl">6</td><td><div class="item-name">DSP Dashboard — Exchange Side</div></td><td><span class="badge badge-progress">IN PROGRESS</span></td><td><div class="tags"><span class="tag">JAVA</span><span class="tag">FE</span></div></td><td class="rc rc-may">May 2026 Planned</td></tr>
+        <tr><td class="sl">7</td><td><div class="item-name">Prebid Server Related Changes</div></td><td><span class="badge badge-progress">IN PROGRESS</span></td><td><div class="tags"><span class="tag">JAVA</span><span class="tag">FE</span></div></td><td class="rc rc-may">May 2026 Planned</td></tr>
+        <tr><td class="sl">8</td><td><div class="item-name">(PMP) Deal Configuration — Make wseat Optional</div><div class="item-sub">At least 1 DSP mandatory; wseat list can be empty</div></td><td><span class="badge badge-testing">SYSTEM TESTING</span></td><td><div class="tags"><span class="tag">QA</span></div></td><td class="rc rc-hotfix">🔥 Hot Fix — 11 May</td></tr>
+        <tr><td class="sl">9</td><td><div class="item-name">Prebid.js — Read eids &amp; schain from Incoming Request</div><div class="item-sub">Pass through to ORTB requests before sending to DSPs</div></td><td><span class="badge badge-testing">SYSTEM TESTING</span></td><td><div class="tags"><span class="tag">QA</span></div></td><td class="rc rc-hotfix">🔥 Hot Fix — 11 May</td></tr>
+        <tr><td class="sl">10</td><td><div class="item-name">AdPod Implementation for Connected TV</div><div class="item-sub">As per Open RTB 2.6 Specification</div></td><td><span class="badge badge-testing">SYSTEM TESTING</span></td><td><div class="tags"><span class="tag">QA</span></div></td><td class="rc rc-adhoc">⚡ AdHoc Priority Belt — 19 May</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <!-- AMP / MBP -->
+  <div class="section" id="amp">
+    <div class="section-header">
+      <div class="section-icon icon-amp">📱</div>
+      <div><div class="section-title">Alkimi Media Platform (AMP / MBP) — Sprint 6</div><div class="section-sub">Ad Tech · Sprint 11 · Priority 2</div></div>
+      <span class="priority-pill">P2</span>
+    </div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>#</th><th style="width:44%">Work Item</th><th>Status</th><th>Team</th><th>Release Cycle</th></tr></thead>
+      <tbody>
+        <tr><td class="sl">1</td><td><div class="item-name">Old PRD Based Development</div></td><td><span class="badge badge-done">COMPLETED</span></td><td><div class="tags"><span class="tag">PRODUCT</span></div></td><td class="rc rc-jun">June 2026</td></tr>
+        <tr><td class="sl">2</td><td><div class="item-name">AdOps Review &amp; Feedback Collection</div></td><td><span class="badge badge-done">COMPLETED</span></td><td><div class="tags"><span class="tag">PRODUCT</span></div></td><td class="rc rc-jun">June 2026</td></tr>
+        <tr><td class="sl">3</td><td><div class="item-name">Gap Analysis</div></td><td><span class="badge badge-done">COMPLETED</span></td><td><div class="tags"><span class="tag">PRODUCT</span></div></td><td class="rc rc-jun">June 2026</td></tr>
+        <tr><td class="sl">4</td><td><div class="item-name">New PRD Development</div></td><td><span class="badge badge-done">COMPLETED</span></td><td><div class="tags"><span class="tag">PRODUCT</span></div></td><td class="rc rc-jun">June 2026</td></tr>
+        <tr><td class="sl">5</td><td><div class="item-name">New Design (UI / UX)</div></td><td><span class="badge badge-review">IN REVIEW</span></td><td><div class="tags"><span class="tag">DESIGN</span></div></td><td class="rc rc-jun">June 2026</td></tr>
+        <tr><td class="sl">6</td><td><div class="item-name">Business Walkthrough — PRD &amp; Design Sign-off</div></td><td><span class="badge badge-todo">TO DO</span></td><td><div class="tags"><span class="tag">DELIVERY</span></div></td><td class="rc rc-jun">June 2026</td></tr>
+        <tr><td class="sl">7</td><td><div class="item-name">Dev Walkthrough — Dev Estimates</div></td><td><span class="badge badge-todo">TO DO</span></td><td><div class="tags"><span class="tag">DELIVERY</span></div></td><td class="rc rc-jun">June 2026</td></tr>
+        <tr><td class="sl">8</td><td><div class="item-name">Planning &amp; Start Development</div></td><td><span class="badge badge-todo">TO DO</span></td><td><div class="tags"><span class="tag">JAVA</span><span class="tag">AI</span><span class="tag">FE</span></div></td><td class="rc rc-jun">June 2026</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <!-- ADFI -->
+  <div class="section" id="adfi">
+    <div class="section-header">
+      <div class="section-icon icon-adfi">💼</div>
+      <div><div class="section-title">AdFi — Sprint 5</div><div class="section-sub">Ad Tech · Sprint 11 · Priority 3</div></div>
+      <span class="priority-pill">P3</span>
+    </div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>#</th><th style="width:44%">Work Item</th><th>Status</th><th>Team</th><th>Release Cycle</th></tr></thead>
+      <tbody>
+        <tr><td class="sl">1</td><td><div class="item-name">Publisher Onboarding Data</div></td><td><span class="badge badge-release">READY TO RELEASE</span></td><td><div class="tags"><span class="tag">JAVA</span><span class="tag">FE</span><span class="tag">QA</span></div></td><td class="rc rc-may">May 2026</td></tr>
+        <tr><td class="sl">2</td><td><div class="item-name">Publisher Dashboard</div></td><td><span class="badge badge-testing">SYSTEM TESTING</span></td><td><div class="tags"><span class="tag">JAVA</span><span class="tag">FE</span><span class="tag">QA</span></div></td><td class="rc rc-may">May 2026</td></tr>
+        <tr><td class="sl">3</td><td><div class="item-name">DSP Dashboard — Portal Side</div></td><td><span class="badge badge-progress">IN PROGRESS</span></td><td><div class="tags"><span class="tag">JAVA</span><span class="tag">FE</span></div></td><td class="rc rc-jun">June 2026</td></tr>
+        <tr><td class="sl">4</td><td><div class="item-name">FinOps Admin Dashboard</div></td><td><span class="badge badge-progress">IN PROGRESS</span></td><td><div class="tags"><span class="tag">JAVA</span><span class="tag">FE</span></div></td><td class="rc rc-jun">June 2026</td></tr>
+        <tr><td class="sl">5</td><td><div class="item-name">FinOps V2</div></td><td><span class="badge badge-prd">PRD READY</span></td><td><div class="tags"><span class="tag">JAVA</span><span class="tag">FE</span></div></td><td class="rc rc-jun">June 2026</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <!-- DSP -->
+  <div class="section" id="dsp">
+    <div class="section-header">
+      <div class="section-icon icon-dsp">🎯</div>
+      <div><div class="section-title">DSP — Sprint 54</div><div class="section-sub">Ad Tech · Sprint 11 · Priority 4</div></div>
+      <span class="priority-pill">P4</span>
+    </div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>#</th><th style="width:44%">Work Item</th><th>Status</th><th>Team</th><th>Release Cycle</th></tr></thead>
+      <tbody>
+        <tr><td class="sl">1</td><td><div class="item-name">Campaign Stop-Loss Feature</div></td><td><span class="badge badge-done">DEV COMPLETED</span></td><td><div class="tags"><span class="tag">JAVA</span><span class="tag">FE</span></div></td><td class="rc rc-may">May 2026</td></tr>
+        <tr><td class="sl">2</td><td><div class="item-name">Bulk Edit — Campaigns, Line Items &amp; Creatives</div></td><td><span class="badge badge-progress">IN PROGRESS</span></td><td><div class="tags"><span class="tag">JAVA</span><span class="tag">FE</span></div></td><td class="rc rc-may">May 2026</td></tr>
+        <tr><td class="sl">3</td><td><div class="item-name">Enable CTV Option in DSP (AdPod)</div></td><td><span class="badge badge-testing">SYSTEM TESTING</span></td><td><div class="tags"><span class="tag">QA</span></div></td><td class="rc rc-may">May 2026</td></tr>
+        <tr><td class="sl">4</td><td><div class="item-name">Move Report Polling Loop to Browser (Client-side)</div></td><td><span class="badge badge-testing">SYSTEM TESTING</span></td><td><div class="tags"><span class="tag">QA</span></div></td><td class="rc rc-may">May 2026</td></tr>
+        <tr><td class="sl">5</td><td><div class="item-name">Domain &amp; Mobile App ID Updated Conditions</div></td><td><span class="badge badge-testing">SYSTEM TESTING</span></td><td><div class="tags"><span class="tag">QA</span></div></td><td class="rc rc-may">May 2026</td></tr>
+        <tr><td class="sl">6</td><td><div class="item-name">Domain Allow List at Line Item Level Not Enforced</div><div class="item-sub">Requests coming from all domains — bug fix</div></td><td><span class="badge badge-testing">SYSTEM TESTING</span></td><td><div class="tags"><span class="tag">QA</span></div></td><td class="rc rc-may">May 2026</td></tr>
+        <tr><td class="sl">7</td><td><div class="item-name">Viewability Targeting</div></td><td><span class="badge badge-testing">SYSTEM TESTING</span></td><td><div class="tags"><span class="tag">QA</span></div></td><td class="rc rc-may">May 2026</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <!-- MMP -->
+  <div class="section" id="mmp">
+    <div class="section-header">
+      <div class="section-icon icon-mmp">💱</div>
+      <div><div class="section-title">Market Maker Product (MMP) — Sprint 7</div><div class="section-sub">Sprint 11 · Ongoing</div></div>
+    </div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>#</th><th style="width:44%">Work Item</th><th>Status</th><th>Team</th><th>Release Cycle</th></tr></thead>
+      <tbody>
+        <tr><td class="sl">1</td><td><div class="item-name">Phase 2 Demo</div></td><td><span class="badge badge-todo">TO DO</span></td><td><div class="tags"><span class="tag">C++</span><span class="tag">Web 3</span><span class="tag">AI</span><span class="tag">FE</span><span class="tag">PRODUCT</span></div></td><td class="rc rc-may">May 2026</td></tr>
+        <tr><td class="sl">2</td><td><div class="item-name">QA Handover — GATE, KuCoin, CETUS</div></td><td><span class="badge badge-todo">TO DO</span></td><td><div class="tags"><span class="tag">QA</span></div></td><td class="rc rc-may">May 2026</td></tr>
+        <tr><td class="sl">3</td><td><div class="item-name">Phase 1 — Bug Fixes</div></td><td><span class="badge badge-todo">TO DO</span></td><td><div class="tags"><span class="tag">QA</span><span class="tag">Web 3</span><span class="tag">FE</span><span class="tag">AI</span><span class="tag">C++</span></div></td><td class="rc rc-may">May 2026</td></tr>
+        <tr><td class="sl">4</td><td><div class="item-name">CEX — Other Exchange Integrations</div></td><td><span class="badge badge-todo">TO DO</span></td><td><div class="tags"><span class="tag">QA</span></div></td><td class="rc rc-may">May 2026</td></tr>
+        <tr><td class="sl">5</td><td><div class="item-name">Meridian PRD — Latency Improvement</div></td><td><span class="badge badge-todo">TO DO</span></td><td><div class="tags"><span class="tag">QA</span></div></td><td class="rc rc-may">May 2026</td></tr>
+        <tr><td class="sl">6</td><td><div class="item-name">Meridian PRD — Quant Model Update</div></td><td><span class="badge badge-todo">TO DO</span></td><td><div class="tags"><span class="tag">JAVA</span></div></td><td class="rc rc-may">May 2026</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <!-- LABS -->
+  <div class="section" id="labs">
+    <div class="section-header">
+      <div class="section-icon icon-labs">🧪</div>
+      <div><div class="section-title">Labs — Sprint 67</div><div class="section-sub">Sprint 11 · Priority 5</div></div>
+      <span class="priority-pill">P5</span>
+    </div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>#</th><th style="width:44%">Work Item</th><th>Status</th><th>Team</th><th>Release Cycle</th></tr></thead>
+      <tbody>
+        <tr><td class="sl">1</td><td><div class="item-name">Q1 Rewards Claim</div></td><td><span class="badge badge-progress">IN PROGRESS</span></td><td><div class="tags"><span class="tag">Web 3</span><span class="tag">QA</span></div></td><td class="rc rc-date">📅 14 May</td></tr>
+        <tr><td class="sl">2</td><td><div class="item-name">Production Bugs</div></td><td><span class="badge badge-progress">IN PROGRESS</span></td><td><div class="tags"><span class="tag">FE</span><span class="tag">Web 3</span><span class="tag">QA</span></div></td><td class="rc rc-date">📅 14 May</td></tr>
+        <tr><td class="sl">3</td><td><div class="item-name">Backend Cleanup &amp; Improvements</div></td><td><span class="badge badge-progress">IN PROGRESS</span></td><td><div class="tags"><span class="tag">Web 3</span></div></td><td class="rc rc-na">—</td></tr>
+        <tr><td class="sl">4</td><td><div class="item-name">Social Login</div></td><td><span class="badge badge-done">DEV COMPLETED</span></td><td><div class="tags"><span class="tag">FE</span></div></td><td class="rc rc-date">📅 14 May</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <!-- DEVOPS -->
+  <div class="section" id="devops">
+    <div class="section-header">
+      <div class="section-icon icon-devops">⚙️</div>
+      <div><div class="section-title">Infra / DevOps</div><div class="section-sub">Sprint 11 · Platform &amp; Infrastructure</div></div>
+    </div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>#</th><th style="width:44%">Work Item</th><th>Status</th><th>Team</th><th>Release Cycle</th></tr></thead>
+      <tbody>
+        <tr><td class="sl">1</td><td><div class="item-name">DSP Migration — US &amp; UK Cluster</div></td><td><span class="badge badge-progress">IN PROGRESS</span></td><td><div class="tags"><span class="tag">DevOps</span></div></td><td class="rc rc-may">ETA May 2026</td></tr>
+        <tr><td class="sl">2</td><td><div class="item-name">AdTech Environment Stability</div></td><td><span class="badge badge-progress">IN PROGRESS</span></td><td><div class="tags"><span class="tag">DevOps</span></div></td><td class="rc rc-may">ETA May 2026</td></tr>
+        <tr><td class="sl">3</td><td><div class="item-name">Cloud Services Audit &amp; Cost Optimisation</div></td><td><span class="badge badge-progress">IN PROGRESS</span></td><td><div class="tags"><span class="tag">DevOps</span></div></td><td class="rc rc-may">ETA May 2026</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       TEAM LOAD — CONSOLIDATED VIEW
+  ═══════════════════════════════════════ -->
+  <div class="section" id="team-load">
+    <div class="section-header">
+      <div class="section-icon" style="background:#f0fdf4;">👥</div>
+      <div>
+        <div class="section-title">Team Load — Consolidated View</div>
+        <div class="section-sub">Item count per team across all workstreams · Sprint 11</div>
+      </div>
+    </div>
+
+    <!-- Summary table -->
+    <div class="tbl-wrap" style="margin-bottom:28px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Team / Squad</th>
+            <th>Items This Sprint</th>
+            <th>Load Level</th>
+            <th>Workstreams Involved</th>
+            <th>Key Deadlines</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>QA</strong></td>
+            <td><strong>16</strong></td>
+            <td><span class="badge" style="background:#fee2e2;color:#b91c1c;">🔴 HIGH</span></td>
+            <td><div class="tags"><span class="tag">DSP</span><span class="tag">Exchange</span><span class="tag">AdFi</span><span class="tag">MMP</span><span class="tag">Labs</span><span class="tag">Mkpl Pro</span></div></td>
+            <td class="rc rc-hotfix">11 May · 14 May · 19 May</td>
+          </tr>
+          <tr>
+            <td><strong>JAVA / FE</strong></td>
+            <td><strong>15</strong></td>
+            <td><span class="badge" style="background:#fee2e2;color:#b91c1c;">🔴 HIGH</span></td>
+            <td><div class="tags"><span class="tag">Exchange</span><span class="tag">DSP</span><span class="tag">AdFi</span><span class="tag">AMP</span><span class="tag">MMP</span></div></td>
+            <td class="rc rc-may">May 2026</td>
+          </tr>
+          <tr>
+            <td><strong>PRODUCT</strong></td>
+            <td><strong>12</strong></td>
+            <td><span class="badge" style="background:#fef3c7;color:#92400e;">🟡 MEDIUM</span></td>
+            <td><div class="tags"><span class="tag">AMP</span><span class="tag">Mkpl Lite</span><span class="tag">Mkpl Pro</span><span class="tag">MMP</span></div></td>
+            <td class="rc rc-may">May / June 2026</td>
+          </tr>
+          <tr>
+            <td><strong>AI</strong></td>
+            <td><strong>8</strong></td>
+            <td><span class="badge" style="background:#fef3c7;color:#92400e;">🟡 MEDIUM</span></td>
+            <td><div class="tags"><span class="tag">Mkpl Pro</span><span class="tag">Mkpl Lite</span><span class="tag">MMP</span><span class="tag">AMP</span></div></td>
+            <td class="rc rc-may">May 2026</td>
+          </tr>
+          <tr>
+            <td><strong>Web 3</strong></td>
+            <td><strong>7</strong></td>
+            <td><span class="badge" style="background:#fef3c7;color:#92400e;">🟡 MEDIUM</span></td>
+            <td><div class="tags"><span class="tag">Labs</span><span class="tag">MMP</span><span class="tag">Mkpl Pro</span><span class="tag">Mkpl Lite</span></div></td>
+            <td class="rc rc-date">14 May (Labs)</td>
+          </tr>
+          <tr>
+            <td><strong>DevOps</strong></td>
+            <td><strong>4</strong></td>
+            <td><span class="badge" style="background:#dcfce7;color:#166534;">🟢 NORMAL</span></td>
+            <td><div class="tags"><span class="tag">Infra</span><span class="tag">Mkpl Lite</span></div></td>
+            <td class="rc rc-may">ETA May 2026</td>
+          </tr>
+          <tr>
+            <td><strong>DESIGN</strong></td>
+            <td><strong>3</strong></td>
+            <td><span class="badge" style="background:#dcfce7;color:#166534;">🟢 NORMAL</span></td>
+            <td><div class="tags"><span class="tag">AMP</span><span class="tag">Mkpl Lite</span><span class="tag">Mkpl Pro</span></div></td>
+            <td class="rc rc-jun">June 2026</td>
+          </tr>
+          <tr>
+            <td><strong>C++</strong></td>
+            <td><strong>2</strong></td>
+            <td><span class="badge" style="background:#dcfce7;color:#166534;">🟢 NORMAL</span></td>
+            <td><div class="tags"><span class="tag">MMP</span></div></td>
+            <td class="rc rc-may">May 2026</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Visual load cards -->
+    <div class="team-grid">
+
+      <div class="team-card">
+        <div class="tc-top">
+          <div class="tc-name"><span class="tc-emoji">🧪</span> QA</div>
+          <span class="load-badge load-high">🔴 HIGH</span>
+        </div>
+        <div class="tc-bar-wrap"><div class="tc-bar bar-high" style="width:100%"></div></div>
+        <div class="tc-count">16</div>
+        <div class="tc-count-label">items across 6 workstreams</div>
+        <div class="tc-sections">
+          <span class="tc-section-tag">DSP · 5 items</span>
+          <span class="tc-section-tag">Exchange · 3 items</span>
+          <span class="tc-section-tag">MMP · 4 items</span>
+          <span class="tc-section-tag">AdFi · 2 items</span>
+          <span class="tc-section-tag">Labs · 2 items</span>
+          <span class="tc-section-tag">Mkpl Pro · 1 item</span>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <div class="tc-top">
+          <div class="tc-name"><span class="tc-emoji">💻</span> JAVA / FE</div>
+          <span class="load-badge load-high">🔴 HIGH</span>
+        </div>
+        <div class="tc-bar-wrap"><div class="tc-bar bar-high" style="width:94%"></div></div>
+        <div class="tc-count">15</div>
+        <div class="tc-count-label">items across 5 workstreams</div>
+        <div class="tc-sections">
+          <span class="tc-section-tag">Exchange · 7 items</span>
+          <span class="tc-section-tag">AdFi · 5 items</span>
+          <span class="tc-section-tag">DSP · 2 items</span>
+          <span class="tc-section-tag">AMP · 1 item</span>
+          <span class="tc-section-tag">MMP · 1 item</span>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <div class="tc-top">
+          <div class="tc-name"><span class="tc-emoji">📦</span> PRODUCT</div>
+          <span class="load-badge load-medium">🟡 MEDIUM</span>
+        </div>
+        <div class="tc-bar-wrap"><div class="tc-bar bar-medium" style="width:75%"></div></div>
+        <div class="tc-count">12</div>
+        <div class="tc-count-label">items across 4 workstreams</div>
+        <div class="tc-sections">
+          <span class="tc-section-tag">AMP · 6 items</span>
+          <span class="tc-section-tag">Mkpl Lite · 3 items</span>
+          <span class="tc-section-tag">Mkpl Pro · 2 items</span>
+          <span class="tc-section-tag">MMP · 1 item</span>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <div class="tc-top">
+          <div class="tc-name"><span class="tc-emoji">🤖</span> AI</div>
+          <span class="load-badge load-medium">🟡 MEDIUM</span>
+        </div>
+        <div class="tc-bar-wrap"><div class="tc-bar bar-medium" style="width:50%"></div></div>
+        <div class="tc-count">8</div>
+        <div class="tc-count-label">items across 4 workstreams</div>
+        <div class="tc-sections">
+          <span class="tc-section-tag">Mkpl Pro · 4 items</span>
+          <span class="tc-section-tag">MMP · 2 items</span>
+          <span class="tc-section-tag">Mkpl Lite · 1 item</span>
+          <span class="tc-section-tag">AMP · 1 item</span>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <div class="tc-top">
+          <div class="tc-name"><span class="tc-emoji">🔗</span> Web 3</div>
+          <span class="load-badge load-medium">🟡 MEDIUM</span>
+        </div>
+        <div class="tc-bar-wrap"><div class="tc-bar bar-medium" style="width:44%"></div></div>
+        <div class="tc-count">7</div>
+        <div class="tc-count-label">items across 4 workstreams</div>
+        <div class="tc-sections">
+          <span class="tc-section-tag">Labs · 3 items</span>
+          <span class="tc-section-tag">MMP · 2 items</span>
+          <span class="tc-section-tag">Mkpl Pro · 1 item</span>
+          <span class="tc-section-tag">Mkpl Lite · 1 item</span>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <div class="tc-top">
+          <div class="tc-name"><span class="tc-emoji">⚙️</span> DevOps</div>
+          <span class="load-badge load-normal">🟢 NORMAL</span>
+        </div>
+        <div class="tc-bar-wrap"><div class="tc-bar bar-normal" style="width:25%"></div></div>
+        <div class="tc-count">4</div>
+        <div class="tc-count-label">items across 2 workstreams</div>
+        <div class="tc-sections">
+          <span class="tc-section-tag">Infra / DevOps · 3 items</span>
+          <span class="tc-section-tag">Mkpl Lite · 1 item</span>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <div class="tc-top">
+          <div class="tc-name"><span class="tc-emoji">🎨</span> DESIGN</div>
+          <span class="load-badge load-normal">🟢 NORMAL</span>
+        </div>
+        <div class="tc-bar-wrap"><div class="tc-bar bar-normal" style="width:19%"></div></div>
+        <div class="tc-count">3</div>
+        <div class="tc-count-label">items across 3 workstreams</div>
+        <div class="tc-sections">
+          <span class="tc-section-tag">AMP · 1 item</span>
+          <span class="tc-section-tag">Mkpl Lite · 1 item</span>
+          <span class="tc-section-tag">Mkpl Pro · 1 item</span>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <div class="tc-top">
+          <div class="tc-name"><span class="tc-emoji">⚡</span> C++</div>
+          <span class="load-badge load-normal">🟢 NORMAL</span>
+        </div>
+        <div class="tc-bar-wrap"><div class="tc-bar bar-normal" style="width:13%"></div></div>
+        <div class="tc-count">2</div>
+        <div class="tc-count-label">items across 1 workstream</div>
+        <div class="tc-sections">
+          <span class="tc-section-tag">MMP · 2 items</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Sprint 11 · 11 May – 22 May 2026 · Alkimi Exchange · Generated for Folio
+</footer>
+
+</body>
+</html>
