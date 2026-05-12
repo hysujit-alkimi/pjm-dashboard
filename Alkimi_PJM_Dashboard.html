@@ -567,7 +567,7 @@ a.jira-link:hover{text-decoration:underline}
     <div class="sidebar-bottom-tabs">
       <button id="sidebarMeetingsBtn" onclick="switchTab('meetings');this.classList.add('active')">&#x1F4C5; Meetings</button>
     </div>
-    <div class="meta">Live Jira Data<br>May 12, 2026<br>Refreshed: 14:30 IST — Sprint 11 W1 D2</div>
+    <div class="meta">Live Jira Data<br>May 12, 2026<br>Refreshed: 15:10 IST — Sprint 11 W1 D2</div>
     <div class="sidebar-clocks">
       <div><span class="clock-label">Date:</span> <span class="clock-val" id="clockDate"></span></div>
       <div><span class="clock-label">IST:</span> <span class="clock-val" id="clockIST"></span></div>
@@ -1159,9 +1159,9 @@ a.jira-link:hover{text-decoration:underline}
 
 <script>
 // ============================
-// LIVE JIRA DATA — auto-refreshed 2026-05-12T14:30 IST
+// LIVE JIRA DATA — auto-refreshed 2026-05-12T15:10 IST
 // Sprint 11 Week 1 Day 2 | DSP:104 | E2:100 | AMP:100 | ADF:110+ | MMP:100+ | ALKIMILABS:100 | AID:53 | Total sprint: 600+ | Blocked: 7 (AID)
-// Calendar: 8 meetings today | Gemini Notes: Awaiting (no notes received yet)
+// Calendar: 8 meetings today | Gemini Notes: 1 confirmed (Agentic Marketplace Standup 14:30 IST)
 // ============================
 const projects = [
   {id:1,name:"DSP",key:"DSP",status:"IN PROGRESS",type:"Recurring",jira:"https://alkimi.atlassian.net/jira/software/projects/DSP/boards",
@@ -2651,7 +2651,7 @@ const geminiNotes = [
 {date:"May 11",title:"Sujit / Keshav – 2026/05/11 18:00 IST",source:"awaiting",projects:["GENERAL"],summary:"Awaiting notes — daily PMO sync. Sprint 11 day 1.",actionItems:[],decisions:[],attendees:["Sujit Kumar","Keshav Ambuga"],docUrl:""},
 /* ── MAY 12 ── */
 {date:"May 12",title:"[Ad-Tech] Release Plan & Deployment – 2026/05/12 12:45 IST",source:"awaiting",projects:["DSP","E2","ADF"],summary:"Awaiting notes — Exchange hot fix deployment plan (11 May target). DSP and ADFI release coordination.",actionItems:[],decisions:[],attendees:["Pushpalatha Rangaswamy","Sujit Kumar","Manasa Mariswamy","Gaurav Handa","Nishanth","Ramachandra KBS","Abhay Thakur","Vishnupriya"],docUrl:""},
-{date:"May 12",title:"[Del] Agentic Marketplace Standup – 2026/05/12 14:30 IST",source:"awaiting",projects:["AMKT"],summary:"Awaiting notes.",actionItems:[],decisions:[],attendees:["Sudarshan Shenvi","Sujit Kumar","Milly","Ramachandra KBS","Chandru Narayana","VJ","Prem Upadhyay","Gedi"],docUrl:""},
+{date:"May 12",title:"[Del] Agentic Marketplace Standup – 2026/05/12 14:30 IST",source:"gemini",projects:["AMKT"],summary:"Meeting discussions addressed environment instability and feature tracking alongside database access with consolidated project management strategies. Environment instability persists despite ongoing testing efforts — team adopted a feature-based tracking approach to replace inefficient individual PR management. Access to database and platform environments remains restricted; user account management funneled through specific team members. Ongoing work continues on campaign creation and system integration; project organisation to shift toward separate Linear projects.",actionItems:["[Prem Upadhyay, @VJ] Test Environment: Continue system testing; report encountered issues; collaborate with Mr. 360 to resolve problems","[Sujit Kumar / @Sujit] Update Tracking: Reach out to Ramachandra KBS; understand required features; get feature list from Mr. 360 for high-level tracking","[Prem Upadhyay / @Prem] Clear Account: Send list of user IDs to Chandru Narayana for database removal","[Chandru Narayana / @Chandru] Remove Users: Remove specified user IDs from the database","[Sujit Kumar / @Sujit] Get Access: Speak to VJ; ensure Lnut receives railway and Superbase access","[Prem Upadhyay, Chandru Narayana / @Prem @Chandru] Handover Task: Catch up post-meeting to transition campaign creation issue ownership","[@VJ] Send Credentials: Send Superbase account credentials to Lok","[Ramachandra KBS / @Ram] Review Update: Provide status on agentic relay review by tomorrow","[Sudarshan Shenvi / @Sudarshan] Design Tables: Work on table designs required for account centralization","[Pushpalatha's team / @Pushpalatha] Implement Centralization: Start implementation work for account centralization within 1–2 days","[@VJ] Folio Integration: Follow up with Gedi concerning folio integration status","[Sujit Kumar / @Sujit] Share Open Items: Share consolidated list of open items categorised by assignee","[Chandru Narayana / @Chandru] Update Linear: Add necessary project details to the new Linear project for harness/marketplace"],decisions:["Feature-based tracking approach adopted to replace individual PR management","Project organisation to shift toward separate Linear projects for product-specific dev"],attendees:["Sudarshan Shenvi","Sujit Kumar","Milly Putley","Ramachandra KBS","Chandru Narayana","VJ","Prem Upadhyay","Gediminas Strumila","Pushpalatha Rangaswamy","Sagar Jadhav"],docUrl:""},
 {date:"May 12",title:"[Del] Labs Daily Standup – 2026/05/12 15:00 IST",source:"awaiting",projects:["LABS"],summary:"Awaiting notes — Labs V4 standup. Q1 Rewards Claim & Social Login hard deadline 14 May.",actionItems:[],decisions:[],attendees:["Gedi","Phanindra Gummaraju","Daniel Calvo Lopez","Sujit Kumar","Darshan Gaonkar","Sriram","VJ","Manasa Mariswamy"],docUrl:""},
 {date:"May 12",title:"UK | India Ad Platforms Tech Call – 2026/05/12 16:00 IST",source:"awaiting",projects:["DSP","E2"],summary:"Awaiting notes — weekly UK/India ad platforms sync.",actionItems:[],decisions:[],attendees:["Vinay Krishna Bhat","Kalidas","Ramachandra KBS","Raman","Chandru Narayana","Kasturi","Naresh","Boardroom"],docUrl:""},
 {date:"May 12",title:"MMP Engineering Internal Syncup – 2026/05/12 16:30 IST",source:"awaiting",projects:["MMP"],summary:"Awaiting notes.",actionItems:[],decisions:[],attendees:["Sangamesh Mudakannavar","Sujit Kumar","Akhil","Naveen","Kannan","Anand Pandey","Gunjan","Darshan Gaonkar"],docUrl:""},
