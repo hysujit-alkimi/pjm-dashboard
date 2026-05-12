@@ -567,7 +567,7 @@ a.jira-link:hover{text-decoration:underline}
     <div class="sidebar-bottom-tabs">
       <button id="sidebarMeetingsBtn" onclick="switchTab('meetings');this.classList.add('active')">&#x1F4C5; Meetings</button>
     </div>
-    <div class="meta">Live Jira Data<br>May 12, 2026<br>Refreshed: Sprint 11 W1 D2</div>
+    <div class="meta">Live Jira Data<br>May 12, 2026<br>Refreshed: 14:30 IST — Sprint 11 W1 D2</div>
     <div class="sidebar-clocks">
       <div><span class="clock-label">Date:</span> <span class="clock-val" id="clockDate"></span></div>
       <div><span class="clock-label">IST:</span> <span class="clock-val" id="clockIST"></span></div>
@@ -1159,8 +1159,9 @@ a.jira-link:hover{text-decoration:underline}
 
 <script>
 // ============================
-// LIVE JIRA DATA — auto-refreshed 2026-05-12T09:30 IST
-// Sprint 11 Week 1 | DSP:104 | E2:100 | AMP:100 | ADF:110+ | MMP:100+ | ALKIMILABS:100 | Total sprint: 600+
+// LIVE JIRA DATA — auto-refreshed 2026-05-12T14:30 IST
+// Sprint 11 Week 1 Day 2 | DSP:104 | E2:100 | AMP:100 | ADF:110+ | MMP:100+ | ALKIMILABS:100 | AID:53 | Total sprint: 600+ | Blocked: 7 (AID)
+// Calendar: 8 meetings today | Gemini Notes: Awaiting (no notes received yet)
 // ============================
 const projects = [
   {id:1,name:"DSP",key:"DSP",status:"IN PROGRESS",type:"Recurring",jira:"https://alkimi.atlassian.net/jira/software/projects/DSP/boards",
@@ -1495,7 +1496,8 @@ const weekMeetings = {
     {title:"UK | India Ad Platforms Tech Call",time:"4:00 PM",end:"4:30 PM",desc:"Weekly UK/India ad platforms sync.",attendees:["vinay.bhat","kalidas","ram","raman","chandru","kasturi","naresh","boardroom"],link:""},
     {title:"MMP Engineering Internal Syncup",time:"4:30 PM",end:"5:00 PM",desc:"MMP engineering sync.",attendees:["sangamesh.m","sujit","akhil","naveen","kannan","anand","gunjan","darshan"],link:""},
     {title:"[AdTech] Feature Walkthrough",time:"5:00 PM",end:"5:30 PM",desc:"Sprint 11 feature walkthrough for ad tech products.",attendees:["kalidas","keshav.a","pushpa.rangaswamy","sujit","manasa.ms","ram","priya.muduli","abhay.thakur"],link:""},
-    {title:"Sujit / Keshav",time:"6:00 PM",end:"6:30 PM",desc:"Daily PMO sync.",attendees:["keshav.a"],link:""}
+    {title:"Sujit / Keshav",time:"6:00 PM",end:"6:30 PM",desc:"Daily PMO sync.",attendees:["keshav.a"],link:""},
+    {title:"Sujit / Roisin / Keshav Sync",time:"6:30 PM",end:"6:45 PM",desc:"Recurring sync with Roisin and Keshav — PMO / stakeholder alignment.",attendees:["roisin","keshav.a"],link:""}
   ],
   "May 13": [
     {title:"[Del] AD Tech Weekly Syncup",time:"11:30 AM",end:"12:00 PM",desc:"Weekly AD Tech standup.",attendees:["pushpa.rangaswamy","gaurav.handa","ram","gedi","sujit","manasa.ms","abhay.thakur","nishanth"],link:""},
@@ -2655,6 +2657,7 @@ const geminiNotes = [
 {date:"May 12",title:"MMP Engineering Internal Syncup – 2026/05/12 16:30 IST",source:"awaiting",projects:["MMP"],summary:"Awaiting notes.",actionItems:[],decisions:[],attendees:["Sangamesh Mudakannavar","Sujit Kumar","Akhil","Naveen","Kannan","Anand Pandey","Gunjan","Darshan Gaonkar"],docUrl:""},
 {date:"May 12",title:"[AdTech] Feature Walkthrough – 2026/05/12 17:00 IST",source:"awaiting",projects:["DSP","E2","ADF"],summary:"Awaiting notes — Sprint 11 feature walkthrough for ad tech.",actionItems:[],decisions:[],attendees:["Kalidas","Keshav Ambuga","Pushpalatha Rangaswamy","Sujit Kumar","Manasa Mariswamy","Ramachandra KBS","Priya Muduli","Abhay Thakur"],docUrl:""},
 {date:"May 12",title:"Sujit / Keshav – 2026/05/12 18:00 IST",source:"awaiting",projects:["GENERAL"],summary:"Awaiting notes — daily PMO sync.",actionItems:[],decisions:[],attendees:["Sujit Kumar","Keshav Ambuga"],docUrl:""},
+{date:"May 12",title:"Sujit / Roisin / Keshav Sync – 2026/05/12 18:30 IST",source:"awaiting",projects:["GENERAL"],summary:"Awaiting notes — recurring PMO and stakeholder alignment sync.",actionItems:[],decisions:[],attendees:["Sujit Kumar","Roisin","Keshav Ambuga"],docUrl:""},
 /* ── MAY 13 ── */
 {date:"May 13",title:"[Del] AD Tech Weekly Syncup – 2026/05/13 11:30 IST",source:"awaiting",projects:["DSP","E2","ADF"],summary:"Awaiting notes.",actionItems:[],decisions:[],attendees:["Pushpalatha Rangaswamy","Gaurav Handa","Ramachandra KBS","Gedi","Sujit Kumar","Manasa Mariswamy","Abhay Thakur","Nishanth"],docUrl:""},
 {date:"May 13",title:"ADTECH - Clustered Env Standup – 2026/05/13 12:00 IST",source:"awaiting",projects:["DEVOPS"],summary:"Awaiting notes.",actionItems:[],decisions:[],attendees:["Harshith Kumar","Goutham M","Vishnupriya","Sudarshan Shenvi","Pushpalatha Rangaswamy","Sujit Kumar","Ramachandra KBS","Loknath Prasad"],docUrl:""},
